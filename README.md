@@ -5,10 +5,10 @@ from a personal music collection through a website. This project is an
 opportunity to explore the following:
 
 -__Test Driven Development__ - Use [RSpec](http://rspec.info/) to build unit
-tests and guide development.
+tests and guide development.   
 -__MySQL__ - Use a MySQL database to simplify and standardize the display of
-songs and the creation of playlists.
--__HTML5__ - Use an HTML5 music player on the page.
+songs and the creation of playlists.   
+-__HTML5__ - Use an HTML5 music player on the page.   
 
 ### Non Ruby Dependencies
 
