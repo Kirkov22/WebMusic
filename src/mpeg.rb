@@ -4,14 +4,19 @@ require 'taglib'
 class FileNotFoundError < Exception; end
 
 class Mpeg
-  attr_reader :filepath, :tag
+  attr_reader :filepath
   
   def initialize(filepath)
     raise FileNotFoundError.new unless File.exists?(filepath)
     @filepath = filepath
-    mp3 = TagLib::MPEG::File.open(@filepath) do |mpeg_file|
+  end
+
+  # Read ID3v2 (preferred) or ID3v1 tag
+  def tag
+    tag = {}
+    TagLib::MPEG::File.open(@filepath) do |mpeg_file|
       mpeg_tag = mpeg_file.tag
-      @tag = {
+      tag = {
         :artist => mpeg_tag.artist,
         :album => mpeg_tag.album,
         :title => mpeg_tag.title,
@@ -21,5 +26,11 @@ class Mpeg
         :comment => mpeg_tag.comment
       }
     end
+    tag
+  end
+
+  # Converts to Vorbis file, 128kpbs bitrate
+  def convert_to(outfile)
+    system "avconv -i #{@filepath} -y -loglevel panic -codec:a libvorbis -b 128k #{outfile}"
   end
 end
