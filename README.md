@@ -13,3 +13,6 @@ songs and the creation of playlists.
 ### Non Ruby Dependencies
 
 -[taglib](http://taglib.github.io/) - sudo apt-get install libtag1-dev
+-[avconv](http://libav.org/) - Debian fork of the FFmpeg project. May add option
+to use FFmpeg in the future. This is the default tool distributed with Ubuntu
+and its derivatives.   
