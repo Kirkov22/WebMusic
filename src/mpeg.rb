@@ -4,7 +4,7 @@ class Mpeg < AudioFile
 
   def initialize(filepath)
     super({
-      ext:      ".mp3",
+      ext:      '.mp3',
       filepath: filepath })
   end
 end
