@@ -23,10 +23,12 @@ Time to start crunching on some Sinatra/Haml/Scss!
 
 ### Non Ruby Dependencies
 
-+ [taglib](http://taglib.github.io/)   
++ [taglib](http://taglib.github.io/)
 
-    sudo apt-get install libtag1-dev   
+        sudo apt-get install libtag1-dev   
 
-+ [avconv](http://libav.org/) - Debian fork of the FFmpeg project. May add option
++ [avconv](http://libav.org/)
+
+    Debian fork of the FFmpeg project. May add option
 to use FFmpeg in the future. This is the default tool distributed with Ubuntu
-and its derivatives.   
+and its derivatives.
