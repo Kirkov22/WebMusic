@@ -1,37 +1,37 @@
 # Class to describe a MPEG music file
 require 'taglib'
 
-module Mpeg
-  
+module Flac
+
   class FileNotFoundError < Exception
   end
-  
+ 
   class WrongExtensionError < Exception
   end
-  
+
   class AudioFile
     attr_reader :filepath
     
     def initialize(filepath)
       raise FileNotFoundError.new unless File.exists?(filepath)
       ext = File.extname(filepath)
-      raise WrongExtensionError.new("Detected #{ext} instead of .mp3") unless ext == '.mp3' 
+      raise WrongExtensionError.new("Detected #{ext} instead of .flac") unless ext == '.flac'
       @filepath = filepath
     end
     
-    # Read ID3v2 (preferred) or ID3v1 tag
+    # Read FLAC tag
     def tag
       tag = {}
-      TagLib::MPEG::File.open(@filepath) do |mpeg_file|
-        mpeg_tag = mpeg_file.tag
+      TagLib::FLAC::File.open(@filepath) do |flac_file|
+        flac_tag = flac_file.tag
         tag = {
-          :artist => mpeg_tag.artist,
-          :album => mpeg_tag.album,
-          :title => mpeg_tag.title,
-          :year => mpeg_tag.year,
-          :track => mpeg_tag.track,
-          :genre => mpeg_tag.genre,
-          :comment => mpeg_tag.comment
+          :artist => flac_tag.artist,
+          :album => flac_tag.album,
+          :title => flac_tag.title,
+          :year => flac_tag.year,
+          :track => flac_tag.track,
+          :genre => flac_tag.genre,
+          :comment => flac_tag.comment
         }
       end
       tag
