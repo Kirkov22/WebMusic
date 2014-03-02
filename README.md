@@ -19,6 +19,7 @@ command:
     rspec test/spec.rb
 
 Next up, creating a page that allows me to select and play a file from a list.
+Time to start crunching on some Sinatra/Haml/Scss!
 
 ### Non Ruby Dependencies
 
