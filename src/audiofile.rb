@@ -1,3 +1,5 @@
+require 'taglib'
+
 class AudioFile
   
   class FileNotFoundError   < Exception; end
