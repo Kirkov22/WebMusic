@@ -16,10 +16,10 @@ class AudioFile
   end
   
   def tag
-    file_type = Kernel.const_get(self.class.to_s.upcase)
+    file_type = self.class.to_s.upcase
 
     {}.tap do |tag|
-      TagLib::file_type::File.open(@filepath) do |audio_file|
+      TagLib::const_get(file_type)::File.open(@filepath) do |audio_file|
         audio_tag = audio_file.tag
         
         tag[:artist]  = audio_tag.artist
