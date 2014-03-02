@@ -45,6 +45,8 @@ describe Mpeg::AudioFile do
   end
   
   it 'transcodes to a vorbis audio file' do
+    pending
+
     filename = 'test/test_id3v1.mp3'
     mpeg = Mpeg::AudioFile.new(filename)
     outfile = 'out.ogg'
@@ -98,6 +100,8 @@ describe Flac::AudioFile do
   end
   
   it 'transcodes to a vorbis audio file' do
+    pending
+
     filename = 'test/test_id3v1.flac'
     flac = Flac::AudioFile.new(filename)
     outfile = 'out.ogg'
