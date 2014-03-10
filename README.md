@@ -8,18 +8,24 @@ opportunity to explore the following:
 tests and guide development.   
 + __MySQL__ - Use a MySQL database to simplify and standardize the display of
 songs and the creation of playlists.   
-+ __HTML5__ - Use an HTML5 music player on the page.   
++ __Javascript__ - Use Javascript to interact with a Sinatra app and dynamically
+modify the page
 
 ### Status
 
-My RSPec file is set up, as are my first passes at MP3 and FLAc
+My RSPec file is set up, as are my first passes at MP3 and FLAC
 file classes. Tests can be run from the main directory using the following
 command:
 
     rspec test/spec.rb
 
-Next up, creating a page that allows me to select and play a file from a list.
-Time to start crunching on some Sinatra/Haml/Scss!
+In addition, the project now has a basic Sinatra app with Javascript to add
+an audio node. For test purposes I copied test_id3v1.mp3 into the public
+directory (filtered out by .gitignore).
+
+Now that I have some Javascript under my belt and understand how to make
+requests to the server without causing a page to reload, I'll start tinkering
+with the UI (configuration, creating a playlist, etc.).
 
 ### Non Ruby Dependencies
 
