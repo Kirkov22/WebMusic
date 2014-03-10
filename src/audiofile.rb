@@ -12,7 +12,7 @@ class AudioFile
   
   # Each subclass of AudioFile must provide its own extension name
   def initialize(filepath, checked_ext = ".none")
-    raise FileNotFoundError.new unless File.exists?(filepath)
+    raise FileNotFoundError.new("Couldn't find #{filepath}.") unless File.exists?(filepath)
     ext = File.extname(filepath).downcase
     raise WrongExtensionError.new("Detected #{ext} instead of #{checked_ext}") unless ext == checked_ext
     @filepath = filepath
