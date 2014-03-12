@@ -36,7 +36,7 @@ class AudioFile
   end
   
   # Converts to Vorbis file, 128kpbs bitrate
-  def convert_to(outfile)
-    system "avconv -i #{@filepath} -y -loglevel panic -codec:a libvorbis -b 128k #{outfile}"
+  def convert_to(cli, outfile)
+    system "#{cli} -i #{@filepath} -y -loglevel panic -codec:a libvorbis -b 128k #{outfile}"
   end
 end
