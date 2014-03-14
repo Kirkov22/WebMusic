@@ -19,13 +19,10 @@ command:
 
     rspec test/spec.rb
 
-In addition, the project now has a basic Sinatra app with Javascript to add
-an audio node. For test purposes I copied test_id3v1.mp3 into the public
-directory (filtered out by .gitignore).
-
-Now that I have some Javascript under my belt and understand how to make
-requests to the server without causing a page to reload, I'll start tinkering
-with the UI (configuration, creating a playlist, etc.).
+Currently I'm prototyping various page functions. I've already done rough
+versions of converting an MP3 and adding it as an audio node, as well as listing
+files in a table using tag data. Next will be a simple form for configuring the
+server options and creating a playlist.
 
 ### Non Ruby Dependencies
 
