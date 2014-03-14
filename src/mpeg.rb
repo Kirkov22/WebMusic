@@ -5,9 +5,11 @@ require_relative 'audiofile.rb'
 
 class Mpeg < AudioFile
 
+  EXT = '.mp3'
+
   # Verify filename is a .mp3 file
   def initialize(filename)
-    super(filename, '.mp3')
+    super(filename, EXT)
   end
 
   # Read tag using TagLib MPEG module

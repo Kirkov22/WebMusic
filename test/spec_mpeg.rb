@@ -10,6 +10,11 @@ describe Mpeg do
     filename = 'test/wrongfile.txt'
     expect{Mpeg.new(filename)}.to raise_error(Mpeg::WrongExtensionError)
   end
+
+  it 'has a constant that defines its extension' do
+    ext = '.mp3'
+    expect(Mpeg::EXT).to eq(ext)
+  end
   
   it 'reads mp3 ID3v1 tag when it exists' do
     filename = 'test/test_id3v1.mp3'

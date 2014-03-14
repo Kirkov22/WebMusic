@@ -11,6 +11,11 @@ describe Flac do
     expect{Flac.new(filename)}.to raise_error(Flac::WrongExtensionError)
   end
   
+  it 'has a constant that defines its extension' do
+    ext = '.flac'
+    expect(Flac::EXT).to eq(ext)
+  end
+  
   it 'reads flac ID3v1 tag when it exists' do
     filename = 'test/test_id3v1.flac'
     tag_values = {
