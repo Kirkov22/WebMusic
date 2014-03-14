@@ -1,3 +1,5 @@
+# Author: Tim Schofield
+# Class to interface with server configuration
 require 'json'
 
 class ServerConfig

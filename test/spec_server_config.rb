@@ -22,7 +22,7 @@ describe ServerConfig do
     expect(server_config.opts[:path]).to eq(new_path)
   end
 
-  it 'does not allow nonexistant options to be written' do
+  it 'does not allow completely new options to be written' do
     filename = 'test/config.json'
     server_config = ServerConfig.new(filename)
     new_opts = {
