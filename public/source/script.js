@@ -66,13 +66,26 @@ function encodeFormData(data) {
   return pairs.join("&");
 }
 
-function postToScript(scriptName, data) {
+//Encode Javascript object as form data and posts it to a script
+function postFormToScript(scriptName, data) {
   var requester = makeHttpObject();
   requester.open("POST", scriptName, false);
   requester.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   body = encodeFormData(data);
   requester.send(body);
   return requester.responseText;
+}
+
+//Takes JSON oject and transforms it to DOC TR node
+function jsonToTr(object) {
+  var tr = makeNode("TR", {});
+
+  tr.appendChild(makeNode("TD", {}, object.artist));
+  tr.appendChild(makeNode("TD", {}, object.album));
+  tr.appendChild(makeNode("TD", {}, object.track.toString()));
+  tr.appendChild(makeNode("TD", {}, object.title));
+
+  return tr;
 }
 
 //---------------
@@ -83,13 +96,27 @@ function postToScript(scriptName, data) {
 // "target" DIV
 function changeTarget() {
   var target = $("target");
-  var path_to_music = postToScript("music", {
-    song : "test_id3v1.mp3" 
+//   var path_to_music = postToScript("music", {
+//     song : "test_id3v1.mp3" 
+//   });
+//   var newNode = makeNode("AUDIO", {
+//     src       : path_to_music,
+//     preload   : "none",
+//     controls  : ""
+//   }, makeNode("P", {}, "This audio format is not supported by your browser."));
+//   var par = makeNode("P", {}, getJson());
+  var response = getJson();
+  forEachIn(response, function(song, tag) {
+    var tr = jsonToTr(tag);
+    target.appendChild(tr);
   });
-  var newNode = makeNode("AUDIO", {
-    src       : path_to_music,
-    preload   : "none",
-    controls  : ""
-  }, makeNode("P", {}, "This audio format is not supported by your browser."));
-  target.appendChild(newNode);
+}
+
+// Temp function to get json data from script
+function getJson() {
+  var requester = makeHttpObject();
+  requester.open("GET", "getfilelist", false);
+  requester.send(null);
+  var text = requester.responseText;
+  return JSON.parse(text);
 }
