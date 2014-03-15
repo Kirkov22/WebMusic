@@ -37,7 +37,7 @@ module AppHelpers
   
   # Return an array of music files at path
   def listMusicFiles(path)
-    Dir.glob(path + "**.{mp3, flac}", caseinsensitive)
+    Dir.glob(path + "**{" + Mpeg::EXT + "," + Flac::EXT + "}", caseinsensitive)
   end
   
   # Flag for case insensitive glob expression
