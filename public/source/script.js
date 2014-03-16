@@ -7,6 +7,11 @@ function $(id) {
   return document.getElementById(id);
 }
 
+// Remove node from the document
+function removeNode(node) {
+  return node.parentNode.removeChild(node);
+}
+
 // For each property in object, do action
 function forEachIn(object, action) {
   for (var property in object) {
@@ -88,9 +93,37 @@ function jsonToTr(object) {
   return tr;
 }
 
+//Remove all rows from table except the first
+function clearTable(table) {
+  var rows = table.getElementsByTagName("TR");
+  while (rows[1]) {
+    removeNode(rows[1]);
+  }
+}
+
 //---------------
 // Page Functions
 //---------------
+
+// Get song listing from app
+function getSongListing() {
+  var requester = makeHttpObject();
+  requester.open("GET", "getfilelist", false);
+  requester.send(null);
+  var text = requester.responseText;
+  return JSON.parse(text);
+}
+
+// Update the table listing song choices
+function updateListingTable() {
+  var selectTable = $("selections");
+  clearTable(selectTable);
+  var songs = getSongListing();
+  forEachIn(songs, function(song, tag) {
+    var tr = jsonToTr(tag);
+    selectTable.appendChild(tr);
+  });
+}
 
 //Temp function to add an audio tag to the document in the
 // "target" DIV
@@ -105,6 +138,7 @@ function changeTarget() {
 //     controls  : ""
 //   }, makeNode("P", {}, "This audio format is not supported by your browser."));
 //   var par = makeNode("P", {}, getJson());
+  clearTable(target);
   var response = getJson();
   forEachIn(response, function(song, tag) {
     var tr = jsonToTr(tag);
