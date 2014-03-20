@@ -1,9 +1,18 @@
 %h2.span-24
   Audio Node Test
-%button{type: 'button', onclick: 'updateListingTable()'}
+%button{type: 'button', onclick: 'updateLibraryTable();'}
   Click me!
+%h2 Library
 %table
-  %tbody{id: 'selections'}
+  %tbody{id: 'library'}
+    %tr
+      %th Artist
+      %th Album
+      %th Track #
+      %th Title
+%h2 Playlist
+%table
+  %tbody{id: 'playlist'}
     %tr
       %th Artist
       %th Album
