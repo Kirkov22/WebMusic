@@ -2,16 +2,6 @@
 // Helper Functions
 //-----------------
 
-// Shorthand for getElementById
-function $(id) {
-  return document.getElementById(id);
-}
-
-// Remove node from the document
-function removeNode(node) {
-  return node.parentNode.removeChild(node);
-}
-
 // For each property in object, do action
 function forEachIn(object, action) {
   for (var property in object) {
@@ -22,34 +12,24 @@ function forEachIn(object, action) {
 }
 
 // Create a DOM node
-//  ex. makeNode("A", {href: "http://google.com"}, "google");
-function makeNode(name, attributes /*, ... */) {
-  var node = document.createElement(name);
+//  ex. $make("<a>", {href: "http://google.com"}, "google");
+function $make(tag, attributes /*, ... */) {
+  var $node = $(tag);
 
   // Set node attributes
   if (attributes) {
-    forEachIn(attributes, function(name, value) {
-      node.setAttribute(name, value)
-    });
+    $node.attr(attributes);
   }
 
   // Set child content for node
   for (var i = 2; i < arguments.length; i++) {
     var child = arguments[i];
     if (typeof child == "string")
-      child = document.createTextNode(child);
-    node.appendChild(child);
+      $node.text(child);
+    else
+      $node.append(child);
   }
-  return node;
-}
-
-// return an XML HTTP Request object
-function makeHttpObject() {
-  try {
-    return new XMLHttpRequest();
-  } catch (error) { }
-  
-  throw new Error("Could not create HTTP request object.");
+  return $node;
 }
 
 // Take a Javascript object and encode it for POST form data
@@ -71,86 +51,64 @@ function encodeFormData(data) {
   return pairs.join("&");
 }
 
-//Encode Javascript object as form data and posts it to a script
-function postFormToScript(scriptName, data) {
-  var requester = makeHttpObject();
-  requester.open("POST", scriptName, false);
-  requester.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  body = encodeFormData(data);
-  requester.send(body);
-  return requester.responseText;
-}
-
-//Takes JSON oject and transforms it to DOC TR node
-function jsonToTr(object) {
-  var tr = makeNode("TR", {});
-
-  tr.appendChild(makeNode("TD", {}, object.artist));
-  tr.appendChild(makeNode("TD", {}, object.album));
-  tr.appendChild(makeNode("TD", {}, object.track.toString()));
-  tr.appendChild(makeNode("TD", {}, object.title));
-
-  return tr;
-}
-
 //Remove all rows from table except the first
-function clearTable(table) {
-  var rows = table.getElementsByTagName("TR");
-  while (rows[1]) {
-    removeNode(rows[1]);
-  }
+function clearTable($table) {
+  var $header = $table.children(":first");
+  $header.siblings().remove();
 }
 
 //---------------
 // Page Functions
 //---------------
 
-// Get song listing from app
-function getSongListing() {
-  var requester = makeHttpObject();
-  requester.open("GET", "getfilelist", false);
-  requester.send(null);
-  var text = requester.responseText;
-  return JSON.parse(text);
+// Create an "Add/Remove" button
+function makeAddButton(id) {
+  return $make("<button>", {
+    type : "button",
+    "class" : "add_remove"
+  }, "+");
 }
 
+//Takes JSON tag data and returns a jQuery TR node
+function $tagsToTr(song) {
+  var $tr = $make("<tr>", { songID : song.id });
+
+  $tr.append($make("<td>", {}, song.artist));
+  $tr.append($make("<td>", {}, song.album));
+  $tr.append($make("<td>", {}, song.track.toString()));
+  $tr.append($make("<td>", {}, song.title));
+  $tr.append(makeAddButton(song.id));
+
+  return $tr;
+}
+
+// Retrieve array of JSON objects containing tag data
+//  and add each as a row in $table
+function addSongListing(url, $table) {
+  $.get(url,
+    function(songs) {
+      songs.forEach(function(tags) {
+        $table.append($tagsToTr(tags));
+      });
+    },
+    "json");
+}
+  
 // Update the table listing song choices
-function updateListingTable() {
-  var selectTable = $("selections");
-  clearTable(selectTable);
-  var songs = getSongListing();
-  forEachIn(songs, function(song, tag) {
-    var tr = jsonToTr(tag);
-    selectTable.appendChild(tr);
-  });
+function updateLibraryTable() {
+  var $library = $("#library");
+  clearTable($library);
+  addSongListing("getfilelist", $library);
 }
 
-//Temp function to add an audio tag to the document in the
-// "target" DIV
-function changeTarget() {
-  var target = $("target");
-//   var path_to_music = postToScript("music", {
-//     song : "test_id3v1.mp3" 
-//   });
-//   var newNode = makeNode("AUDIO", {
-//     src       : path_to_music,
-//     preload   : "none",
-//     controls  : ""
-//   }, makeNode("P", {}, "This audio format is not supported by your browser."));
-//   var par = makeNode("P", {}, getJson());
-  clearTable(target);
-  var response = getJson();
-  forEachIn(response, function(song, tag) {
-    var tr = jsonToTr(tag);
-    target.appendChild(tr);
-  });
+// Add song to playlist
+function songToPL($song_row) {
+  $song_row.clone().appendTo($("#playlist"));
 }
 
-// Temp function to get json data from script
-function getJson() {
-  var requester = makeHttpObject();
-  requester.open("GET", "getfilelist", false);
-  requester.send(null);
-  var text = requester.responseText;
-  return JSON.parse(text);
-}
+// Add event handlers to document
+$(document).ready(function() {
+  $("#library").on("click", ".add_remove", function() {
+    songToPL($(this.parentNode));
+  });
+});
