@@ -10,6 +10,8 @@ helpers AppHelpers
 
 configure do
   set :config, ServerConfig.new('config.json')
+  # TODO: Remove once MySQL database is set up
+  set :songs, {}
 end
 
 # Main Page
@@ -19,7 +21,11 @@ end
 
 # Retrieve music file list
 get '/getfilelist' do
-  JSON.generate(tagHash(settings.config.opts[:path])) 
+  files = tagArray(settings.config.opts[:path])
+  files.each do |song|
+    settings.songs[song[:id]] = song[:path]
+  end
+  JSON.generate(files)
 end
 
 # Test for Javascript

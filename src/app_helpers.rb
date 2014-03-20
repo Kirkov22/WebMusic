@@ -6,20 +6,19 @@ require_relative 'mpeg.rb'
 module AppHelpers
   
   # Return a hash of tags for the music files at path
-  def tagHash(path)
-    {}.tap do |taglist|
+  def tagArray(path)
+    [].tap do |taglist|
       i = 0
       listMusicFiles(path).each do |file|
         ext = File.extname(file).downcase
-        key = ("song" + i.to_s.rjust(3,'0')).to_sym
         
         case ext
         when Mpeg::EXT
-          taglist[key] = Mpeg.new(file).tag
+          song = Mpeg.new(file).tag.clone
         when Flac::EXT
-          taglist[key] = Flac.new(file).tag
+          song = Flac.new(file).tag.clone
         else
-          taglist[key] = {
+          song = {
             artist:  "Unhandled extension - #{ext}",
             album:   "",
             title:   "",
@@ -30,7 +29,15 @@ module AppHelpers
           }
         end
         
+        # TODO: Assign each song an ID through MySQL
+        id = i.to_s.rjust(5,'0').to_sym
+        
+        # TODO: Remove these lines once path & id are in MySQL
+        song[:id] = id
+        song[:path] = file
+        
         i += 1
+        taglist.push(song)
       end
     end
   end
