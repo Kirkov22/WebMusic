@@ -19,10 +19,12 @@ command:
 
     rspec test/spec.rb
 
-Currently I'm prototyping various page functions. I've already done rough
-versions of converting an MP3 and adding it as an audio node, as well as listing
-files in a table using tag data. Next will be a simple form for configuring the
-server options and creating a playlist.
+The first draft of page functions is complete (Listing the music library as a
+table, adding songs to a playlist, and selectively converting songs for playback
+based on their ID).
+
+Next I plan to split my time between niceties for the page and prototyping
+MySQL functionality.
 
 ### Non Ruby Dependencies
 
