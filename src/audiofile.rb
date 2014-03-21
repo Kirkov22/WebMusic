@@ -2,11 +2,13 @@
 # Class to describe a generic music file
 
 require 'taglib'
+require 'shellwords'
 
 class AudioFile
 
   class FileNotFoundError < Exception; end
   class WrongExtensionError < Exception; end
+  class ConversionFailureError < Exception; end
 
   attr_reader :filepath
   
@@ -36,7 +38,11 @@ class AudioFile
   end
   
   # Converts to Vorbis file, 128kpbs bitrate
-  def convert_to(cli, outfile)
-    system "#{cli} -i #{@filepath} -y -loglevel panic -codec:a libvorbis -b 128k #{outfile}"
+  def convert(cli, outfile)
+    syscall = "#{cli} -i #{Shellwords.escape(@filepath)} " +
+      "-y -loglevel panic " +
+      "-codec:a libvorbis -b 128k -sample_fmt s16 -ar 44100 #{outfile}"
+    status = system syscall
+    raise ConversionFailureError.new(syscall) unless status
   end
 end

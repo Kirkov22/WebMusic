@@ -17,7 +17,7 @@ describe Flac do
   end
   
   it 'reads flac ID3v1 tag when it exists' do
-    filename = 'test/test_id3v1.flac'
+    filename = 'test/test id3v1.flac'
     tag_values = {
       :artist => 'Test Artist',
       :album => 'Test Album',
@@ -49,12 +49,20 @@ describe Flac do
   end
   
   it 'transcodes to a vorbis audio file' do
-    filename = 'test/test_id3v1.flac'
+    filename = 'test/test id3v1.flac'
     flac = Flac.new(filename)
     cli = 'avconv'
     outfile = 'out.ogg'
-    flac.convert_to(cli, outfile)
+    flac.convert(cli, outfile)
     expect(File.exists?(outfile)).to be_true
     system "rm #{outfile}"
+  end
+
+  it 'raises an exception if transcoding is not successful' do
+    filename = 'test/test id3v1.flac'
+    flac = Flac.new(filename)
+    cli = 'nothing'
+    outfile = 'out.ogg'
+    expect{ flac.convert(cli, outfile) }.to raise_error(Flac::ConversionFailureError)
   end
 end

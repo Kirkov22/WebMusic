@@ -17,7 +17,7 @@ describe Mpeg do
   end
   
   it 'reads mp3 ID3v1 tag when it exists' do
-    filename = 'test/test_id3v1.mp3'
+    filename = 'test/test id3v1.mp3'
     tag_values = {
       :artist => 'Test Artist',
       :album => 'Test Album',
@@ -49,12 +49,20 @@ describe Mpeg do
   end
   
   it 'transcodes to a vorbis audio file' do
-    filename = 'test/test_id3v1.mp3'
+    filename = 'test/test id3v1.mp3'
     mpeg = Mpeg.new(filename)
     cli = 'avconv'
     outfile = 'out.ogg'
-    mpeg.convert_to(cli, outfile)
+    mpeg.convert(cli, outfile)
     expect(File.exists?(outfile)).to be_true
     system "rm #{outfile}"
+  end
+
+  it 'raises an exception if transcoding is not successful' do
+    filename = 'test/test id3v1.mp3'
+    mpeg = Mpeg.new(filename)
+    cli = 'nothing'
+    outfile = 'out.ogg'
+    expect{ mpeg.convert(cli, outfile) }.to raise_error(Mpeg::ConversionFailureError)
   end
 end
