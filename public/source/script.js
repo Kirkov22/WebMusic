@@ -62,14 +62,14 @@ function clearTable($table) {
 //---------------
 
 // Create an "Add/Remove" button
-function makeAddButton(id) {
+function $makeAddButton(id) {
   return $make("<button>", {
     type : "button",
     "class" : "add_remove"
   }, "+");
 }
 
-//Takes JSON tag data and returns a jQuery TR node
+// Takes JSON tag data and returns a jQuery TR node
 function $tagsToTr(song) {
   var $tr = $make("<tr>", { songID : song.id });
 
@@ -77,7 +77,7 @@ function $tagsToTr(song) {
   $tr.append($make("<td>", {}, song.album));
   $tr.append($make("<td>", {}, song.track.toString()));
   $tr.append($make("<td>", {}, song.title));
-  $tr.append(makeAddButton(song.id));
+  $tr.append($make("<td>", {}, $makeAddButton(song.id)));
 
   return $tr;
 }
@@ -103,12 +103,29 @@ function updateLibraryTable() {
 
 // Add song to playlist
 function songToPL($song_row) {
-  $song_row.clone().appendTo($("#playlist"));
+  var $tr = $song_row.parent().parent().clone();
+  var $button = $tr.find("td > button");
+  $button.attr("class", "play");
+  $button.text("PLAY");
+  $tr.appendTo("#playlist");
+}
+
+// Request file path to song with given id
+function playSong(id) {
+  $.get("music",
+    { songID: id },
+    function(path) {
+      $("audio").attr("src", path);
+    },
+    "text");
 }
 
 // Add event handlers to document
 $(document).ready(function() {
   $("#library").on("click", ".add_remove", function() {
-    songToPL($(this.parentNode));
+    songToPL($(this));
+  });
+  $("#playlist").on("click", ".play", function() {
+    playSong($(this).parent().parent().attr("songID"));
   });
 });

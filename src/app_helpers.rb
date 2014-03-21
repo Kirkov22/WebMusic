@@ -30,7 +30,8 @@ module AppHelpers
         end
         
         # TODO: Assign each song an ID through MySQL
-        id = i.to_s.rjust(5,'0').to_sym
+        id = i.to_s
+#         id = i.to_s.rjust(5,'0').to_sym
         
         # TODO: Remove these lines once path & id are in MySQL
         song[:id] = id
