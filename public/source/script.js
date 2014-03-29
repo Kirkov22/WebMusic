@@ -120,6 +120,20 @@ function playSong(id) {
     "text");
 }
 
+// function downHandler() {
+function downHandler($element) {
+  $element.css("background-color", "yellow");
+  
+  document.addEventListener("mouseup", upHandler, true);
+
+  function upHandler(e) {
+    $element.removeAttr("style");
+
+    document.removeEventListener("mouseup", upHandler, true);
+    e.stopPropagation();
+  }
+}
+
 // Add event handlers to document
 $(document).ready(function() {
   $("#library").on("click", ".add_remove", function() {
@@ -127,5 +141,8 @@ $(document).ready(function() {
   });
   $("#playlist").on("click", ".play", function() {
     playSong($(this).parent().parent().attr("songID"));
+  });
+  $(".slider-bumper").on("mousedown", function() {
+    downHandler($(this));
   });
 });

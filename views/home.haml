@@ -1,5 +1,13 @@
-%h2.span-24
-  Audio Node Test
+%div.progress-slider
+  %div.slider-bg
+  %div.slider-progress-bg
+  %div.slider-bumper
+%div.configuration
+  %div.expand
+    %button{type: 'button'}
+      +
+  %div.config-form
+    %h2 My config stuff goes here
 %audio{controls: true}
 %button{type: 'button', onclick: 'updateLibraryTable();'}
   Click me!

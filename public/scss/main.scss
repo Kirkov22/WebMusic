@@ -1,0 +1,44 @@
+@import 'compass/reset';
+
+h1 {
+  font-size : 1rem;
+  font-family : monospace;
+}
+
+.progress-slider {
+  position      : relative;
+  margin-left   : auto;
+  margin-right  : auto;
+  height        : 16px;
+  width         : 300px;
+}
+
+.slider-bg {
+  position          : absolute;
+  height            : 100%;
+  width             : 100%;
+  top               : 0;
+  left              : 0;
+  background-color  : blue;
+  z-index           : 1;
+}
+
+.slider-progress-bg {
+  position          : absolute;
+  height            : 100%;
+  width             : 50%;
+  top               : 0;
+  left              : 0;
+  background-color  : green;
+  z-index           : 2;
+}
+
+.slider-bumper {
+  position          : absolute;
+  height            : 100%;
+  width             : 10%;
+  top               : 0;
+  left              : 25px;
+  background-color  : red;
+  z-index           : 3;
+}

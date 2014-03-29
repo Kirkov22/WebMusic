@@ -1,14 +1,14 @@
 !!! 5
 %html{lang: 'eng'}
   %head
-    %link{rel: 'stylesheet', type: 'text/css', href: '/css/main.css'}
+    %link{rel: 'stylesheet', type: 'text/css', href: '/stylesheets/main.css'}
     %script{src: '/source/jquery-1.11.0.min.js'}
     %script{src: '/source/script.js'}
     %title Music
   %body
-    %div.contents.container
-      %header.span-24
-        %h1{class: 'container'}
-          Little ole Music Player
-        %main.span-24
-          =yield
+    %header
+      %h1 Red Shoes
+      %div.hr
+      %h3 Music Player
+    %main
+      =yield
