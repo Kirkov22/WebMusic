@@ -1,2 +1,6 @@
-public/*.mp3
+# Ignore SASS/SCSS generated files
+public/.sass-cache/
+public/images/*.png
+
+# Ignore temp audio files
 public/*.ogg

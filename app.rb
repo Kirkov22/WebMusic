@@ -11,6 +11,10 @@ helpers AppHelpers
 
 configure do
   set :config, ServerConfig.new('config.json')
+  set :playNames, ["file01.ogg",
+                   "file02.ogg",
+                   "file03.ogg",
+                   "file04.ogg"];
   # TODO: Remove once MySQL database is set up
   set :songs, {}
 end
@@ -37,7 +41,8 @@ get '/music' do
 #   puts settings.songs[id.to_str]
   mp3 = Mpeg.new(settings.songs[id])
 #   mp3 = Mpeg.new("public/" + params[:song])
-  tempfile = "other.ogg"
+  tempfile = settings.playNames.shift
+  settings.playNames.push(tempfile);
 #   mp3.convert("avconv", tempfile)
   mp3.convert(settings.config.opts[:converter], "public/" + tempfile)
   '/' + tempfile

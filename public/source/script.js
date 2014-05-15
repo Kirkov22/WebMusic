@@ -77,7 +77,7 @@ function $tagsToTr(song) {
   $tr.append($make("<td>", {}, song.album));
   $tr.append($make("<td>", {}, song.track.toString()));
   $tr.append($make("<td>", {}, song.title));
-  $tr.append($make("<td>", {}, $makeAddButton(song.id)));
+//   $tr.append($make("<td>", {}, $makeAddButton(song.id)));
 
   return $tr;
 }
@@ -102,16 +102,36 @@ function updateLibraryTable() {
 }
 
 // Add song to playlist
-function songToPL($song_row) {
-  var $tr = $song_row.parent().parent().clone();
-  var $button = $tr.find("td > button");
-  $button.attr("class", "play");
-  $button.text("PLAY");
+function songToPL() {
+  var $tr = $(this);
+//   $song_row = $(this);
+//   var $tr = $song_row.parent().parent().clone();
+//   var $button = $tr.find("td > button");
+//   $button.attr("class", "tempplaybutton");
+//   $button.text("PLAY");
   $tr.appendTo("#playlist");
 }
 
+function loadSong(event, request, settings) {
+  if (settings.url.search("^music?") === 0) {
+    trackData.setStatus("Loading");
+  }
+}
+
+function loadedSong(event, request, settings) {
+  if (settings.url.search("^music?") === 0) {
+    trackData.stop();
+//     progressBar.enable();
+//     volumeKnob.enable();
+//     playPause.enable();
+  }
+}
+
 // Request file path to song with given id
-function playSong(id) {
+function playSong() {
+  var id = $(this).parent().parent().attr("songID")
+//   trackData.setArtist($(this).parent().parent().children(":first").text());
+  trackData.newSong(id);
   $.get("music",
     { songID: id },
     function(path) {
@@ -120,29 +140,16 @@ function playSong(id) {
     "text");
 }
 
-// function downHandler() {
-function downHandler($element) {
-  $element.css("background-color", "yellow");
-  
-  document.addEventListener("mouseup", upHandler, true);
-
-  function upHandler(e) {
-    $element.removeAttr("style");
-
-    document.removeEventListener("mouseup", upHandler, true);
-    e.stopPropagation();
-  }
-}
-
 // Add event handlers to document
 $(document).ready(function() {
-  $("#library").on("click", ".add_remove", function() {
-    songToPL($(this));
-  });
-  $("#playlist").on("click", ".play", function() {
-    playSong($(this).parent().parent().attr("songID"));
-  });
-  $(".slider-bumper").on("mousedown", function() {
-    downHandler($(this));
-  });
+  $("#library").on("dblclick", "tr", songToPL);
+//   $("#library").on("click", ".add_remove", songToPL);
+//   $("#playlist").on("click", ".tempplaybutton", playSong);
+  initAudioPlayer();
+  initPlaylist();
+  progressBar.enable();
+  volumeKnob.enable();
+  playPause.enable();
+  $(document).ajaxSend(loadSong);
+//   $(document).ajaxComplete(loadedSong);
 });

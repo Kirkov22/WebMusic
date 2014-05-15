@@ -1,44 +1,518 @@
 @import 'compass/reset';
+@import 'compass/css3';
+@import 'compass/utilities/sprites';
+@import 'icons/*.png';
 
-h1 {
-  font-size : 1rem;
-  font-family : monospace;
+// Variables
+$pale-green     : rgb(134,255,109);
+$mid-green      : rgb( 71,120, 61);
+$emerald-green  : rgb( 28,106, 26);
+$dark-green     : rgb( 27, 61, 17);
+//$dark-green     : rgb( 19, 61,  0);
+$mid-gray       : rgb(147,146,151);
+//$mid-gray       : rgb(187,186,191);
+$dark-gray      : rgb( 41, 39, 43);
+$terminal-white : rgb(190,190,200);
+$pale-sky-blue  : rgb(115,203,190);
+$black-alpha    : rgba(  0,  0,  0, 0.6);
+$white-alpha    : rgba(255,255,255, 0.3);
+
+$track-height   : 14px;
+$player-width   : 500px;
+
+// *****
+// Fonts
+// *****
+@include font-face("MediaIcons",
+  font-files( "icomoon.woff", woff,
+              "icomoon.ttf", ttf,
+              "icomoon.svg", svg));
+
+@include font-face("Inconsolata",
+  font-files( "inconsolata-regular-webfont.ttf", ttf,
+              "inconsolata-regular-webfont.woff", woff,
+              "inconsolata-regular-webfont.svg", svg));
+
+@include font-face("Inconsolata-Bold",
+  font-files( "inconsolata-bold-webfont.ttf", ttf,
+              "inconsolata-bold-webfont.woff", woff,
+              "inconsolata-bold-webfont.svg", svg));
+
+@include font-face("OpenSans-Bold",
+  font-files( "opensans-extrabold-webfont.ttf", ttf,
+              "opensans-extrabold-webfont.woff", woff,
+              "opensans-extrabold-webfont.svg", svg));
+
+@include font-face("OpenSans-SemiBold",
+  font-files( "opensans-semibold-webfont.ttf", ttf,
+              "opensans-semibold-webfont.woff", woff,
+              "opensans-semibold-webfont.svg", svg));
+
+// ******
+// Mixins
+// ******
+@mixin absolute-center {
+  margin  : auto;
+  position: absolute;
+  top     : 0;
+  left    : 0;
+  bottom  : 0;
+  right   : 0;
 }
 
-.progress-slider {
+@mixin metallic-gradient($color) {
+  background :
+    linear-gradient(
+      $color 0%,
+      $color 49%,
+      darken($color, 12%) 50%,
+      darken($color, 15%) 100%);
+}
+
+@mixin raised-button {
+  border-radius     : 2px;
+  border            : 1px solid $white-alpha;
+  border-top        : 1px solid rgba(255,255,255, 0.8);
+  box-shadow        : 0px 1px 3px black;
+  @include metallic-gradient($mid-gray);
+}
+
+@mixin raised-button-hover {
+  &:hover {
+    box-shadow  : 0px 2px 3px $dark-green;
+  }
+}
+
+@mixin raised-button-active {
+  &:active {
+    box-shadow  : 0px 1px 3px $emerald-green;
+    @include metallic-gradient(darken($mid-gray, 5%));
+  }
+}
+
+@mixin media-icon($size, $content) {
+  font-family : 'MediaIcons';
+  font-size   : $size;
+  text-align  : center;
+  color       : $dark-gray;
+  text-shadow :
+    0px -1px 0px rgba(  0,  0,  0, 0.8),
+    0px 1px 0px  rgba(255,255,255, 0.6);
+  height      : $size;
+  content     : $content;
+  cursor      : default;
+  @include absolute-center;
+}
+
+// ***************
+// Element Styling
+// ***************
+html, body {
+  background-color : rgb(128,128,128);
+}
+
+#header {
+  display           : inline-block;
+  border            : 2px solid $dark-gray;
+  background-color  : lighten($terminal-white, 10%);
+
+  h1 {
+    display           : inline-block;
+    margin            : 4px;
+    float             : left;
+    padding           : 3px 5px 5px;
+    font-family       : 'OpenSans-Bold';
+    font-size         : 20px;
+    color             : lighten($terminal-white, 10%);
+    background-color  : $dark-gray;
+  } 
+
+  h2, h3 {
+    margin-right      : 5px;
+    display           : inline-block;
+    float             : right;
+  }
+
+  h2 {
+    margin-top        : 5px;
+    font-family       : 'OpenSans-Bold';
+    font-size         : 14px;
+  }
+
+  h3 {
+    margin-top        : 4px;
+    clear             : right;
+    font-family       : 'OpenSans-SemiBold';
+    font-size         : 8px;
+  }
+}
+
+#audio-player {
+  width             : $player-width + 20;
+  margin-left       : auto;
+  margin-right      : auto;
+  border-radius     : 8px;
+  border            : 1px solid black;
+  background-image  : linear-gradient(darken($mid-gray, 0%) 0%, darken($mid-gray, 15%)); 
+  box-shadow        : 0px 1px 1px $black-alpha;
+}
+
+.center-contents {
+  text-align  : center;
+}
+
+.display {
+  position            : relative;
+  background-color    : $dark-gray;
+  background-image    : linear-gradient(transparent 0%, black 100%);
+  box-shadow          :
+    inset 3px 3px 5px black,
+    inset -3px -3px 15px black,
+    inset 0 5px 7px $white-alpha;
+  color               : $terminal-white;
+
+  &::before {
+    content           : "";
+    position          : absolute;
+    top               : 0px;
+    left              : 0px;
+    width             : 100%;
+    height            : 100%;
+    background-image  :
+      linear-gradient(
+        transparent 1px,
+        rgba(255,255,255,0.2) 2px);
+    background-size   : 10px 2px;
+  }
+}
+
+#track-data {
+  $font-size          : 14px;
+  $padding            : 5px;
+  padding             : $padding;
+  margin              : 10px auto;
+  width               : $player-width - 2 * $padding;
+  height              : 5 * $font-size;
+  font-size           : $font-size;
+  font-family         : 'Inconsolata-Bold';
+  border-radius       : $padding;
+
+  p:first-of-type span:first-of-type {
+    color         : $pale-sky-blue;
+  }
+
+  p:not(:first-of-type)::before {
+    white-space   : pre;
+    content       : " ";
+  }
+
+  p:nth-child(4) {
+    color         : lighten($emerald-green, 30%);
+  }
+
+  #cursor {
+    background-color  : $terminal-white;
+  }
+}
+
+#track-position {
   position      : relative;
-  margin-left   : auto;
-  margin-right  : auto;
-  height        : 16px;
-  width         : 300px;
+  margin        : 0px auto 10px;
+  height        : $track-height;
+  width         : $player-width;
+  border-radius : round($track-height/2);
+  border        : solid 1px black;
+
+  .bg {
+    position          : absolute;
+    height            : 100%;
+    width             : 100%;
+    top               : 0px;
+    left              : 0px;
+    z-index           : 1;
+    border-radius     : round($track-height/2);
+    box-shadow        :
+      inset 0px 1px 1px $black-alpha,
+      inset 0px -1px 2px $white-alpha;
+    background-color  : $dark-gray;
+  }
+
+  .progress-bg {
+    position          : absolute;
+    height            : $track-height - 2;
+    top               : 1px;
+    left              : 0px;
+    z-index           : 2;
+    border-radius     : 8px;
+    box-shadow        : 
+      inset 0px -1px 1px lighten($emerald-green, 30%),
+      inset 0px 1px 3px rgb(255,255,200);
+    background-image  :
+      linear-gradient(
+        $pale-green 0%,
+        $mid-green 55%,
+        $dark-green 55%,
+        $emerald-green 100%
+      );
+  }
+
+  .bumper {
+    position          : absolute;
+    height            : $track-height + 4;
+    width             : 32px;
+    top               : -3px;
+    left              : -1px;
+    z-index           : 3;
+    @include raised-button;
+    @include raised-button-hover;
+  }
 }
 
-.slider-bg {
-  position          : absolute;
-  height            : 100%;
-  width             : 100%;
-  top               : 0;
-  left              : 0;
-  background-color  : blue;
-  z-index           : 1;
+ul#player-buttons {
+  list-style    : none;
+  margin        : 0px auto 10px;
+  width         : $player-width - 10;
+  font-size     : 0px;
+
+  li {
+    position    : relative;
+  }
+
+  #prev, #play-pause, #next {
+    float       : left;
+    margin-top  : 6px;
+  }
 }
 
-.slider-progress-bg {
-  position          : absolute;
-  height            : 100%;
-  width             : 50%;
-  top               : 0;
-  left              : 0;
-  background-color  : green;
-  z-index           : 2;
+.clear-float {
+  clear         : both;
+  margin-bottom : 10px;
 }
 
-.slider-bumper {
-  position          : absolute;
-  height            : 100%;
-  width             : 10%;
-  top               : 0;
-  left              : 25px;
-  background-color  : red;
-  z-index           : 3;
+.button {
+  margin-right          : 8px;
+  width                 : 32px;
+  height                : 36px;
+  @include raised-button;
+  @include raised-button-hover;
+  @include raised-button-active;
+}
+
+#next::after {
+  @include media-icon(28px, '\e603');
+}
+
+#play-pause.play::after {
+  @include media-icon(28px, '\e600');
+}
+
+#play-pause.pause::after {
+  @include media-icon(28px, '\e601');
+}
+
+#prev::after {
+  @include media-icon(28px, '\e602');
+}
+
+#volume {
+  $radius       : 24px;
+  position      : relative;
+  float         : right;
+  width         : $radius * 2;
+  height        : $radius * 2;
+  @include raised-button;
+  @include raised-button-hover;
+  border-radius : $radius + 1;
+
+  .indicator {
+    height      : ($radius - 2) * 2;
+    width       : ($radius - 2) * 2;
+    @include absolute-center;
+
+    &::after {
+      $i-radius         : 2px;
+      content           : "";
+      position          : absolute;
+      margin            : auto;
+      left              : 0px;
+      right             : 0px;
+      bottom            : 0px;
+      width             : $i-radius * 2;
+      height            : $i-radius * 2;
+      border-radius     : $i-radius + 1;
+      background-color  : $dark-gray;
+      border            : 1px solid $black-alpha;
+    }
+  }
+}
+  
+.mute::after {
+  @include media-icon(16px, '\e608');
+}
+
+.soft-volume::after {
+  @include media-icon(16px, '\e607');
+}
+
+.low-volume::after {
+  @include media-icon(16px, '\e606');
+}
+
+.mid-volume::after {
+  @include media-icon(16px, '\e605');
+}
+
+.high-volume::after {
+  @include media-icon(16px, '\e604');
+}
+
+#playlist-box {
+  $font-size            : 14px; 
+  $table-border         : 1px;
+  $scrollbar-width      : 20px;
+  $scrollbutton-border  : 3px;
+
+  max-width       : 960px;
+  margin-left     : auto;
+  margin-right    : auto;
+
+  div.display {
+    display       : inline-block;
+    $padding      : 10px;
+    padding       : $padding;
+    border-radius : $padding;
+  }
+
+  div.scrollable {
+    position      : relative;
+    overflow      : hidden;
+    height        : 5 * ($font-size + 4 + 1) - 1;
+
+    table {
+      float       : left;
+      position    : absolute;
+      top         : 0px;
+      left        : 0px;
+    }
+  }
+
+  h2 {
+    float       : left;
+  }
+
+  table {
+    clear       : both;
+    font-family : 'Inconsolata-Bold';
+    font-size   : $font-size;
+    color       : $terminal-white;
+
+    colgroup.col-artist {
+      width         : 25 * $font-size / 2;
+    }
+
+    colgroup.col-album {
+      width         : 40 * $font-size / 2;
+    }
+
+    colgroup.col-track {
+      width         : 8 * $font-size / 2;
+    }
+
+    colgroup.col-title {
+      width         : 50 * $font-size / 2;
+    }
+  }
+
+  th, td {
+    max-width     : 0px;
+    overflow      : hidden;
+    text-overflow : ellipsis;
+    white-space   : nowrap;
+  }
+  
+  th {
+    padding       : 1px 5px 3px;
+    color         : $pale-sky-blue;
+    border        : $table-border solid darken($terminal-white, 30%);
+    border-bottom : 0;
+  }
+
+  td.data-container {
+    padding       : 0px;
+    border        : $table-border solid darken($terminal-white, 30%);
+
+    colgroup.col-title {
+      width       : 50 * $font-size / 2 - $scrollbar-width;
+    }
+  }
+
+  #playlist {
+    td {
+      padding         : 1px 5px 3px;
+      border          : $table-border solid darken($terminal-white, 30%);
+
+      &:first-child {
+        border-left   : 0;
+      }
+
+      &:last-child {
+        //border-right  : 0;
+      }
+    }
+
+    tr:first-child td {
+      border-top      : 0;
+    }
+
+    tr:last-child td {
+      //border-bottom   : 0;
+    }
+  }
+
+  th:nth-of-type(3), td:nth-of-type(3) {
+    text-align    : center;
+  }
+
+  div.scrollbar {
+    position      : relative;
+    float         : right;
+    width         : 20px;
+    height        : 100%;
+
+    div.indicator {
+      position    : absolute;
+      width       : $scrollbar-width - 2 * $scrollbutton-border - 1;
+      height      : $scrollbar-width - 2 * $scrollbutton-border - 1;
+      background-color  : $terminal-white;
+      top         : $scrollbutton-border;
+      left        : $scrollbutton-border + 1;
+    }
+  }
+}
+
+.current {
+  color         : lighten($emerald-green, 30%);
+}
+
+ul#playlist-buttons {
+  list-style  : none;
+  float       : right;
+  font-size   : 0px;
+
+  li {
+    position    : relative;
+    display     : inline-block;
+  }
+}
+
+#shuffle::after {
+  @include media-icon(28px, '\e60a');
+}
+
+#loop::after {
+  @include media-icon(28px, '\e609');
+}
+
+#trash::after {
+  @include media-icon(28px, '\e60b');
 }
