@@ -15,6 +15,7 @@ configure do
                    "file02.ogg",
                    "file03.ogg",
                    "file04.ogg"];
+  set :converted, {}
   # TODO: Remove once MySQL database is set up
   set :songs, {}
 end
@@ -36,14 +37,16 @@ end
 # Test for Javascript
 get '/music' do
   id = params[:songID]
-#   puts id
-#   puts settings.songs
-#   puts settings.songs[id.to_str]
-  mp3 = Mpeg.new(settings.songs[id])
-#   mp3 = Mpeg.new("public/" + params[:song])
-  tempfile = settings.playNames.shift
-  settings.playNames.push(tempfile);
-#   mp3.convert("avconv", tempfile)
-  mp3.convert(settings.config.opts[:converter], "public/" + tempfile)
-  '/' + tempfile
+  if settings.converted.has_key?(id)
+    settings.converted[id]
+  else
+    mp3 = Mpeg.new(settings.songs[id])
+    tempfile = settings.playNames.shift
+    settings.playNames.push(tempfile);
+    mp3.convert(settings.config.opts[:converter], "public/" + tempfile)
+    if settings.converted.length == 4
+      settings.converted.shift
+    end
+    settings.converted[id] = '/' + tempfile
+  end
 end
