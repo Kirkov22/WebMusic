@@ -1,7 +1,7 @@
 @import 'compass/reset';
 @import 'compass/css3';
 @import 'compass/utilities/sprites';
-@import 'icons/*.png';
+//@import 'icons/*.png';
 
 // Variables
 $pale-green     : rgb(134,255,109);
@@ -90,18 +90,29 @@ $player-width   : 500px;
   }
 }
 
-@mixin media-icon($size, $content) {
-  font-family : 'MediaIcons';
-  font-size   : $size;
-  text-align  : center;
+@mixin etched {
   color       : $dark-gray;
   text-shadow :
     0px -1px 0px rgba(  0,  0,  0, 0.8),
     0px 1px 0px  rgba(255,255,255, 0.6);
+}
+
+@mixin media-icon($size, $content) {
+  font-family : 'MediaIcons';
+  font-size   : $size;
+  text-align  : center;
   height      : $size;
   content     : $content;
   cursor      : default;
+  @include etched;
   @include absolute-center;
+}
+
+@mixin device-bg {
+  border-radius     : 8px;
+  border            : 1px solid black;
+  background-image  : linear-gradient(darken($mid-gray, 0%) 0%, darken($mid-gray, 15%)); 
+  box-shadow        : 0px 1px 1px $black-alpha;
 }
 
 // ***************
@@ -147,14 +158,17 @@ html, body {
   }
 }
 
+#container {
+  @include device-bg;
+  width       : 960px;
+  margin      : 20px auto 0;
+}
+
 #audio-player {
   width             : $player-width + 20;
   margin-left       : auto;
   margin-right      : auto;
-  border-radius     : 8px;
-  border            : 1px solid black;
-  background-image  : linear-gradient(darken($mid-gray, 0%) 0%, darken($mid-gray, 15%)); 
-  box-shadow        : 0px 1px 1px $black-alpha;
+  //@include device-bg;
 }
 
 .center-contents {
@@ -164,26 +178,15 @@ html, body {
 .display {
   position            : relative;
   background-color    : $dark-gray;
-  background-image    : linear-gradient(transparent 0%, black 100%);
+  background-image    :
+    linear-gradient(transparent 0%, black 100%),
+    linear-gradient(transparent 1px, rgba(255,255,255,0.2) 2px);
+  background-size     : 100% 100%, 10px 2px;
   box-shadow          :
     inset 3px 3px 5px black,
     inset -3px -3px 15px black,
     inset 0 5px 7px $white-alpha;
   color               : $terminal-white;
-
-  &::before {
-    content           : "";
-    position          : absolute;
-    top               : 0px;
-    left              : 0px;
-    width             : 100%;
-    height            : 100%;
-    background-image  :
-      linear-gradient(
-        transparent 1px,
-        rgba(255,255,255,0.2) 2px);
-    background-size   : 10px 2px;
-  }
 }
 
 #track-data {
@@ -280,6 +283,13 @@ ul#player-buttons {
 
   #prev, #play-pause, #next {
     float       : left;
+  }
+  
+  #volume, #loop {
+    float         : right;
+  }
+
+  .button {
     margin-top  : 6px;
   }
 }
@@ -314,10 +324,13 @@ ul#player-buttons {
   @include media-icon(28px, '\e602');
 }
 
+#loop::after {
+  @include media-icon(28px, '\e609');
+}
+
 #volume {
   $radius       : 24px;
   position      : relative;
-  float         : right;
   width         : $radius * 2;
   height        : $radius * 2;
   @include raised-button;
@@ -369,12 +382,14 @@ ul#player-buttons {
 #playlist-box {
   $font-size            : 14px; 
   $table-border         : 1px;
-  $scrollbar-width      : 20px;
-  $scrollbutton-border  : 3px;
+  $scrollbar-width      : 2 * $font-size; //20px;
+  $scrollable-window    : 8 * ($font-size + 4 + 1) - 1;
 
-  max-width       : 960px;
+  //max-width       : 960px;
   margin-left     : auto;
   margin-right    : auto;
+
+  //@include device-bg;
 
   div.display {
     display       : inline-block;
@@ -386,7 +401,7 @@ ul#player-buttons {
   div.scrollable {
     position      : relative;
     overflow      : hidden;
-    height        : 5 * ($font-size + 4 + 1) - 1;
+    height        : $scrollable-window;
 
     table {
       float       : left;
@@ -397,7 +412,11 @@ ul#player-buttons {
   }
 
   h2 {
-    float       : left;
+    float           : left;
+    font-family     : 'OpenSans-Bold';
+    font-size       : 20px;
+    text-transform  : uppercase;
+    //@include etched;
   }
 
   table {
@@ -421,6 +440,10 @@ ul#player-buttons {
     colgroup.col-title {
       width         : 50 * $font-size / 2;
     }
+
+    colgroup.col-buttons {
+      width         : 2 * $font-size;
+    }
   }
 
   th, td {
@@ -431,7 +454,7 @@ ul#player-buttons {
   }
   
   th {
-    padding       : 1px 5px 3px;
+    padding       : 3px 5px 5px;
     color         : $pale-sky-blue;
     border        : $table-border solid darken($terminal-white, 30%);
     border-bottom : 0;
@@ -442,13 +465,43 @@ ul#player-buttons {
     border        : $table-border solid darken($terminal-white, 30%);
 
     colgroup.col-title {
-      width       : 50 * $font-size / 2 - $scrollbar-width;
+      width       : 50 * $font-size / 2 + 4 * $font-size - $scrollbar-width;
     }
   }
 
+  th:nth-of-type(3), td:nth-of-type(3) {
+    text-align    : center;
+  }
+
+  th:nth-of-type(5), th:nth-of-type(6) {
+    text-align    : center;
+    padding       : 1px 0px 0px;
+  }
+
   #playlist {
+    tr:not(.empty):hover td {
+      background-color  : darken($terminal-white, 55%);
+    }
+
+    tr:not(.empty):active td {
+      background-color  : darken($terminal-white, 45%);
+    }
+
+    tr.selected td {
+      background-color  : darken($terminal-white, 50%);
+    }
+
+    tr.selected:hover td {
+      background-color  : darken($terminal-white, 45%);
+    }
+
+    tr.selected:active td {
+      background-color  : darken($terminal-white, 35%);
+    }
+
     td {
       padding         : 1px 5px 3px;
+      height          : 14px;
       border          : $table-border solid darken($terminal-white, 30%);
 
       &:first-child {
@@ -469,23 +522,23 @@ ul#player-buttons {
     }
   }
 
-  th:nth-of-type(3), td:nth-of-type(3) {
-    text-align    : center;
-  }
-
   div.scrollbar {
+    $margin       : 4px;
+    $width        : $scrollbar-width;
     position      : relative;
+    margin        : $margin;
     float         : right;
-    width         : 20px;
-    height        : 100%;
+    width         : $width - 2 * $margin - 1;
+    height        : $scrollable-window - 2 * $margin;
 
     div.indicator {
+      display     : none;
       position    : absolute;
-      width       : $scrollbar-width - 2 * $scrollbutton-border - 1;
-      height      : $scrollbar-width - 2 * $scrollbutton-border - 1;
+      width       : $width - 2 * $margin - 1;
+      height      : $width - 2 * $margin - 1;
       background-color  : $terminal-white;
-      top         : $scrollbutton-border;
-      left        : $scrollbutton-border + 1;
+      left : 0px;
+      top  : 0px;
     }
   }
 }
@@ -505,14 +558,41 @@ ul#playlist-buttons {
   }
 }
 
-#shuffle::after {
-  @include media-icon(28px, '\e60a');
+#shuffle {
+
+  &::after {
+    font-family   : 'MediaIcons';
+    content       : '\e60a';
+    cursor        : default;
+    text-align    : center;
+  }
+
+  &:hover {
+    font-size     : 16px;
+    padding       : 0px;
+  }
+  
+  &:active {
+    font-size     : 12px;
+    padding       : 0px;
+  }
 }
 
-#loop::after {
-  @include media-icon(28px, '\e609');
-}
+#trash {
+  &::after {
+    font-family   : 'MediaIcons';
+    content       : '\e60b';
+    cursor        : default;
+    text-align    : center;
+  }
 
-#trash::after {
-  @include media-icon(28px, '\e60b');
+  &:hover {
+    font-size     : 16px;
+    padding       : 0px;
+  }
+  
+  &:active {
+    font-size     : 12px;
+    padding       : 0px;
+  }
 }

@@ -63,11 +63,6 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   display: block;
 }
 
-/* line 66, icons/*.png */
-.icons-sprite {
-  background: url('/images/icons-s5cfdf6f9e0.png') no-repeat;
-}
-
 @font-face {
   font-family: "MediaIcons";
   src: url('/fonts/icomoon.woff') format('woff'), url('/fonts/icomoon.ttf') format('truetype'), url('/fonts/icomoon.svg') format('svg');
@@ -93,18 +88,18 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   src: url('/fonts/opensans-semibold-webfont.ttf') format('truetype'), url('/fonts/opensans-semibold-webfont.woff') format('woff'), url('/fonts/opensans-semibold-webfont.svg') format('svg');
 }
 
-/* line 110, ../scss/main.scss */
+/* line 121, ../scss/main.scss */
 html, body {
   background-color: gray;
 }
 
-/* line 114, ../scss/main.scss */
+/* line 125, ../scss/main.scss */
 #header {
   display: inline-block;
   border: 2px solid #29272b;
   background-color: #dadadf;
 }
-/* line 119, ../scss/main.scss */
+/* line 130, ../scss/main.scss */
 #header h1 {
   display: inline-block;
   margin: 4px;
@@ -115,19 +110,19 @@ html, body {
   color: #dadadf;
   background-color: #29272b;
 }
-/* line 130, ../scss/main.scss */
+/* line 141, ../scss/main.scss */
 #header h2, #header h3 {
   margin-right: 5px;
   display: inline-block;
   float: right;
 }
-/* line 136, ../scss/main.scss */
+/* line 147, ../scss/main.scss */
 #header h2 {
   margin-top: 5px;
   font-family: 'OpenSans-Bold';
   font-size: 14px;
 }
-/* line 142, ../scss/main.scss */
+/* line 153, ../scss/main.scss */
 #header h3 {
   margin-top: 4px;
   clear: right;
@@ -135,43 +130,39 @@ html, body {
   font-size: 8px;
 }
 
-/* line 150, ../scss/main.scss */
-#audio-player {
-  width: 520px;
-  margin-left: auto;
-  margin-right: auto;
+/* line 161, ../scss/main.scss */
+#container {
   border-radius: 8px;
   border: 1px solid black;
   background-image: linear-gradient(#939297 0%, #6d6c71);
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.6);
+  width: 960px;
+  margin: 20px auto 0;
 }
 
-/* line 160, ../scss/main.scss */
+/* line 167, ../scss/main.scss */
+#audio-player {
+  width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* line 174, ../scss/main.scss */
 .center-contents {
   text-align: center;
 }
 
-/* line 164, ../scss/main.scss */
+/* line 178, ../scss/main.scss */
 .display {
   position: relative;
   background-color: #29272b;
-  background-image: linear-gradient(transparent 0%, #000000 100%);
+  background-image: linear-gradient(transparent 0%, #000000 100%), linear-gradient(transparent 1px, rgba(255, 255, 255, 0.2) 2px);
+  background-size: 100% 100%, 10px 2px;
   box-shadow: inset 3px 3px 5px black, inset -3px -3px 15px black, inset 0 5px 7px rgba(255, 255, 255, 0.3);
   color: #bebec8;
 }
-/* line 174, ../scss/main.scss */
-.display::before {
-  content: "";
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  background-image: linear-gradient(transparent 1px, rgba(255, 255, 255, 0.2) 2px);
-  background-size: 10px 2px;
-}
 
-/* line 189, ../scss/main.scss */
+/* line 192, ../scss/main.scss */
 #track-data {
   padding: 5px;
   margin: 10px auto;
@@ -181,25 +172,25 @@ html, body {
   font-family: 'Inconsolata-Bold';
   border-radius: 5px;
 }
-/* line 200, ../scss/main.scss */
+/* line 203, ../scss/main.scss */
 #track-data p:first-of-type span:first-of-type {
   color: #73cbbe;
 }
-/* line 204, ../scss/main.scss */
+/* line 207, ../scss/main.scss */
 #track-data p:not(:first-of-type)::before {
   white-space: pre;
   content: " ";
 }
-/* line 209, ../scss/main.scss */
+/* line 212, ../scss/main.scss */
 #track-data p:nth-child(4) {
   color: #4ed34a;
 }
-/* line 213, ../scss/main.scss */
+/* line 216, ../scss/main.scss */
 #track-data #cursor {
   background-color: #bebec8;
 }
 
-/* line 218, ../scss/main.scss */
+/* line 221, ../scss/main.scss */
 #track-position {
   position: relative;
   margin: 0px auto 10px;
@@ -208,7 +199,7 @@ html, body {
   border-radius: 7px;
   border: solid 1px black;
 }
-/* line 226, ../scss/main.scss */
+/* line 229, ../scss/main.scss */
 #track-position .bg {
   position: absolute;
   height: 100%;
@@ -220,7 +211,7 @@ html, body {
   box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.6), inset 0px -1px 2px rgba(255, 255, 255, 0.3);
   background-color: #29272b;
 }
-/* line 240, ../scss/main.scss */
+/* line 243, ../scss/main.scss */
 #track-position .progress-bg {
   position: absolute;
   height: 12px;
@@ -231,7 +222,7 @@ html, body {
   box-shadow: inset 0px -1px 1px #4ed34a, inset 0px 1px 3px #ffffc8;
   background-image: linear-gradient(#86ff6d 0%, #47783d 55%, #1b3d11 55%, #1c6a1a 100%);
 }
-/* line 259, ../scss/main.scss */
+/* line 262, ../scss/main.scss */
 #track-position .bumper {
   position: absolute;
   height: 18px;
@@ -250,30 +241,37 @@ html, body {
   box-shadow: 0px 2px 3px #1b3d11;
 }
 
-/* line 271, ../scss/main.scss */
+/* line 274, ../scss/main.scss */
 ul#player-buttons {
   list-style: none;
   margin: 0px auto 10px;
   width: 490px;
   font-size: 0px;
 }
-/* line 277, ../scss/main.scss */
+/* line 280, ../scss/main.scss */
 ul#player-buttons li {
   position: relative;
 }
-/* line 281, ../scss/main.scss */
+/* line 284, ../scss/main.scss */
 ul#player-buttons #prev, ul#player-buttons #play-pause, ul#player-buttons #next {
   float: left;
+}
+/* line 288, ../scss/main.scss */
+ul#player-buttons #volume, ul#player-buttons #loop {
+  float: right;
+}
+/* line 292, ../scss/main.scss */
+ul#player-buttons .button {
   margin-top: 6px;
 }
 
-/* line 287, ../scss/main.scss */
+/* line 297, ../scss/main.scss */
 .clear-float {
   clear: both;
   margin-bottom: 10px;
 }
 
-/* line 292, ../scss/main.scss */
+/* line 302, ../scss/main.scss */
 .button {
   margin-right: 8px;
   width: 32px;
@@ -294,16 +292,16 @@ ul#player-buttons #prev, ul#player-buttons #play-pause, ul#player-buttons #next 
   background: linear-gradient(#86858b 0%, #86858b 49%, #68676c 50%, #605f64 100%);
 }
 
-/* line 301, ../scss/main.scss */
+/* line 311, ../scss/main.scss */
 #next::after {
   font-family: 'MediaIcons';
   font-size: 28px;
   text-align: center;
-  color: #29272b;
-  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
   height: 28px;
   content: "\e603";
   cursor: default;
+  color: #29272b;
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
   margin: auto;
   position: absolute;
   top: 0;
@@ -312,16 +310,16 @@ ul#player-buttons #prev, ul#player-buttons #play-pause, ul#player-buttons #next 
   right: 0;
 }
 
-/* line 305, ../scss/main.scss */
+/* line 315, ../scss/main.scss */
 #play-pause.play::after {
   font-family: 'MediaIcons';
   font-size: 28px;
   text-align: center;
-  color: #29272b;
-  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
   height: 28px;
   content: "\e600";
   cursor: default;
+  color: #29272b;
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
   margin: auto;
   position: absolute;
   top: 0;
@@ -330,16 +328,16 @@ ul#player-buttons #prev, ul#player-buttons #play-pause, ul#player-buttons #next 
   right: 0;
 }
 
-/* line 309, ../scss/main.scss */
+/* line 319, ../scss/main.scss */
 #play-pause.pause::after {
   font-family: 'MediaIcons';
   font-size: 28px;
   text-align: center;
-  color: #29272b;
-  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
   height: 28px;
   content: "\e601";
   cursor: default;
+  color: #29272b;
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
   margin: auto;
   position: absolute;
   top: 0;
@@ -348,16 +346,16 @@ ul#player-buttons #prev, ul#player-buttons #play-pause, ul#player-buttons #next 
   right: 0;
 }
 
-/* line 313, ../scss/main.scss */
+/* line 323, ../scss/main.scss */
 #prev::after {
   font-family: 'MediaIcons';
   font-size: 28px;
   text-align: center;
-  color: #29272b;
-  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
   height: 28px;
   content: "\e602";
   cursor: default;
+  color: #29272b;
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
   margin: auto;
   position: absolute;
   top: 0;
@@ -366,10 +364,27 @@ ul#player-buttons #prev, ul#player-buttons #play-pause, ul#player-buttons #next 
   right: 0;
 }
 
-/* line 317, ../scss/main.scss */
+/* line 327, ../scss/main.scss */
+#loop::after {
+  font-family: 'MediaIcons';
+  font-size: 28px;
+  text-align: center;
+  height: 28px;
+  content: "\e609";
+  cursor: default;
+  color: #29272b;
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+/* line 331, ../scss/main.scss */
 #volume {
   position: relative;
-  float: right;
   width: 48px;
   height: 48px;
   border-radius: 2px;
@@ -383,7 +398,7 @@ ul#player-buttons #prev, ul#player-buttons #play-pause, ul#player-buttons #next 
 #volume:hover {
   box-shadow: 0px 2px 3px #1b3d11;
 }
-/* line 327, ../scss/main.scss */
+/* line 340, ../scss/main.scss */
 #volume .indicator {
   height: 44px;
   width: 44px;
@@ -394,7 +409,7 @@ ul#player-buttons #prev, ul#player-buttons #play-pause, ul#player-buttons #next 
   bottom: 0;
   right: 0;
 }
-/* line 332, ../scss/main.scss */
+/* line 345, ../scss/main.scss */
 #volume .indicator::after {
   content: "";
   position: absolute;
@@ -409,16 +424,16 @@ ul#player-buttons #prev, ul#player-buttons #play-pause, ul#player-buttons #next 
   border: 1px solid rgba(0, 0, 0, 0.6);
 }
 
-/* line 349, ../scss/main.scss */
+/* line 362, ../scss/main.scss */
 .mute::after {
   font-family: 'MediaIcons';
   font-size: 16px;
   text-align: center;
-  color: #29272b;
-  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
   height: 16px;
   content: "\e608";
   cursor: default;
+  color: #29272b;
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
   margin: auto;
   position: absolute;
   top: 0;
@@ -427,16 +442,16 @@ ul#player-buttons #prev, ul#player-buttons #play-pause, ul#player-buttons #next 
   right: 0;
 }
 
-/* line 353, ../scss/main.scss */
+/* line 366, ../scss/main.scss */
 .soft-volume::after {
   font-family: 'MediaIcons';
   font-size: 16px;
   text-align: center;
-  color: #29272b;
-  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
   height: 16px;
   content: "\e607";
   cursor: default;
+  color: #29272b;
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
   margin: auto;
   position: absolute;
   top: 0;
@@ -445,16 +460,16 @@ ul#player-buttons #prev, ul#player-buttons #play-pause, ul#player-buttons #next 
   right: 0;
 }
 
-/* line 357, ../scss/main.scss */
+/* line 370, ../scss/main.scss */
 .low-volume::after {
   font-family: 'MediaIcons';
   font-size: 16px;
   text-align: center;
-  color: #29272b;
-  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
   height: 16px;
   content: "\e606";
   cursor: default;
+  color: #29272b;
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
   margin: auto;
   position: absolute;
   top: 0;
@@ -463,16 +478,16 @@ ul#player-buttons #prev, ul#player-buttons #play-pause, ul#player-buttons #next 
   right: 0;
 }
 
-/* line 361, ../scss/main.scss */
+/* line 374, ../scss/main.scss */
 .mid-volume::after {
   font-family: 'MediaIcons';
   font-size: 16px;
   text-align: center;
-  color: #29272b;
-  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
   height: 16px;
   content: "\e605";
   cursor: default;
+  color: #29272b;
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
   margin: auto;
   position: absolute;
   top: 0;
@@ -481,16 +496,16 @@ ul#player-buttons #prev, ul#player-buttons #play-pause, ul#player-buttons #next 
   right: 0;
 }
 
-/* line 365, ../scss/main.scss */
+/* line 378, ../scss/main.scss */
 .high-volume::after {
   font-family: 'MediaIcons';
   font-size: 16px;
   text-align: center;
-  color: #29272b;
-  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
   height: 16px;
   content: "\e604";
   cursor: default;
+  color: #29272b;
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
   margin: auto;
   position: absolute;
   top: 0;
@@ -499,182 +514,198 @@ ul#player-buttons #prev, ul#player-buttons #play-pause, ul#player-buttons #next 
   right: 0;
 }
 
-/* line 369, ../scss/main.scss */
+/* line 382, ../scss/main.scss */
 #playlist-box {
-  max-width: 960px;
   margin-left: auto;
   margin-right: auto;
 }
-/* line 379, ../scss/main.scss */
+/* line 394, ../scss/main.scss */
 #playlist-box div.display {
   display: inline-block;
   padding: 10px;
   border-radius: 10px;
 }
-/* line 386, ../scss/main.scss */
+/* line 401, ../scss/main.scss */
 #playlist-box div.scrollable {
   position: relative;
   overflow: hidden;
-  height: 94px;
+  height: 151px;
 }
-/* line 391, ../scss/main.scss */
+/* line 406, ../scss/main.scss */
 #playlist-box div.scrollable table {
   float: left;
   position: absolute;
   top: 0px;
   left: 0px;
 }
-/* line 399, ../scss/main.scss */
+/* line 414, ../scss/main.scss */
 #playlist-box h2 {
   float: left;
+  font-family: 'OpenSans-Bold';
+  font-size: 20px;
+  text-transform: uppercase;
 }
-/* line 403, ../scss/main.scss */
+/* line 422, ../scss/main.scss */
 #playlist-box table {
   clear: both;
   font-family: 'Inconsolata-Bold';
   font-size: 14px;
   color: #bebec8;
 }
-/* line 409, ../scss/main.scss */
+/* line 428, ../scss/main.scss */
 #playlist-box table colgroup.col-artist {
   width: 175px;
 }
-/* line 413, ../scss/main.scss */
+/* line 432, ../scss/main.scss */
 #playlist-box table colgroup.col-album {
   width: 280px;
 }
-/* line 417, ../scss/main.scss */
+/* line 436, ../scss/main.scss */
 #playlist-box table colgroup.col-track {
   width: 56px;
 }
-/* line 421, ../scss/main.scss */
+/* line 440, ../scss/main.scss */
 #playlist-box table colgroup.col-title {
   width: 350px;
 }
-/* line 426, ../scss/main.scss */
+/* line 444, ../scss/main.scss */
+#playlist-box table colgroup.col-buttons {
+  width: 28px;
+}
+/* line 449, ../scss/main.scss */
 #playlist-box th, #playlist-box td {
   max-width: 0px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-/* line 433, ../scss/main.scss */
+/* line 456, ../scss/main.scss */
 #playlist-box th {
-  padding: 1px 5px 3px;
+  padding: 3px 5px 5px;
   color: #73cbbe;
   border: 1px solid #6d6d80;
   border-bottom: 0;
 }
-/* line 440, ../scss/main.scss */
+/* line 463, ../scss/main.scss */
 #playlist-box td.data-container {
   padding: 0px;
   border: 1px solid #6d6d80;
 }
-/* line 444, ../scss/main.scss */
+/* line 467, ../scss/main.scss */
 #playlist-box td.data-container colgroup.col-title {
-  width: 330px;
-}
-/* line 450, ../scss/main.scss */
-#playlist-box #playlist td {
-  padding: 1px 5px 3px;
-  border: 1px solid #6d6d80;
-}
-/* line 454, ../scss/main.scss */
-#playlist-box #playlist td:first-child {
-  border-left: 0;
-}
-/* line 463, ../scss/main.scss */
-#playlist-box #playlist tr:first-child td {
-  border-top: 0;
+  width: 378px;
 }
 /* line 472, ../scss/main.scss */
 #playlist-box th:nth-of-type(3), #playlist-box td:nth-of-type(3) {
   text-align: center;
 }
 /* line 476, ../scss/main.scss */
-#playlist-box div.scrollbar {
-  position: relative;
-  float: right;
-  width: 20px;
-  height: 100%;
+#playlist-box th:nth-of-type(5), #playlist-box th:nth-of-type(6) {
+  text-align: center;
+  padding: 1px 0px 0px;
 }
 /* line 482, ../scss/main.scss */
+#playlist-box #playlist tr:not(.empty):hover td {
+  background-color: #32323b;
+}
+/* line 486, ../scss/main.scss */
+#playlist-box #playlist tr:not(.empty):active td {
+  background-color: #4a4a57;
+}
+/* line 490, ../scss/main.scss */
+#playlist-box #playlist tr.selected td {
+  background-color: #3e3e49;
+}
+/* line 494, ../scss/main.scss */
+#playlist-box #playlist tr.selected:hover td {
+  background-color: #4a4a57;
+}
+/* line 498, ../scss/main.scss */
+#playlist-box #playlist tr.selected:active td {
+  background-color: #616173;
+}
+/* line 502, ../scss/main.scss */
+#playlist-box #playlist td {
+  padding: 1px 5px 3px;
+  height: 14px;
+  border: 1px solid #6d6d80;
+}
+/* line 507, ../scss/main.scss */
+#playlist-box #playlist td:first-child {
+  border-left: 0;
+}
+/* line 516, ../scss/main.scss */
+#playlist-box #playlist tr:first-child td {
+  border-top: 0;
+}
+/* line 525, ../scss/main.scss */
+#playlist-box div.scrollbar {
+  position: relative;
+  margin: 4px;
+  float: right;
+  width: 19px;
+  height: 143px;
+}
+/* line 534, ../scss/main.scss */
 #playlist-box div.scrollbar div.indicator {
+  display: none;
   position: absolute;
-  width: 13px;
-  height: 13px;
+  width: 19px;
+  height: 19px;
   background-color: #bebec8;
-  top: 3px;
-  left: 4px;
+  left: 0px;
+  top: 0px;
 }
 
-/* line 493, ../scss/main.scss */
+/* line 546, ../scss/main.scss */
 .current {
   color: #4ed34a;
 }
 
-/* line 497, ../scss/main.scss */
+/* line 550, ../scss/main.scss */
 ul#playlist-buttons {
   list-style: none;
   float: right;
   font-size: 0px;
 }
-/* line 502, ../scss/main.scss */
+/* line 555, ../scss/main.scss */
 ul#playlist-buttons li {
   position: relative;
   display: inline-block;
 }
 
-/* line 508, ../scss/main.scss */
+/* line 563, ../scss/main.scss */
 #shuffle::after {
   font-family: 'MediaIcons';
-  font-size: 28px;
-  text-align: center;
-  color: #29272b;
-  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
-  height: 28px;
-  content: "\e60a";
+  content: '\e60a';
   cursor: default;
-  margin: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
+  text-align: center;
+}
+/* line 570, ../scss/main.scss */
+#shuffle:hover {
+  font-size: 16px;
+  padding: 0px;
+}
+/* line 575, ../scss/main.scss */
+#shuffle:active {
+  font-size: 12px;
+  padding: 0px;
 }
 
-/* line 512, ../scss/main.scss */
-#loop::after {
-  font-family: 'MediaIcons';
-  font-size: 28px;
-  text-align: center;
-  color: #29272b;
-  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
-  height: 28px;
-  content: "\e609";
-  cursor: default;
-  margin: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}
-
-/* line 516, ../scss/main.scss */
+/* line 582, ../scss/main.scss */
 #trash::after {
   font-family: 'MediaIcons';
-  font-size: 28px;
-  text-align: center;
-  color: #29272b;
-  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
-  height: 28px;
-  content: "\e60b";
+  content: '\e60b';
   cursor: default;
-  margin: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
+  text-align: center;
+}
+/* line 589, ../scss/main.scss */
+#trash:hover {
+  font-size: 16px;
+  padding: 0px;
+}
+/* line 594, ../scss/main.scss */
+#trash:active {
+  font-size: 12px;
+  padding: 0px;
 }

@@ -1,74 +1,78 @@
-%div{id: 'audio-player'}
-  %div{id: 'header'}
-    %h1 FG179
-    %h2 Remote Audio
-    %h3 Ver 2.71
-  %div{id: 'track-data', class: 'display'}
-    %p<
-      %span< @FGL ~$
-      %span{id: 'command'}<
-    %p{style: 'display : none;'}<
-      %span{id: 'title'}<
-      %span< by
-      %span{id: 'artist'}<
-    %p{style: 'display : none;'}<
-      %span< Track
-      %span{id: 'track'}<
-      %span< from
-      %span{id: 'album'}<
-      %span< (
-      %span{id: 'year'}<
-      %span< )
-    %p{style: 'display : none;'}<
-      %span< [
-      %span{id: 'status'}<
-      %span{id: 'animated-text'}
-      %span< ]
-  %div{id: 'track-position'}
-    %div.bg
-    %div.progress-bg
-    %div.bumper
-  %ul{id: 'player-buttons'}
-    %li{id: 'prev', class: 'button'}
-    %li{id: 'play-pause', class: 'button play'}
-    %li{id: 'next', class: 'button'}
-    %li{id: 'volume', class: 'mute'}
-      %div{class: 'indicator'}
-  %div{class: 'clear-float'}
-  %audio
-%button{type: 'button', onclick: 'updateLibraryTable();'}
-  Click me!
-%div{id: 'playlist-box'}
-  %h2 Playlist
-  %ul{id: 'playlist-buttons'}
-    %li{id: 'shuffle', class: 'button'}
-    %li{id: 'loop', class: 'button'}
-    %li{id: 'trash', class: 'button'}
-  %div{class: 'center-contents clear-float'}
-    %div{class: 'display'}
-      %table
-        %colgroup{span: '1', class: 'col-artist'}
-        %colgroup{span: '1', class: 'col-album'}
-        %colgroup{span: '1', class: 'col-track'}
-        %colgroup{span: '1', class: 'col-title'}
-        %thead
-          %tr
-            %th Artist
-            %th Album
-            %th Track
-            %th Title
-        %tbody
-          %tr
-            %td{class: 'data-container', colspan: '4'}
-              %div{class: 'scrollable'}
-                %table
-                  %colgroup{span: '1', class: 'col-artist'}
-                  %colgroup{span: '1', class: 'col-album'}
-                  %colgroup{span: '1', class: 'col-track'}
-                  %colgroup{span: '1', class: 'col-title'}
-                  %tbody{id: 'playlist'}
-                %div{class: 'scrollbar'}
-                  %div{class: 'indicator'}
+%div{id: 'container'}
+  %div{id: 'audio-player'}
+    -# %div{id: 'header'}
+      -# %h1 FG179
+      -# %h2 Remote Audio
+      -# %h3 Ver 2.71
+    %div{id: 'track-data', class: 'display'}
+      %p<
+        %span< @FGL ~$
+        %span{id: 'command'}<
+      %p{style: 'display : none;'}<
+        %span{id: 'title'}<
+        %span< by
+        %span{id: 'artist'}<
+      %p{style: 'display : none;'}<
+        %span< Track
+        %span{id: 'track'}<
+        %span< from
+        %span{id: 'album'}<
+      %p{style: 'display : none;'}<
+        %span< [
+        %span{id: 'status'}<
+        %span{id: 'animated-text'}
+        %span< ]
+    %div{id: 'track-position'}
+      %div.bg
+      %div.progress-bg
+      %div.bumper
+    %ul{id: 'player-buttons'}
+      %li{id: 'prev', class: 'button'}
+      %li{id: 'play-pause', class: 'button play'}
+      %li{id: 'next', class: 'button'}
+      %li{id: 'volume', class: 'mute'}
+        %div{class: 'indicator'}
+      %li{id: 'loop', class: 'button'}
+    %div{class: 'clear-float'}
+    -# %audio
+  %div{id: 'playlist-box'}
+    -# %h2 Playlist
+    %div{class: 'center-contents'}
+      %div{class: 'display'}
+        %table
+          %colgroup{span: '1', class: 'col-artist'}
+          %colgroup{span: '1', class: 'col-album'}
+          %colgroup{span: '1', class: 'col-track'}
+          %colgroup{span: '1', class: 'col-title'}
+          %colgroup{span: '2', class: 'col-buttons'}
+          %thead{id: 'something'}
+            %tr
+              %th Artist
+              %th Album
+              %th Track
+              %th Title
+              %th{id: 'shuffle'}
+              %th{id: 'trash'}
+          %tbody
+            %tr
+              %td{class: 'data-container', colspan: '6'}
+                %div{class: 'scrollable'}
+                  %table
+                    %colgroup{span: '1', class: 'col-artist'}
+                    %colgroup{span: '1', class: 'col-album'}
+                    %colgroup{span: '1', class: 'col-track'}
+                    %colgroup{span: '1', class: 'col-title'}
+                    %tbody{id: 'playlist'}
+                      - 8.times do
+                        %tr{class: 'empty'}
+                          - 4.times do
+                            %td
+                  %div{id: 'pl-scrollbar', class: 'scrollbar'}
+                    %div{class: 'indicator'}
+        -# %ul{id: 'playlist-buttons'}
+          -# %li{id: 'shuffle', class: 'button'}
+          -# %li{id: 'trash', class: 'button'}
+    %div{class: 'clear-float'}
 %h2 Library
 %table
   %thead
@@ -78,3 +82,5 @@
       %th Track #
       %th Title
   %tbody{id: 'library'}
+%button{type: 'button', onclick: 'updateLibraryTable();'}
+  Click me!
