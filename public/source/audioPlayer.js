@@ -3,10 +3,118 @@
     Modules for the audio player controls
 */
 
-// Audio node
-var audio = null;
+//-------------------------------
+// Audio Player General Functions
+//-------------------------------
 
-// Control audio volume through a knob
+var player = (function() {
+  var $player = $(),
+      audio = new Audio("", false);
+
+  var PLAYPAUSE   = "#play-pause";
+
+  function setPlayer($playerNode) {
+    $player = $playerNode;
+    audio.appendTo($player);
+  }
+
+  function enable() {
+    audio.on("play", onPlay);
+    audio.on("pause", onPause);
+    audio.on("loadeddata", onReady);
+    audio.on("ended", onEnded);
+  }
+
+  function onPlay() {
+    var $button = $(PLAYPAUSE);
+    $button.removeClass("play");
+    $button.addClass("pause");
+    trackData.setStatus("Playing");
+  }
+
+  function onPause() {
+    var $button = $(PLAYPAUSE);
+    $button.removeClass("pause");
+    $button.addClass("play");
+    trackData.setStatus("Paused");
+  }
+
+  function onReady() {
+    progressBar.setPosition(0);
+    trackData.setStatus("Loaded");
+  }
+
+  function onEnded() {
+    playlist.next();
+  }
+
+  function onTimeUpdate(funct) {
+    audio.on("timeupdate", funct);
+  }
+
+  function offTimeUpdate(funct) {
+    audio.off("timeupdate", funct);
+  }
+
+  function setVolume(volume) {
+    audio.setVolume(volume);
+  }
+
+  function play() {
+    audio.play();
+    audio.setAutoplay(true);
+  }
+
+  function pause() {
+    audio.pause();
+    audio.setAutoplay(false);
+  }
+
+  function paused() {
+    return audio.paused();
+  }
+
+  function setCurrentTime(time) {
+    audio.setCurrentTime(time);
+  }
+
+  function getCurrentTime() {
+    return audio.getCurrentTime();
+  }
+
+  function setToEnd() {
+    audio.setToEnd();
+  }
+
+  function getDuration() {
+    return audio.getDuration();
+  }
+
+  function setSrc(source) {
+    audio.setSrc(source);
+  }
+
+  return {
+    setPlayer:      setPlayer,
+    enable:         enable,
+    onTimeUpdate:   onTimeUpdate,
+    offTimeUpdate:  offTimeUpdate,
+    setVolume:      setVolume,
+    play:           play,
+    pause:          pause,
+    paused:         paused,
+    setCurrentTime: setCurrentTime,
+    getCurrentTime: getCurrentTime,
+    setToEnd:       setToEnd,
+    getDuration:    getDuration,
+    setSrc:         setSrc
+  }
+})();
+
+// -------------
+// Volume Adjust
+// -------------
+
 var volumeKnob = (function () {
 
   var $knob         = null,
@@ -28,9 +136,7 @@ var volumeKnob = (function () {
   function enable() {
     if ($knob === null) {
       throw new Error("(volumeKnob) uninitialized $knob var");
-    } else if (audio === null) {
-      throw new Error("(volumeKnob) uninitialized audio var");
-    } if (!enabled) {
+    } else if (!enabled) {
       $knob.on("mousedown", adjustVolume);
       enabled = true;
     }
@@ -115,7 +221,7 @@ var volumeKnob = (function () {
 
   function setByAngle(theta) {
     spinKnob(theta);
-    audio.volume = (theta / 360);
+    player.setVolume(theta / 360);
   }
   
   // Set the indicator to the correct angle and update the class
@@ -137,7 +243,7 @@ var volumeKnob = (function () {
 
   function setByPercent(percent) {
     spinKnob(percent * 3.6);
-    audio.volume = percent;
+    player.setVolume(percent);
   }
 
   // Public methods
@@ -149,7 +255,10 @@ var volumeKnob = (function () {
   };
 })();
 
-// Display and control progress through a progress bar
+// ---------------------
+// Display Song Progress
+// ---------------------
+
 var progressBar = (function() {
 
   var $bumper       = null,
@@ -172,23 +281,21 @@ var progressBar = (function() {
   function enable() {
     if ($bumper === null) {
       throw new Error("(progressBar) uninitialized $bumper var");
-    } else if (audio === null) {
-      throw new Error("(progressBar) uninitialized audio var");
     } else if (!enabled) {
       $bumper.on("mousedown", seek);
-      $(audio).on("timeupdate", updateTime);
+      player.onTimeUpdate(updateTime);
       enabled = true;
     }
   }
 
   function disable() {
     $bumper.off("mousedown", seek);
-    $(audio).off("timeupdate", updateTime);
+    player.offTimeUpdate(updateTime);
     enabled = false;
   }
 
   function seek(e) {
-    $(audio).off("timeupdate", updateTime);
+    player.offTimeUpdate(updateTime);
     document.addEventListener("mouseup", upHandler, true);
     document.addEventListener("mousemove", moveHandler, true);
     
@@ -199,15 +306,15 @@ var progressBar = (function() {
   function upHandler(e) {
     document.removeEventListener("mousemove", moveHandler, true);
     document.removeEventListener("mouseup", upHandler, true);
-    audio.currentTime = positionToTime();
-    $(audio).on("timeupdate", updateTime);
+    player.setCurrentTime(positionToTime());
+    player.onTimeUpdate(updateTime);
     e.stopPropagation();
   }
 
   function positionToTime() {
     var percent = parseInt($bumper.css("left"), 10) /
       ($bumper.parent().width() - $bumper.width());
-    var songLength = audio.duration;
+    var songLength = player.getDuration();
     return percent * songLength;
   }
 
@@ -231,7 +338,7 @@ var progressBar = (function() {
 
   function updateTime() {
     var width = rightBound - pageOffset;
-    var position = audio.currentTime * width / audio.duration;
+    var position = player.getCurrentTime() * width / player.getDuration();
     setPosition(position);
 
     // Stop Propagation/Default Action
@@ -243,11 +350,15 @@ var progressBar = (function() {
     setBumper:    setBumper,
     enable:       enable,
     disable:      disable,
-    setPosition:  setPosition
+    setPosition:  setPosition,
+    updateTime:   updateTime
   };
 })();
 
-// Toggle audio player's play/pause state
+// -----------------
+// Play/Pause Button
+// -----------------
+
 var playPause = (function() {
 
   var $button = null,
@@ -260,9 +371,7 @@ var playPause = (function() {
   function enable() {
     if ($button === null) {
       throw new Error("(playPause) uninitialized $button var");
-    } else if (audio === null) {
-      throw new Error("(playPause) uninitialized $button var");
-    } if (!enabled) {
+    } else if (!enabled) {
       $button.on("click", buttonPress);
       enabled = true;
     }
@@ -273,12 +382,10 @@ var playPause = (function() {
   }
 
   function buttonPress() {
-    if (audio.paused) {
-      audio.play();
-      $(audio).attr("autoplay","");
+    if (player.paused()) {
+      player.play();
     } else {
-      audio.pause();
-      $(audio).removeAttr("autoplay");
+      player.pause();
     }
 
     //Stop Propagation/Default Action
@@ -292,48 +399,50 @@ var playPause = (function() {
   };
 })();
 
-// Set status text and animations
+// ------------------------
+// Display Song Data/Status
+// ------------------------
+
 var trackData = (function(){
-  
   var $data     = null;
 
-  var aniID     = "#animated-text",
-      statusID  = "#status",
-      cmdID     = "#command",
-      artistID  = "#artist",
-      cmdText   = "./fg179 --id ";
+  var ANIMATEID = "#animated-text",
+      STATUSID  = "#status",
+      CMDID     = "#command",
+      ARTISTID  = "#artist",
+      CMDTEXT   = "./fg179 --id ";
 
   function setNode($trackDataNode) {
     $data = $trackDataNode;
   }
 
   function setAniText(text) {
-    var $aniText = $(aniID, $data);
+    var $aniText = $(ANIMATEID, $data);
     if ($aniText === null)
-      throw new Error("(trackData) no " + aniID + " node found");
+      throw new Error("(trackData) no " + ANIMATEID + " node found");
     else
       $aniText.text(text);
   }
 
   function setStatus(text) {
-    var $status = $(statusID, $data);
+    var $status = $(STATUSID, $data);
     if ($status === null)
-      throw new Error("(trackData) no " + statusID + " node found");
+      throw new Error("(trackData) no " + STATUSID + " node found");
     else
       $status.text(text);
   }
 
   function setArtist(text) {
-    var $artist = $(artistID, $data);
+    var $artist = $(ARTISTID, $data);
     if ($artist === null)
-      throw new Error("(trackData) no " + artistID + " node found");
+      throw new Error("(trackData) no " + ARTISTID + " node found");
     else
       $artist.text(text);
   }
 
-  function newSong(id, artist, title, trackNo, album, year) {
-    var newCmd = cmdText + id;
-    var $cmd = $(cmdID, $data);
+  function newSong(id, artist, title, trackNo, album) {
+    var newCmd = CMDTEXT + id;
+    var $cmd = $(CMDID, $data);
     var cmdSequence = new Animation(0, false);
     var setTrackData = new Animation(1, false);
     var cmdSubStr = function(i) {
@@ -347,7 +456,6 @@ var trackData = (function(){
       $("#title", $data).text(title);
       $("#track", $data).text(trackNo);
       $("#album", $data).text(album);
-      $("#year", $data).text(year);
     });
 
     $cmd.text("");
@@ -423,49 +531,19 @@ var trackData = (function(){
     stop:         stop,
     newSong:      newSong
   };
-
 })();
 
-//-------------
-// Audio Events
-//-------------
-
-function play() {
-  var $button = $("#play-pause");
-  $button.removeClass("play");
-  $button.addClass("pause");
-  trackData.setStatus("Playing");
-}
-
-function pause() {
-  var $button = $("#play-pause");
-  $button.removeClass("pause");
-  $button.addClass("play");
-  trackData.setStatus("Paused");
-}
-
-function ready() {
-  var $bumper = $("#track-position .bumper");
-  progressBar.setPosition(0);
-  pause(); 
-}
-
-function ended() {
-  if (playlist.nextReady()) {
-    playlist.next();
-  } else {
-    audio.pause;
-  }
-}
-
 function initAudioPlayer() {
-  audio = $("#audio-player > audio")[0];
+//   audio.set($("#audio-player > audio")[0]);
   volumeKnob.setKnob($("#volume"));
   progressBar.setBumper($("#track-position .bumper"));
   playPause.setButton($("#play-pause"));
   trackData.setNode($("#track-data"));
-  $(audio).on("play", play);
-  $(audio).on("pause", pause);
-  $(audio).on("loadeddata", ready);
-  $(audio).on("ended", ended);
+  player.setPlayer($("#audio-player"));
+  $("#next").on("click", function() {
+    playlist.next();
+  });
+  $("#prev").on("click", function() {
+    playlist.prev();
+  });
 }

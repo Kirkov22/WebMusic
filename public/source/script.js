@@ -74,7 +74,7 @@ function $tagsToTr(song) {
   var $tr = $make("<tr>", { songID : song.id });
 
   $tr.append($make("<td>", {}, song.artist));
-  $tr.append($make("<td>", {}, song.album));
+  $tr.append($make("<td>", {}, song.album + " (" + song.year + ")"));
   $tr.append($make("<td>", {}, song.track.toString()));
   $tr.append($make("<td>", {}, song.title));
 //   $tr.append($make("<td>", {}, $makeAddButton(song.id)));
@@ -109,7 +109,8 @@ function songToPL() {
 //   var $button = $tr.find("td > button");
 //   $button.attr("class", "tempplaybutton");
 //   $button.text("PLAY");
-  $tr.appendTo("#playlist");
+//   $tr.appendTo("#playlist");
+  playlist.add($tr);
 }
 
 function loadSong(event, request, settings) {
@@ -128,17 +129,17 @@ function loadedSong(event, request, settings) {
 }
 
 // Request file path to song with given id
-function playSong() {
-  var id = $(this).parent().parent().attr("songID")
-//   trackData.setArtist($(this).parent().parent().children(":first").text());
-  trackData.newSong(id);
-  $.get("music",
-    { songID: id },
-    function(path) {
-      $("audio").attr("src", path);
-    },
-    "text");
-}
+// function playSong() {
+//   var id = $(this).parent().parent().attr("songID")
+// //   trackData.setArtist($(this).parent().parent().children(":first").text());
+//   trackData.newSong(id);
+//   $.get("music",
+//     { songID: id },
+//     function(path) {
+//       $("audio").attr("src", path);
+//     },
+//     "text");
+// }
 
 // Add event handlers to document
 $(document).ready(function() {
@@ -150,6 +151,8 @@ $(document).ready(function() {
   progressBar.enable();
   volumeKnob.enable();
   playPause.enable();
+//   audio.enable();
+  player.enable();
   $(document).ajaxSend(loadSong);
 //   $(document).ajaxComplete(loadedSong);
 });

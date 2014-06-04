@@ -1,81 +1,357 @@
 var playlist = (function() {
   var $playlist     = null,
-      $selected     = [],
-      current       = 0,
-      nextID        = 0,
+      $scrollButton = null,
+      scrollYStart  = 0,
+      scrollHeight  = 0,
+      rowHeight     = 0,
+      scrollStep    = 1,
+      selected      = [],
+      length        = 0,
+      $prev         = $(),
+      prevPath      = "",
+      $current      = $(),
+      currentPath   = "",
+      $next         = $(),
       nextPath      = "";
+
+  var MIN_ROWS      = 8,
+      REMOVE        = "#trash",
+      BLANK         = "<tr class=\"empty\"><td/><td/><td/><td/></tr>",
+      ACTIVE_ROW    = "tr:not(.empty)";
+
+  // ---------------
+  // Setup Functions
+  // ---------------
 
   function setPlaylist($playlistNode) {
     $playlist = $playlistNode;
   }
 
-  function add($tr) {
-    $playlist.append($tr);
-  }
+  function setScrollbar($scrollButtonNode) {
+    $scrollButton = $scrollButtonNode;
 
+    // get scrollbar geometry
+    scrollYStart = $scrollButton.parent().offset().top;
+    scrollHeight = $scrollButton.parent().height() - $scrollButton.height();
+    rowHeight = $("tr:first", $playlist).height();
+    scrollStep = scrollHeight;
+  }
+  
   function enable() {
-    $playlist.on("dblclick", "tr", setCurrent);
+    $playlist.on("dblclick", ACTIVE_ROW, changeCurrent);
+    $playlist.on("click", ACTIVE_ROW, select);
+    $(REMOVE).on("click", removeSelected);
   }
 
-  function setCurrent(e) {
-    $selected = [$(this)];
-    $selected[0].siblings().removeClass("selected");
-    $selected[0].siblings().removeClass("current");
-    $selected[0].addClass("current");
-    var id = $selected[0].attr("songID");
-    var artist = $("td:nth-of-type(1)", $selected[0]).text();
-    var title = $("td:nth-of-type(4)", $selected[0]).text();
-    var track = $("td:nth-of-type(3)", $selected[0]).text();
-    var album = $("td:nth-of-type(2)", $selected[0]).text();
-    current = id;
+  // --------------
+  // Event Handlers
+  // --------------
+
+  function changeCurrent(e) {
+    // Deselect other rows and move the current class to the dbl clicked song
+    emptySelected();
+    $current = $(this);
+    setCurrentClass();
+
+    displaySongData($current);
+
+    var id = $current.attr("songID");
+    loadCurrent(id);
+  }
+
+  function select(e) {
+    var $select = $(this);
+    var id = $select.attr("songID");
+    var index = selected.indexOf(id);
+
+    if ( index === -1) {
+      // If not already selected, add to selected
+      selected.push(id);
+      $select.addClass("selected");
+    } else {
+      // De-select if already selected
+      selected.splice(index, 1);
+      $select.removeClass("selected");
+    }
+  }
+
+  function removeSelected(e) {
+    var numRemoved = selected.length;
+    for (var i = 0; i < numRemoved; i++) {
+      removeSong(selected[i]);
+    }
+    selected = [];
+  }
+
+  function scrollStart(e) {
+    // Get Mouse Y position relative to button's top edge
+    var offset = e.pageY - $scrollButton.offset().top;
+
+    document.addEventListener("mouseup", upHandler, true);
+    document.addEventListener("mousemove", moveHandler, true);
+
+    function moveHandler(e) {
+      var position = e.pageY - offset - scrollYStart;
+      if (position < 0) {
+        position = 0; 
+      } else if (position > scrollHeight) {
+        position = scrollHeight;
+      }
+      scroll(position);
+      e.stopPropagation();
+    }
+
+    function upHandler(e) {
+      document.removeEventListener("mousemove", moveHandler, true);
+      document.removeEventListener("mouseup", upHandler, true);
+      e.stopPropagation();
+    }
+
+    // Stop Propagation/Default Action
+    return false;
+  }
+
+  // -------------------
+  // UI Helper Functions
+  // -------------------
+
+  function setCurrentClass() {
+    $current.siblings().removeClass("current");
+    $current.addClass("current");
+  }
+
+  function emptySelected() {
+    $("tr", $playlist).removeClass("selected");
+    selected = [];
+  }
+
+  function removeSong(id) {
+    $("[songID=" + id + "]" , $playlist).remove();
+    decrementPL();
+  }
+
+  // Adjust GUI for the removal of 1 playlist entry
+  function decrementPL() {
+    length -= 1;
+    if (length === MIN_ROWS) {
+      disableScroll();
+    }else if (length < MIN_ROWS) {
+      $playlist.append(BLANK);
+    } else {
+      decrementScrollStep();
+    }
+  }
+
+  // Adjust GUI for the addition of 1 playlist entry
+  function incrementPL() {
+    length += 1;
+    if (length === MIN_ROWS + 1) {
+      enableScroll();
+    }else if (length <= MIN_ROWS) {
+      removeBlankRow();
+    } else {
+      incrementScrollStep();
+    }
+  }
+
+  function removeBlankRow() {
+    $("tr.empty", $playlist).first().remove();
+  }
+
+  function scrollButtonPosition(steps) {
+    $scrollButton.css("top", (steps * scrollStep) + "px");
+  }
+
+  function playlistScrollPosition(steps) {
+    $playlist.parent().css("top", "-" + (steps * rowHeight) + "px");
+  }
+
+  // -------------
+  // Other Helpers
+  // -------------
+
+  function displaySongData($tr) {
+    //Get song data from table row
+    var id = $tr.attr("songID");
+    var artist = $("td:nth-of-type(1)", $tr).text();
+    var title = $("td:nth-of-type(4)", $tr).text();
+    var track = $("td:nth-of-type(3)", $tr).text();
+    var album = $("td:nth-of-type(2)", $tr).text();
+
+    // Display new song
     trackData.newSong(id, artist, title, track, album);
+  }
+
+  function loadCurrent(id) {
     $.get("music",
       { songID: id },
-      function(path) {
-        $("audio").attr("src", path);
-        trackData.stop();
-        prepareNext();
-      },
+      onCurrentLoad,
       "text");
   }
 
-  function next() {
-    current = nextID;
-    trackData.newSong(nextID);
-    $(audio).attr("src", nextPath);
+  function onCurrentLoad(path) {
+    player.setSrc(path);
     trackData.stop();
+    preparePrev();
     prepareNext();
   }
 
-  function prepareNext() {
-    nextID = 0;
-    nextPath = "";
-    var nextSong = $("[songID='" + current + "'] + tr", $playlist);
-    if(nextSong.length > 0) {
-      nextID = nextSong.attr("songID");
+  function preparePrev() {
+    prevPath  = "";
+    $prev     = $current.prev(":not(.empty)");
+
+    //TODO Add support for continuous play
+    if (false && $prev.length === 0)
+      $prev = $("tr[songID]:last", $playlist);
+    if ($prev.length !== 0)
       $.get("music",
-        { songID: nextID },
+        { songID: $prev.attr("songID") },
+        function(path) {
+          prevPath = path;
+        },
+        "text");
+  }
+
+  function prepareNext() {
+    nextPath  = "";
+    $next     = $current.next(":not(.empty)");
+
+    //TODO Add support for continuous play
+    if (false && $next.length === 0)
+      $next = $("tr[songID]:first", $playlist);
+    if ($next.length !== 0)
+      $.get("music",
+        { songID: $next.attr("songID") },
         function(path) {
           nextPath = path;
         },
         "text");
+  }
+
+  function disableScroll() {
+    $scrollButton.off("mousedown", scrollStart);
+    $scrollButton.removeAttr("style");
+    $playlist.parent().removeAttr("style");
+  }
+
+  function enableScroll() {
+    $scrollButton.on("mousedown", scrollStart);
+    $scrollButton.css("display", "initial");
+  }
+
+  function decrementScrollStep() {
+    // Keep minimum number of rows visible
+    if (length > MIN_ROWS) {
+      var cssTop  = $scrollButton.css("top") || "0";
+      var intTop  = parseInt(cssTop);
+      var steps   = intTop / scrollStep;
+      updateScrollStep();
+      scrollButtonPosition(steps - 1);
+      playlistScrollPosition(steps - 1);
     }
   }
 
-  function nextReady() {
-    return (nextPath !== "");
+  function incrementScrollStep() {
+    //Keep minimum # of rows visible
+    if (length > MIN_ROWS) {
+      var cssTop  = $scrollButton.css("top") || "0";
+      var intTop  = parseInt(cssTop);
+      var steps   = intTop / scrollStep;
+      updateScrollStep();
+      scrollButtonPosition(steps);
+    } 
+  }
+  
+  function updateScrollStep() {
+    scrollStep  = scrollHeight / (length - MIN_ROWS);
+  }
+
+  function scroll(position) {
+    var steps = Math.round(position / scrollStep);
+    playlistScrollPosition(steps);
+    scrollButtonPosition(steps);
+  }
+
+  //-------------------------------
+  // External Playlist Manipulation
+  //-------------------------------
+
+  function add($tr) {
+    emptySelected();
+    var idToAdd = $tr.attr("songID");
+    // If song isn't already in the playlist
+    if ($("tr[songID=\"" + idToAdd + "\"]", $playlist).length === 0) {
+      if (length >= MIN_ROWS) {
+        $playlist.append($tr.clone());
+      } else if (length > 0) {
+        $("tr.empty:first", $playlist).before($tr.clone());
+        prepareNext();
+      } else {
+        $current = $tr.clone();
+        $("tr.empty:first", $playlist).before($current);
+        setCurrentClass();
+        displaySongData($current);
+        loadCurrent(idToAdd);
+      }
+    incrementPL();
+    }
+  }
+
+  function next() {
+    if (nextPath === "") {
+      if ($next.length === 0) {
+        player.pause();
+        player.setToEnd();
+      } else {
+        $current = $next;
+        setCurrentClass();
+        loadCurrent($current.attr("songID"));
+      }
+    } else {
+      $prev         = $current;
+      prevPath      = currentPath;
+      $current      = $next;
+      currentPath   = nextPath;
+      setCurrentClass();
+      player.setSrc(currentPath);
+      prepareNext();
+    }
+  }
+
+  function prev() {
+    if (prevPath === "") {
+      if ($prev.length === 0) {
+        player.pause();
+        player.setCurrentTime(0);
+      } else {
+        $current = $prev;
+        setCurrentClass();
+        loadCurrent($current.attr("songID"));
+      }
+    } else {
+      $next         = $current;
+      nextPath      = currentPath;
+      $current      = $prev;
+      currentPath   = prevPath;
+      setCurrentClass();
+      player.setSrc(currentPath);
+      preparePrev();
+    }
   }
 
   return {
     setPlaylist:  setPlaylist,
+    setScrollbar: setScrollbar,
     enable:       enable,
     prepareNext:  prepareNext,
+    add:          add,
     next:         next,
-    nextReady:    nextReady
+    prev:         prev
   };
 })();
 
 function initPlaylist() {
   playlist.setPlaylist($("#playlist"));
+  playlist.setScrollbar($("#pl-scrollbar .indicator"));
   playlist.enable();
 }
