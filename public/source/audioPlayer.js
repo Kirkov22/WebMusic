@@ -117,8 +117,8 @@ var player = (function() {
 
 var volumeKnob = (function () {
 
-  var $knob         = null,
-      $indicator    = null,
+  var $knob         = $(),
+      $indicator    = $(),
       enabled       = false,
       knobCenterX   = 0,
       knobCenterY   = 0,
@@ -134,7 +134,7 @@ var volumeKnob = (function () {
   }
 
   function enable() {
-    if ($knob === null) {
+    if ($knob.length === 0) {
       throw new Error("(volumeKnob) uninitialized $knob var");
     } else if (!enabled) {
       $knob.on("mousedown", adjustVolume);
@@ -261,8 +261,8 @@ var volumeKnob = (function () {
 
 var progressBar = (function() {
 
-  var $bumper       = null,
-      $progressBG   = null,
+  var $bumper       = $(),
+      $progressBG   = $(),
       enabled       = false,
       halfWidth     = 0,
       pageOffset    = 0,
@@ -279,7 +279,7 @@ var progressBar = (function() {
   }
 
   function enable() {
-    if ($bumper === null) {
+    if ($bumper.length === 0) {
       throw new Error("(progressBar) uninitialized $bumper var");
     } else if (!enabled) {
       $bumper.on("mousedown", seek);
@@ -361,7 +361,7 @@ var progressBar = (function() {
 
 var playPause = (function() {
 
-  var $button = null,
+  var $button = $(),
       enabled = false;
 
   function setButton($buttonNode) {
@@ -369,7 +369,7 @@ var playPause = (function() {
   }
 
   function enable() {
-    if ($button === null) {
+    if ($button.length === 0) {
       throw new Error("(playPause) uninitialized $button var");
     } else if (!enabled) {
       $button.on("click", buttonPress);
@@ -404,7 +404,7 @@ var playPause = (function() {
 // ------------------------
 
 var trackData = (function(){
-  var $data     = null;
+  var $data     = $();
 
   var ANIMATEID = "#animated-text",
       STATUSID  = "#status",
@@ -418,7 +418,7 @@ var trackData = (function(){
 
   function setAniText(text) {
     var $aniText = $(ANIMATEID, $data);
-    if ($aniText === null)
+    if ($aniText.length === 0)
       throw new Error("(trackData) no " + ANIMATEID + " node found");
     else
       $aniText.text(text);
@@ -426,7 +426,7 @@ var trackData = (function(){
 
   function setStatus(text) {
     var $status = $(STATUSID, $data);
-    if ($status === null)
+    if ($status.length === 0)
       throw new Error("(trackData) no " + STATUSID + " node found");
     else
       $status.text(text);
@@ -434,7 +434,7 @@ var trackData = (function(){
 
   function setArtist(text) {
     var $artist = $(ARTISTID, $data);
-    if ($artist === null)
+    if ($artist.length === 0)
       throw new Error("(trackData) no " + ARTISTID + " node found");
     else
       $artist.text(text);
@@ -466,8 +466,9 @@ var trackData = (function(){
     });
 
     //Loop through newCmd
-    for (var i = 1; i <= newCmd.length; i++) {
-      cmdSequence.frames.push(cmdSubStr(i));
+    var len = newCmd.length;
+    for (var i = len; i--; ) {
+      cmdSequence.frames.push(cmdSubStr(len - i));
     }
 
     //Remove cursor
@@ -479,9 +480,9 @@ var trackData = (function(){
     animator.add(setTrackData);
 
     twirl(newCmd.length + 3);
-    revealAfter($("p:nth-of-type(2)", $data),newCmd.length + 7);
-    revealAfter($("p:nth-of-type(3)", $data),newCmd.length + 9);
-    revealAfter($("p:nth-of-type(4)", $data),newCmd.length + 11);
+    revealAfter($("p:nth-of-type(2)", $data),len + 7);
+    revealAfter($("p:nth-of-type(3)", $data),len + 9);
+    revealAfter($("p:nth-of-type(4)", $data),len + 11);
 
     animator.start(80);
   }
