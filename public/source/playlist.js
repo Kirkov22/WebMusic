@@ -53,8 +53,6 @@ var playlist = (function() {
     $current = $(this);
     setCurrentClass();
 
-    displaySongData($current);
-
     var id = $current.attr("songID");
     loadCurrent(id);
   }
@@ -77,10 +75,12 @@ var playlist = (function() {
 
   function removeSelected(e) {
     var numRemoved = selected.length;
-    for (var i = 0; i < numRemoved; i++) {
+    for (var i = numRemoved; i--; ) {
       removeSong(selected[i]);
     }
     selected = [];
+    preparePrev();
+    prepareNext();
   }
 
   function scrollStart(e) {
@@ -126,6 +126,9 @@ var playlist = (function() {
   }
 
   function removeSong(id) {
+    var $song = $("[songID=" + id + "]", $playlist);
+    if ($song.is($current))
+      next();
     $("[songID=" + id + "]" , $playlist).remove();
     decrementPL();
   }
@@ -166,10 +169,6 @@ var playlist = (function() {
     $playlist.parent().css("top", "-" + (steps * rowHeight) + "px");
   }
 
-  // -------------
-  // Other Helpers
-  // -------------
-
   function displaySongData($tr) {
     //Get song data from table row
     var id = $tr.attr("songID");
@@ -182,7 +181,13 @@ var playlist = (function() {
     trackData.newSong(id, artist, title, track, album);
   }
 
+  // -------------
+  // Other Helpers
+  // -------------
+
   function loadCurrent(id) {
+    displaySongData($current);
+    trackData.setStatus("Loading");
     $.get("music",
       { songID: id },
       onCurrentLoad,
@@ -290,7 +295,6 @@ var playlist = (function() {
         $current = $tr.clone();
         $("tr.empty:first", $playlist).before($current);
         setCurrentClass();
-        displaySongData($current);
         loadCurrent(idToAdd);
       }
     incrementPL();
@@ -314,6 +318,8 @@ var playlist = (function() {
       currentPath   = nextPath;
       setCurrentClass();
       player.setSrc(currentPath);
+      displaySongData($current);
+      trackData.stop();
       prepareNext();
     }
   }
@@ -335,6 +341,8 @@ var playlist = (function() {
       currentPath   = prevPath;
       setCurrentClass();
       player.setSrc(currentPath);
+      displaySongData($current);
+      trackData.stop();
       preparePrev();
     }
   }

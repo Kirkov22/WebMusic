@@ -113,11 +113,11 @@ function songToPL() {
   playlist.add($tr);
 }
 
-function loadSong(event, request, settings) {
-  if (settings.url.search("^music?") === 0) {
-    trackData.setStatus("Loading");
-  }
-}
+// function loadSong(event, request, settings) {
+//   if (settings.url.search("^music?") === 0) {
+//     trackData.setStatus("Loading");
+//   }
+// }
 
 function loadedSong(event, request, settings) {
   if (settings.url.search("^music?") === 0) {
@@ -129,17 +129,17 @@ function loadedSong(event, request, settings) {
 }
 
 // Request file path to song with given id
-// function playSong() {
-//   var id = $(this).parent().parent().attr("songID")
-// //   trackData.setArtist($(this).parent().parent().children(":first").text());
-//   trackData.newSong(id);
-//   $.get("music",
-//     { songID: id },
-//     function(path) {
-//       $("audio").attr("src", path);
-//     },
-//     "text");
-// }
+function playSong() {
+  var id = $(this).parent().parent().attr("songID")
+//   trackData.setArtist($(this).parent().parent().children(":first").text());
+  trackData.newSong(id);
+  $.get("music",
+    { songID: id },
+    function(path) {
+      $("audio").attr("src", path);
+    },
+    "text");
+}
 
 // Add event handlers to document
 $(document).ready(function() {
@@ -151,8 +151,8 @@ $(document).ready(function() {
   progressBar.enable();
   volumeKnob.enable();
   playPause.enable();
-//   audio.enable();
   player.enable();
-  $(document).ajaxSend(loadSong);
+//   audio.enable();
+//   $(document).ajaxSend(loadSong);
 //   $(document).ajaxComplete(loadedSong);
 });
