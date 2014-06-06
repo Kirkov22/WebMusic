@@ -16,8 +16,11 @@ var playlist = (function() {
 
   var MIN_ROWS      = 8,
       REMOVE        = "#trash",
-      BLANK         = "<tr class=\"empty\"><td/><td/><td/><td/></tr>",
-      ACTIVE_ROW    = "tr:not(.empty)";
+      SHUFFLE       = "#shuffle",
+      BLANK         = ".empty",
+      BLANK_ROW     = "<tr class=\"empty\"><td/><td/><td/><td/></tr>",
+      ACTIVE        = ":not(" + BLANK + ")";
+      ACTIVE_ROW    = "tr" + ACTIVE;
 
   // ---------------
   // Setup Functions
@@ -41,6 +44,7 @@ var playlist = (function() {
     $playlist.on("dblclick", ACTIVE_ROW, changeCurrent);
     $playlist.on("click", ACTIVE_ROW, select);
     $(REMOVE).on("click", removeSelected);
+    $(SHUFFLE).on("click", shufflePlaylist);
   }
 
   // --------------
@@ -79,6 +83,17 @@ var playlist = (function() {
       removeSong(selected[i]);
     }
     selected = [];
+    preparePrev();
+    prepareNext();
+  }
+
+  function shufflePlaylist(e) {
+    var $songs  = $playlist.children(ACTIVE_ROW).clone(),
+        $blanks = $playlist.children(BLANK).clone();
+    shuffle($songs);
+    $playlist.html($songs);
+    $playlist.append($blanks);
+    reacquireCurrent();
     preparePrev();
     prepareNext();
   }
@@ -139,7 +154,7 @@ var playlist = (function() {
     if (length === MIN_ROWS) {
       disableScroll();
     }else if (length < MIN_ROWS) {
-      $playlist.append(BLANK);
+      $playlist.append(BLANK_ROW);
     } else {
       decrementScrollStep();
     }
@@ -158,7 +173,20 @@ var playlist = (function() {
   }
 
   function removeBlankRow() {
-    $("tr.empty", $playlist).first().remove();
+    $(BLANK, $playlist).first().remove();
+  }
+
+  function shuffle($array) {
+    var randIndex,
+        temp,
+        index;
+
+    for ( index = $array.length; index--; ) {
+      randIndex = Math.floor(Math.random() * index);
+      temp = $array[index];
+      $array[index] = $array[randIndex];
+      $array[randIndex] = temp;
+    }
   }
 
   function scrollButtonPosition(steps) {
@@ -203,7 +231,7 @@ var playlist = (function() {
 
   function preparePrev() {
     prevPath  = "";
-    $prev     = $current.prev(":not(.empty)");
+    $prev     = $current.prev(ACTIVE);
 
     //TODO Add support for continuous play
     if (false && $prev.length === 0)
@@ -219,7 +247,7 @@ var playlist = (function() {
 
   function prepareNext() {
     nextPath  = "";
-    $next     = $current.next(":not(.empty)");
+    $next     = $current.next(ACTIVE);
 
     //TODO Add support for continuous play
     if (false && $next.length === 0)
@@ -231,6 +259,10 @@ var playlist = (function() {
           nextPath = path;
         },
         "text");
+  }
+
+  function reacquireCurrent() {
+    $current = $playlist.children(".current");
   }
 
   function disableScroll() {
