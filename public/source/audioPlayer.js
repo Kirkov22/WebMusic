@@ -11,7 +11,9 @@ var player = (function() {
   var $player = $(),
       audio = new Audio("", false);
 
-  var PLAYPAUSE   = "#play-pause";
+  var PLAYPAUSE   = "#play-pause",
+      PLAY_CLASS  = "play",
+      PAUSE_CLASS = "pause";
 
   function setPlayer($playerNode) {
     $player = $playerNode;
@@ -27,15 +29,15 @@ var player = (function() {
 
   function onPlay() {
     var $button = $(PLAYPAUSE);
-    $button.removeClass("play");
-    $button.addClass("pause");
+    $button.removeClass(PLAY_CLASS);
+    $button.addClass(PAUSE_CLASS);
     trackData.setStatus("Playing");
   }
 
   function onPause() {
     var $button = $(PLAYPAUSE);
-    $button.removeClass("pause");
-    $button.addClass("play");
+    $button.removeClass(PAUSE_CLASS);
+    $button.addClass(PLAY_CLASS);
     trackData.setStatus("Paused");
   }
 
@@ -128,7 +130,7 @@ var volumeKnob = (function () {
   
   function setKnob($knobNode) {
     $knob         = $knobNode;
-    $indicator    = $(".indicator", $knob);
+    $indicator    = $knob.children(".indicator");
     knobCenterX   = $knob.offset().left + ($knob.innerWidth() / 2);
     knobCenterY   = $knob.offset().top + ($knob.innerHeight() / 2);
   }
@@ -150,6 +152,9 @@ var volumeKnob = (function () {
   function adjustVolume(e) {
     document.addEventListener("mouseup", upHandler, true);
     document.addEventListener("mousemove", moveHandler, true);
+
+    var theta = mouseAngle(e); 
+    setByAngle(theta);
 
     // Stop Propagation/Default Action
     return false;
@@ -179,7 +184,6 @@ var volumeKnob = (function () {
         // Stop movement from Quad 4 to 1
         opposite = 0;
         theta = 359;
-        $knob.addClass("high-volume");
       } else {
         opposite = deltaX;
         theta = 0;

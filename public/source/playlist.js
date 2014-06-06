@@ -15,8 +15,13 @@ var playlist = (function() {
       nextPath      = "";
 
   var MIN_ROWS      = 8,
+      GETSONG_URL   = "music"
+      CURRENT_CLASS = "current",
+      SELECT_CLASS  = "selected",
       REMOVE        = "#trash",
       SHUFFLE       = "#shuffle",
+      TRACK_ID      = "songID",
+      TRACK_ID_ATTR = "[" + TRACK_ID + "]",
       BLANK         = ".empty",
       BLANK_ROW     = "<tr class=\"empty\"><td/><td/><td/><td/></tr>",
       ACTIVE        = ":not(" + BLANK + ")";
@@ -36,7 +41,7 @@ var playlist = (function() {
     // get scrollbar geometry
     scrollYStart = $scrollButton.parent().offset().top;
     scrollHeight = $scrollButton.parent().height() - $scrollButton.height();
-    rowHeight = $("tr:first", $playlist).height();
+    rowHeight = $playlist.children().first().height();
     scrollStep = scrollHeight;
   }
   
@@ -57,23 +62,23 @@ var playlist = (function() {
     $current = $(this);
     setCurrentClass();
 
-    var id = $current.attr("songID");
+    var id = $current.attr(TRACK_ID);
     loadCurrent(id);
   }
 
   function select(e) {
     var $select = $(this);
-    var id = $select.attr("songID");
+    var id = $select.attr(TRACK_ID);
     var index = selected.indexOf(id);
 
     if ( index === -1) {
       // If not already selected, add to selected
       selected.push(id);
-      $select.addClass("selected");
+      $select.addClass(SELECT_CLASS);
     } else {
       // De-select if already selected
       selected.splice(index, 1);
-      $select.removeClass("selected");
+      $select.removeClass(SELECT_CLASS);
     }
   }
 
@@ -88,7 +93,7 @@ var playlist = (function() {
   }
 
   function shufflePlaylist(e) {
-    var $songs  = $playlist.children(ACTIVE_ROW).clone(),
+    var $songs  = $playlist.children(ACTIVE).clone(),
         $blanks = $playlist.children(BLANK).clone();
     shuffle($songs);
     $playlist.html($songs);
@@ -131,20 +136,20 @@ var playlist = (function() {
   // -------------------
 
   function setCurrentClass() {
-    $current.siblings().removeClass("current");
-    $current.addClass("current");
+    $current.siblings().removeClass(CURRENT_CLASS);
+    $current.addClass(CURRENT_CLASS);
   }
 
   function emptySelected() {
-    $("tr", $playlist).removeClass("selected");
+    $playlist.children().removeClass(SELECT_CLASS);
     selected = [];
   }
 
   function removeSong(id) {
-    var $song = $("[songID=" + id + "]", $playlist);
+    var $song = $playlist.children(trackIDAttr(id));
     if ($song.is($current))
       next();
-    $("[songID=" + id + "]" , $playlist).remove();
+    $song.remove();
     decrementPL();
   }
 
@@ -153,7 +158,7 @@ var playlist = (function() {
     length -= 1;
     if (length === MIN_ROWS) {
       disableScroll();
-    }else if (length < MIN_ROWS) {
+    } else if (length < MIN_ROWS) {
       $playlist.append(BLANK_ROW);
     } else {
       decrementScrollStep();
@@ -173,7 +178,7 @@ var playlist = (function() {
   }
 
   function removeBlankRow() {
-    $(BLANK, $playlist).first().remove();
+    $playlist.children(BLANK).first().remove();
   }
 
   function shuffle($array) {
@@ -190,20 +195,26 @@ var playlist = (function() {
   }
 
   function scrollButtonPosition(steps) {
-    $scrollButton.css("top", (steps * scrollStep) + "px");
+    if (steps > 0)
+      $scrollButton.css("top", (steps * scrollStep) + "px");
+    else
+      $scrollButton.css("top", "0px");
   }
 
   function playlistScrollPosition(steps) {
-    $playlist.parent().css("top", "-" + (steps * rowHeight) + "px");
+    if (steps > 0)
+      $playlist.parent().css("top", "-" + (steps * rowHeight) + "px");
+    else
+      $playlist.parent().css("top", "0px");
   }
 
   function displaySongData($tr) {
     //Get song data from table row
-    var id = $tr.attr("songID");
-    var artist = $("td:nth-of-type(1)", $tr).text();
-    var title = $("td:nth-of-type(4)", $tr).text();
-    var track = $("td:nth-of-type(3)", $tr).text();
-    var album = $("td:nth-of-type(2)", $tr).text();
+    var id      = $tr.attr(TRACK_ID),
+        artist  = $tr.children().eq(0).text(),
+        title   = $tr.children().eq(3).text(),
+        track   = $tr.children().eq(2).text(),
+        album   = $tr.children().eq(1).text();
 
     // Display new song
     trackData.newSong(id, artist, title, track, album);
@@ -216,7 +227,7 @@ var playlist = (function() {
   function loadCurrent(id) {
     displaySongData($current);
     trackData.setStatus("Loading");
-    $.get("music",
+    $.get(GETSONG_URL,
       { songID: id },
       onCurrentLoad,
       "text");
@@ -235,10 +246,10 @@ var playlist = (function() {
 
     //TODO Add support for continuous play
     if (false && $prev.length === 0)
-      $prev = $("tr[songID]:last", $playlist);
+      $prev = $playlist.children(TRACK_ID_ATTR).last();
     if ($prev.length !== 0)
-      $.get("music",
-        { songID: $prev.attr("songID") },
+      $.get(GETSONG_URL,
+        { songID: $prev.attr(TRACK_ID) },
         function(path) {
           prevPath = path;
         },
@@ -251,10 +262,10 @@ var playlist = (function() {
 
     //TODO Add support for continuous play
     if (false && $next.length === 0)
-      $next = $("tr[songID]:first", $playlist);
+      $next = $playlist.children(TRACK_ID_ATTR).first();
     if ($next.length !== 0)
-      $.get("music",
-        { songID: $next.attr("songID") },
+      $.get(GETSONG_URL,
+        { songID: $next.attr(TRACK_ID) },
         function(path) {
           nextPath = path;
         },
@@ -262,7 +273,7 @@ var playlist = (function() {
   }
 
   function reacquireCurrent() {
-    $current = $playlist.children(".current");
+    $current = $playlist.children("." + CURRENT_CLASS);
   }
 
   function disableScroll() {
@@ -309,23 +320,27 @@ var playlist = (function() {
     scrollButtonPosition(steps);
   }
 
+  function trackIDAttr(id) {
+    return "[" + TRACK_ID + "=\"" + id + "\"]";
+  }
+
   //-------------------------------
   // External Playlist Manipulation
   //-------------------------------
 
   function add($tr) {
     emptySelected();
-    var idToAdd = $tr.attr("songID");
+    var idToAdd = $tr.attr(TRACK_ID);
     // If song isn't already in the playlist
-    if ($("tr[songID=\"" + idToAdd + "\"]", $playlist).length === 0) {
+    if ($playlist.children(trackIDAttr(idToAdd)).length === 0) {
       if (length >= MIN_ROWS) {
         $playlist.append($tr.clone());
       } else if (length > 0) {
-        $("tr.empty:first", $playlist).before($tr.clone());
+        $playlist.children(BLANK).first().before($tr.clone());
         prepareNext();
       } else {
         $current = $tr.clone();
-        $("tr.empty:first", $playlist).before($current);
+        $playlist.children(BLANK).first().before($current);
         setCurrentClass();
         loadCurrent(idToAdd);
       }
@@ -341,7 +356,7 @@ var playlist = (function() {
       } else {
         $current = $next;
         setCurrentClass();
-        loadCurrent($current.attr("songID"));
+        loadCurrent($current.attr(TRACK_ID));
       }
     } else {
       $prev         = $current;
@@ -364,7 +379,7 @@ var playlist = (function() {
       } else {
         $current = $prev;
         setCurrentClass();
-        loadCurrent($current.attr("songID"));
+        loadCurrent($current.attr(TRACK_ID));
       }
     } else {
       $next         = $current;
