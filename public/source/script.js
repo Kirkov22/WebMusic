@@ -151,6 +151,8 @@ $(document).ready(function() {
   progressBar.enable();
   volumeKnob.enable();
   playPause.enable();
+  nextButton.enable();
+  prevButton.enable();
   player.enable();
 //   audio.enable();
 //   $(document).ajaxSend(loadSong);
