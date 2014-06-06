@@ -64,6 +64,9 @@ var playlist = (function() {
 
     var id = $current.attr(TRACK_ID);
     loadCurrent(id);
+
+    //Stop Propagation/Default Action
+    return false;
   }
 
   function select(e) {
@@ -80,6 +83,9 @@ var playlist = (function() {
       selected.splice(index, 1);
       $select.removeClass(SELECT_CLASS);
     }
+
+    //Stop Propagation/Default Action
+    return false;
   }
 
   function removeSelected(e) {
@@ -90,6 +96,9 @@ var playlist = (function() {
     selected = [];
     preparePrev();
     prepareNext();
+
+    //Stop Propagation/Default Action
+    return false;
   }
 
   function shufflePlaylist(e) {
@@ -101,6 +110,9 @@ var playlist = (function() {
     reacquireCurrent();
     preparePrev();
     prepareNext();
+
+    //Stop Propagation/Default Action
+    return false;
   }
 
   function scrollStart(e) {
