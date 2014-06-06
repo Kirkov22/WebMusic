@@ -356,7 +356,7 @@ var progressBar = (function() {
 })();
 
 // -----------------
-// Play/Pause Button
+// Playback Buttons
 // -----------------
 
 var playPause = (function() {
@@ -379,6 +379,7 @@ var playPause = (function() {
 
   function disable() {
     $button.off("click", buttonPress);
+    enabled = false;
   }
 
   function buttonPress() {
@@ -387,6 +388,78 @@ var playPause = (function() {
     } else {
       player.pause();
     }
+
+    //Stop Propagation/Default Action
+    return false;
+  }
+
+  return {
+    setButton:  setButton,
+    enable:     enable,
+    disable:    disable
+  };
+})();
+
+var nextButton = (function() {
+  var $button = $(),
+      enabled = false;
+
+  function setButton($buttonNode) {
+    $button = $buttonNode;
+  }
+
+  function enable() {
+    if ($button.length === 0) {
+      throw new Error("(nextButton) unitialized $button var");
+    } else if (!enabled) {
+      $button.on("click", buttonPress);
+      enabled = true;
+    }
+  }
+
+  function disable() {
+    $button.off("click", buttonPress);
+    enabled = false;
+  }
+
+  function buttonPress() {
+    playlist.next();
+
+    //Stop Propagation/Default Action
+    return false;
+  }
+
+  return {
+    setButton:  setButton,
+    enable:     enable,
+    disable:    disable
+  };
+})();
+
+var prevButton = (function() {
+  var $button = $(),
+      enabled = false;
+
+  function setButton($buttonNode) {
+    $button = $buttonNode;
+  }
+
+  function enable() {
+    if ($button.length === 0) {
+      throw new Error("(prevButton) unitialized $button var");
+    } else if (!enabled) {
+      $button.on("click", buttonPress);
+      enabled = true;
+    }
+  }
+
+  function disable() {
+    $button.off("click", buttonPress);
+    enabled = false;
+  }
+
+  function buttonPress() {
+    playlist.prev();
 
     //Stop Propagation/Default Action
     return false;
@@ -539,12 +612,8 @@ function initAudioPlayer() {
   volumeKnob.setKnob($("#volume"));
   progressBar.setBumper($("#track-position .bumper"));
   playPause.setButton($("#play-pause"));
+  nextButton.setButton($("#next"));
+  prevButton.setButton($("#prev"));
   trackData.setNode($("#track-data"));
   player.setPlayer($("#audio-player"));
-  $("#next").on("click", function() {
-    playlist.next();
-  });
-  $("#prev").on("click", function() {
-    playlist.prev();
-  });
 }
