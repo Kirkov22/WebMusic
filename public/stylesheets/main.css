@@ -160,9 +160,13 @@ html, body {
   background-size: 100% 100%, 10px 2px;
   box-shadow: inset 3px 3px 5px black, inset -3px -3px 15px black, inset 0 5px 7px rgba(255, 255, 255, 0.3);
   color: #bebec8;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
-/* line 192, ../scss/main.scss */
+/* line 194, ../scss/main.scss */
 #track-data {
   padding: 5px;
   margin: 10px auto;
@@ -172,25 +176,25 @@ html, body {
   font-family: 'Inconsolata-Bold';
   border-radius: 5px;
 }
-/* line 203, ../scss/main.scss */
+/* line 205, ../scss/main.scss */
 #track-data p:first-of-type span:first-of-type {
   color: #73cbbe;
 }
-/* line 207, ../scss/main.scss */
+/* line 209, ../scss/main.scss */
 #track-data p:not(:first-of-type)::before {
   white-space: pre;
   content: " ";
 }
-/* line 212, ../scss/main.scss */
+/* line 214, ../scss/main.scss */
 #track-data p:nth-child(4) {
   color: #4ed34a;
 }
-/* line 216, ../scss/main.scss */
+/* line 218, ../scss/main.scss */
 #track-data #cursor {
   background-color: #bebec8;
 }
 
-/* line 221, ../scss/main.scss */
+/* line 223, ../scss/main.scss */
 #track-position {
   position: relative;
   margin: 0px auto 10px;
@@ -199,7 +203,7 @@ html, body {
   border-radius: 7px;
   border: solid 1px black;
 }
-/* line 229, ../scss/main.scss */
+/* line 231, ../scss/main.scss */
 #track-position .bg {
   position: absolute;
   height: 100%;
@@ -211,7 +215,7 @@ html, body {
   box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.6), inset 0px -1px 2px rgba(255, 255, 255, 0.3);
   background-color: #29272b;
 }
-/* line 243, ../scss/main.scss */
+/* line 245, ../scss/main.scss */
 #track-position .progress-bg {
   position: absolute;
   height: 12px;
@@ -222,7 +226,7 @@ html, body {
   box-shadow: inset 0px -1px 1px #4ed34a, inset 0px 1px 3px #ffffc8;
   background-image: linear-gradient(#86ff6d 0%, #47783d 55%, #1b3d11 55%, #1c6a1a 100%);
 }
-/* line 262, ../scss/main.scss */
+/* line 264, ../scss/main.scss */
 #track-position .bumper {
   position: absolute;
   height: 18px;
@@ -241,37 +245,37 @@ html, body {
   box-shadow: 0px 2px 3px #1b3d11;
 }
 
-/* line 274, ../scss/main.scss */
+/* line 276, ../scss/main.scss */
 ul#player-buttons {
   list-style: none;
   margin: 0px auto 10px;
   width: 490px;
   font-size: 0px;
 }
-/* line 280, ../scss/main.scss */
+/* line 282, ../scss/main.scss */
 ul#player-buttons li {
   position: relative;
 }
-/* line 284, ../scss/main.scss */
+/* line 286, ../scss/main.scss */
 ul#player-buttons #prev, ul#player-buttons #play-pause, ul#player-buttons #next {
   float: left;
 }
-/* line 288, ../scss/main.scss */
+/* line 290, ../scss/main.scss */
 ul#player-buttons #volume, ul#player-buttons #loop {
   float: right;
 }
-/* line 292, ../scss/main.scss */
+/* line 294, ../scss/main.scss */
 ul#player-buttons .button {
   margin-top: 6px;
 }
 
-/* line 297, ../scss/main.scss */
+/* line 299, ../scss/main.scss */
 .clear-float {
   clear: both;
   margin-bottom: 10px;
 }
 
-/* line 302, ../scss/main.scss */
+/* line 304, ../scss/main.scss */
 .button {
   margin-right: 8px;
   width: 32px;
@@ -291,14 +295,13 @@ ul#player-buttons .button {
   box-shadow: 0px 1px 3px #1c6a1a;
   background: linear-gradient(#86858b 0%, #86858b 49%, #68676c 50%, #605f64 100%);
 }
-
 /* line 311, ../scss/main.scss */
-#next::after {
+.button::after {
   font-family: 'MediaIcons';
   font-size: 28px;
   text-align: center;
   height: 28px;
-  content: "\e603";
+  content: attr(icon-content);
   cursor: default;
   color: #29272b;
   text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
@@ -310,79 +313,7 @@ ul#player-buttons .button {
   right: 0;
 }
 
-/* line 315, ../scss/main.scss */
-#play-pause.play::after {
-  font-family: 'MediaIcons';
-  font-size: 28px;
-  text-align: center;
-  height: 28px;
-  content: "\e600";
-  cursor: default;
-  color: #29272b;
-  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
-  margin: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}
-
-/* line 319, ../scss/main.scss */
-#play-pause.pause::after {
-  font-family: 'MediaIcons';
-  font-size: 28px;
-  text-align: center;
-  height: 28px;
-  content: "\e601";
-  cursor: default;
-  color: #29272b;
-  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
-  margin: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}
-
-/* line 323, ../scss/main.scss */
-#prev::after {
-  font-family: 'MediaIcons';
-  font-size: 28px;
-  text-align: center;
-  height: 28px;
-  content: "\e602";
-  cursor: default;
-  color: #29272b;
-  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
-  margin: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}
-
-/* line 327, ../scss/main.scss */
-#loop::after {
-  font-family: 'MediaIcons';
-  font-size: 28px;
-  text-align: center;
-  height: 28px;
-  content: "\e609";
-  cursor: default;
-  color: #29272b;
-  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
-  margin: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}
-
-/* line 331, ../scss/main.scss */
+/* line 336, ../scss/main.scss */
 #volume {
   position: relative;
   width: 48px;
@@ -398,7 +329,24 @@ ul#player-buttons .button {
 #volume:hover {
   box-shadow: 0px 2px 3px #1b3d11;
 }
-/* line 340, ../scss/main.scss */
+/* line 345, ../scss/main.scss */
+#volume::after {
+  font-family: 'MediaIcons';
+  font-size: 16px;
+  text-align: center;
+  height: 16px;
+  content: attr(icon-content);
+  cursor: default;
+  color: #29272b;
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+/* line 349, ../scss/main.scss */
 #volume .indicator {
   height: 44px;
   width: 44px;
@@ -409,7 +357,7 @@ ul#player-buttons .button {
   bottom: 0;
   right: 0;
 }
-/* line 345, ../scss/main.scss */
+/* line 354, ../scss/main.scss */
 #volume .indicator::after {
   content: "";
   position: absolute;
@@ -424,221 +372,135 @@ ul#player-buttons .button {
   border: 1px solid rgba(0, 0, 0, 0.6);
 }
 
-/* line 362, ../scss/main.scss */
-.mute::after {
-  font-family: 'MediaIcons';
-  font-size: 16px;
-  text-align: center;
-  height: 16px;
-  content: "\e608";
-  cursor: default;
-  color: #29272b;
-  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
-  margin: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}
-
-/* line 366, ../scss/main.scss */
-.soft-volume::after {
-  font-family: 'MediaIcons';
-  font-size: 16px;
-  text-align: center;
-  height: 16px;
-  content: "\e607";
-  cursor: default;
-  color: #29272b;
-  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
-  margin: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}
-
-/* line 370, ../scss/main.scss */
-.low-volume::after {
-  font-family: 'MediaIcons';
-  font-size: 16px;
-  text-align: center;
-  height: 16px;
-  content: "\e606";
-  cursor: default;
-  color: #29272b;
-  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
-  margin: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}
-
-/* line 374, ../scss/main.scss */
-.mid-volume::after {
-  font-family: 'MediaIcons';
-  font-size: 16px;
-  text-align: center;
-  height: 16px;
-  content: "\e605";
-  cursor: default;
-  color: #29272b;
-  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
-  margin: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}
-
-/* line 378, ../scss/main.scss */
-.high-volume::after {
-  font-family: 'MediaIcons';
-  font-size: 16px;
-  text-align: center;
-  height: 16px;
-  content: "\e604";
-  cursor: default;
-  color: #29272b;
-  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.8), 0px 1px 0px rgba(255, 255, 255, 0.6);
-  margin: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}
-
-/* line 382, ../scss/main.scss */
+/* line 371, ../scss/main.scss */
 #playlist-box {
   margin-left: auto;
   margin-right: auto;
 }
-/* line 394, ../scss/main.scss */
+/* line 383, ../scss/main.scss */
 #playlist-box div.display {
   display: inline-block;
   padding: 10px;
   border-radius: 10px;
 }
-/* line 401, ../scss/main.scss */
+/* line 390, ../scss/main.scss */
 #playlist-box div.scrollable {
   position: relative;
   overflow: hidden;
   height: 151px;
 }
-/* line 406, ../scss/main.scss */
+/* line 395, ../scss/main.scss */
 #playlist-box div.scrollable table {
   float: left;
   position: absolute;
   top: 0px;
   left: 0px;
 }
-/* line 414, ../scss/main.scss */
+/* line 403, ../scss/main.scss */
 #playlist-box h2 {
   float: left;
   font-family: 'OpenSans-Bold';
   font-size: 20px;
   text-transform: uppercase;
 }
-/* line 422, ../scss/main.scss */
+/* line 411, ../scss/main.scss */
 #playlist-box table {
   clear: both;
   font-family: 'Inconsolata-Bold';
   font-size: 14px;
   color: #bebec8;
 }
-/* line 428, ../scss/main.scss */
+/* line 417, ../scss/main.scss */
 #playlist-box table colgroup.col-artist {
   width: 175px;
 }
-/* line 432, ../scss/main.scss */
+/* line 421, ../scss/main.scss */
 #playlist-box table colgroup.col-album {
   width: 280px;
 }
-/* line 436, ../scss/main.scss */
+/* line 425, ../scss/main.scss */
 #playlist-box table colgroup.col-track {
   width: 56px;
 }
-/* line 440, ../scss/main.scss */
+/* line 429, ../scss/main.scss */
 #playlist-box table colgroup.col-title {
   width: 350px;
 }
-/* line 444, ../scss/main.scss */
+/* line 433, ../scss/main.scss */
 #playlist-box table colgroup.col-buttons {
   width: 28px;
 }
-/* line 449, ../scss/main.scss */
+/* line 438, ../scss/main.scss */
 #playlist-box th, #playlist-box td {
   max-width: 0px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-/* line 456, ../scss/main.scss */
+/* line 445, ../scss/main.scss */
 #playlist-box th {
   padding: 3px 5px 5px;
   color: #73cbbe;
   border: 1px solid #6d6d80;
   border-bottom: 0;
 }
-/* line 463, ../scss/main.scss */
+/* line 452, ../scss/main.scss */
 #playlist-box td.data-container {
   padding: 0px;
   border: 1px solid #6d6d80;
 }
-/* line 467, ../scss/main.scss */
+/* line 456, ../scss/main.scss */
 #playlist-box td.data-container colgroup.col-title {
   width: 378px;
 }
-/* line 472, ../scss/main.scss */
+/* line 461, ../scss/main.scss */
 #playlist-box th:nth-of-type(3), #playlist-box td:nth-of-type(3) {
   text-align: center;
 }
-/* line 476, ../scss/main.scss */
+/* line 465, ../scss/main.scss */
 #playlist-box th:nth-of-type(5), #playlist-box th:nth-of-type(6) {
   text-align: center;
   padding: 1px 0px 0px;
 }
-/* line 482, ../scss/main.scss */
+/* line 471, ../scss/main.scss */
+#playlist-box #playlist tr:not(.empty) {
+  cursor: pointer;
+}
+/* line 474, ../scss/main.scss */
 #playlist-box #playlist tr:not(.empty):hover td {
   background-color: #32323b;
 }
-/* line 486, ../scss/main.scss */
+/* line 478, ../scss/main.scss */
 #playlist-box #playlist tr:not(.empty):active td {
   background-color: #4a4a57;
 }
-/* line 490, ../scss/main.scss */
+/* line 483, ../scss/main.scss */
 #playlist-box #playlist tr.selected td {
   background-color: #3e3e49;
 }
-/* line 494, ../scss/main.scss */
+/* line 487, ../scss/main.scss */
 #playlist-box #playlist tr.selected:hover td {
   background-color: #4a4a57;
 }
-/* line 498, ../scss/main.scss */
+/* line 491, ../scss/main.scss */
 #playlist-box #playlist tr.selected:active td {
   background-color: #616173;
 }
-/* line 502, ../scss/main.scss */
+/* line 495, ../scss/main.scss */
 #playlist-box #playlist td {
   padding: 1px 5px 3px;
   height: 14px;
   border: 1px solid #6d6d80;
 }
-/* line 507, ../scss/main.scss */
+/* line 500, ../scss/main.scss */
 #playlist-box #playlist td:first-child {
   border-left: 0;
 }
-/* line 516, ../scss/main.scss */
+/* line 509, ../scss/main.scss */
 #playlist-box #playlist tr:first-child td {
   border-top: 0;
 }
-/* line 525, ../scss/main.scss */
+/* line 518, ../scss/main.scss */
 #playlist-box div.scrollbar {
   position: relative;
   margin: 4px;
@@ -646,7 +508,7 @@ ul#player-buttons .button {
   width: 19px;
   height: 143px;
 }
-/* line 534, ../scss/main.scss */
+/* line 527, ../scss/main.scss */
 #playlist-box div.scrollbar div.indicator {
   display: none;
   position: absolute;
@@ -655,56 +517,63 @@ ul#player-buttons .button {
   background-color: #bebec8;
   left: 0px;
   top: 0px;
+  cursor: ns-resize;
 }
 
-/* line 546, ../scss/main.scss */
+/* line 540, ../scss/main.scss */
 .current {
   color: #4ed34a;
 }
 
-/* line 550, ../scss/main.scss */
+/* line 544, ../scss/main.scss */
 ul#playlist-buttons {
   list-style: none;
   float: right;
   font-size: 0px;
 }
-/* line 555, ../scss/main.scss */
+/* line 549, ../scss/main.scss */
 ul#playlist-buttons li {
   position: relative;
   display: inline-block;
 }
 
-/* line 563, ../scss/main.scss */
+/* line 555, ../scss/main.scss */
+#shuffle {
+  cursor: pointer;
+}
+/* line 558, ../scss/main.scss */
 #shuffle::after {
   font-family: 'MediaIcons';
   content: '\e60a';
-  cursor: default;
   text-align: center;
 }
-/* line 570, ../scss/main.scss */
+/* line 565, ../scss/main.scss */
 #shuffle:hover {
   font-size: 16px;
   padding: 0px;
 }
-/* line 575, ../scss/main.scss */
+/* line 570, ../scss/main.scss */
 #shuffle:active {
   font-size: 12px;
   padding: 0px;
 }
 
-/* line 582, ../scss/main.scss */
+/* line 576, ../scss/main.scss */
+#trash {
+  cursor: pointer;
+}
+/* line 579, ../scss/main.scss */
 #trash::after {
   font-family: 'MediaIcons';
   content: '\e60b';
-  cursor: default;
   text-align: center;
 }
-/* line 589, ../scss/main.scss */
+/* line 586, ../scss/main.scss */
 #trash:hover {
   font-size: 16px;
   padding: 0px;
 }
-/* line 594, ../scss/main.scss */
+/* line 591, ../scss/main.scss */
 #trash:active {
   font-size: 12px;
   padding: 0px;

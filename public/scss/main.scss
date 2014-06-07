@@ -187,6 +187,8 @@ html, body {
     inset -3px -3px 15px black,
     inset 0 5px 7px $white-alpha;
   color               : $terminal-white;
+  cursor              : default;
+  @include user-select(none);
 }
 
 #track-data {
@@ -306,26 +308,10 @@ ul#player-buttons {
   @include raised-button;
   @include raised-button-hover;
   @include raised-button-active;
-}
 
-#next::after {
-  @include media-icon(28px, '\e603');
-}
-
-#play-pause.play::after {
-  @include media-icon(28px, '\e600');
-}
-
-#play-pause.pause::after {
-  @include media-icon(28px, '\e601');
-}
-
-#prev::after {
-  @include media-icon(28px, '\e602');
-}
-
-#loop::after {
-  @include media-icon(28px, '\e609');
+  &::after {
+    @include media-icon(28px, attr(icon-content));
+  }
 }
 
 #volume {
@@ -336,6 +322,10 @@ ul#player-buttons {
   @include raised-button;
   @include raised-button-hover;
   border-radius : $radius + 1;
+
+  &::after {
+    @include media-icon(16px, attr(icon-content)); 
+  }
 
   .indicator {
     height      : ($radius - 2) * 2;
@@ -357,26 +347,6 @@ ul#player-buttons {
       border            : 1px solid $black-alpha;
     }
   }
-}
-  
-.mute::after {
-  @include media-icon(16px, '\e608');
-}
-
-.soft-volume::after {
-  @include media-icon(16px, '\e607');
-}
-
-.low-volume::after {
-  @include media-icon(16px, '\e606');
-}
-
-.mid-volume::after {
-  @include media-icon(16px, '\e605');
-}
-
-.high-volume::after {
-  @include media-icon(16px, '\e604');
 }
 
 #playlist-box {
@@ -479,12 +449,16 @@ ul#player-buttons {
   }
 
   #playlist {
-    tr:not(.empty):hover td {
-      background-color  : darken($terminal-white, 55%);
-    }
+    tr:not(.empty) {
+      cursor      : pointer;
 
-    tr:not(.empty):active td {
-      background-color  : darken($terminal-white, 45%);
+      &:hover td {
+        background-color  : darken($terminal-white, 55%);
+      }
+
+      &:active td {
+        background-color  : darken($terminal-white, 45%);
+      }
     }
 
     tr.selected td {
@@ -537,8 +511,9 @@ ul#player-buttons {
       width       : $width - 2 * $margin - 1;
       height      : $width - 2 * $margin - 1;
       background-color  : $terminal-white;
-      left : 0px;
-      top  : 0px;
+      left        : 0px;
+      top         : 0px;
+      cursor      : ns-resize;
     }
   }
 }
@@ -559,11 +534,12 @@ ul#playlist-buttons {
 }
 
 #shuffle {
+  cursor          : pointer;
 
   &::after {
     font-family   : 'MediaIcons';
     content       : '\e60a';
-    cursor        : default;
+    //cursor        : default;
     text-align    : center;
   }
 
@@ -579,10 +555,12 @@ ul#playlist-buttons {
 }
 
 #trash {
+  cursor          : pointer;
+
   &::after {
     font-family   : 'MediaIcons';
     content       : '\e60b';
-    cursor        : default;
+    //cursor        : default;
     text-align    : center;
   }
 

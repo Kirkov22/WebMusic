@@ -12,8 +12,8 @@ var player = (function() {
       audio = new Audio("", false);
 
   var PLAYPAUSE   = "#play-pause",
-      PLAY_CLASS  = "play",
-      PAUSE_CLASS = "pause";
+      PLAY_VAL    = "\ue600",
+      PAUSE_VAL   = "\ue601";
 
   function setPlayer($playerNode) {
     $player = $playerNode;
@@ -29,15 +29,13 @@ var player = (function() {
 
   function onPlay() {
     var $button = $(PLAYPAUSE);
-    $button.removeClass(PLAY_CLASS);
-    $button.addClass(PAUSE_CLASS);
+    $button.attr("icon-content", PAUSE_VAL);
     trackData.setStatus("Playing");
   }
 
   function onPause() {
     var $button = $(PLAYPAUSE);
-    $button.removeClass(PAUSE_CLASS);
-    $button.addClass(PLAY_CLASS);
+    $button.attr("icon-content", PLAY_VAL);
     trackData.setStatus("Paused");
   }
 
@@ -124,7 +122,7 @@ var volumeKnob = (function () {
       enabled       = false,
       knobCenterX   = 0,
       knobCenterY   = 0,
-      lastQuadrant  = 0,
+      lastQuadrant  = 4,
       opposite      = 0,
       adjacent      = 0;
   
@@ -150,26 +148,32 @@ var volumeKnob = (function () {
   }
 
   function adjustVolume(e) {
-    document.addEventListener("mouseup", upHandler, true);
-    document.addEventListener("mousemove", moveHandler, true);
+    $knob.on("mouseup", upHandler);
+    $knob.on("mousemove", moveHandler);
 
     var theta = mouseAngle(e); 
     setByAngle(theta);
+
+    e.target.setCapture();
+
+    function moveHandler(e) {
+      var theta = mouseAngle(e); 
+      setByAngle(theta);
+
+      // Stop Propagation/Default Action
+      return false;
+    }
+
+    function upHandler(e) {
+      $knob.off("mousemove", moveHandler);
+      $knob.off("mouseup", upHandler);
+
+      // Stop Propagation/Default Action
+      return false;
+    }
 
     // Stop Propagation/Default Action
     return false;
-  }
-
-  function upHandler(e) {
-    document.removeEventListener("mousemove", moveHandler, true);
-    document.removeEventListener("mouseup", upHandler, true);
-    e.stopPropagation();
-  }
-
-  function moveHandler(e) {
-    var theta = mouseAngle(e); 
-    setByAngle(theta);
-    e.stopPropagation();
   }
 
   function mouseAngle(moveEvent) {
@@ -232,15 +236,15 @@ var volumeKnob = (function () {
   function spinKnob(theta) {
     $knob.removeClass();
     if (theta === 0) {
-      $knob.addClass("mute");
+      $knob.attr("icon-content", "\ue608");
     } else if (theta < 90) {
-      $knob.addClass("soft-volume");
+      $knob.attr("icon-content", "\ue607");
     } else if (theta < 180) {
-      $knob.addClass("low-volume");
+      $knob.attr("icon-content", "\ue606");
     } else if (theta < 270) {
-      $knob.addClass("mid-volume");
+      $knob.attr("icon-content", "\ue605");
     } else {
-      $knob.addClass("high-volume");
+      $knob.attr("icon-content", "\ue604");
     }
     $indicator.css("transform", "rotate(" + theta + "deg)");
   }
@@ -557,9 +561,9 @@ var trackData = (function(){
     animator.add(setTrackData);
 
     twirl(newCmd.length + 3);
-    revealAfter($("p:nth-of-type(2)", $data),len + 7);
-    revealAfter($("p:nth-of-type(3)", $data),len + 9);
-    revealAfter($("p:nth-of-type(4)", $data),len + 11);
+    revealAfter($data.children().eq(1),len + 7);
+    revealAfter($data.children().eq(2),len + 9);
+    revealAfter($data.children().eq(3),len + 11);
 
     animator.start(80);
   }
@@ -612,7 +616,6 @@ var trackData = (function(){
 })();
 
 function initAudioPlayer() {
-//   audio.set($("#audio-player > audio")[0]);
   volumeKnob.setKnob($("#volume"));
   progressBar.setBumper($("#track-position .bumper"));
   playPause.setButton($("#play-pause"));
