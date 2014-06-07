@@ -1,3 +1,8 @@
+/*  Author: Tim Schofield
+
+    Module for managing playlist functions
+*/
+
 var playlist = (function() {
   var $playlist     = null,
       $scrollButton = null,
@@ -104,12 +109,14 @@ var playlist = (function() {
   function shufflePlaylist(e) {
     var $songs  = $playlist.children(ACTIVE).clone(),
         $blanks = $playlist.children(BLANK).clone();
-    shuffle($songs);
-    $playlist.html($songs);
-    $playlist.append($blanks);
-    reacquireCurrent();
-    preparePrev();
-    prepareNext();
+    if ($songs.length > 1) {
+      shuffle($songs);
+      $playlist.html($songs);
+      $playlist.append($blanks);
+      reacquireCurrent();
+      preparePrev();
+      prepareNext();
+    }
 
     //Stop Propagation/Default Action
     return false;
@@ -119,8 +126,9 @@ var playlist = (function() {
     // Get Mouse Y position relative to button's top edge
     var offset = e.pageY - $scrollButton.offset().top;
 
-    document.addEventListener("mouseup", upHandler, true);
-    document.addEventListener("mousemove", moveHandler, true);
+    $scrollButton.on("mouseup", upHandler);
+    $scrollButton.on("mousemove", moveHandler);
+    e.target.setCapture();
 
     function moveHandler(e) {
       var position = e.pageY - offset - scrollYStart;
@@ -130,13 +138,17 @@ var playlist = (function() {
         position = scrollHeight;
       }
       scroll(position);
-      e.stopPropagation();
+
+      //Stop Propagation/Default Action
+      return false;
     }
 
     function upHandler(e) {
-      document.removeEventListener("mousemove", moveHandler, true);
-      document.removeEventListener("mouseup", upHandler, true);
-      e.stopPropagation();
+      $scrollButton.off("mousemove", moveHandler);
+      $scrollButton.off("mouseup", upHandler);
+
+      //Stop Propagation/Default Action
+      return false;
     }
 
     // Stop Propagation/Default Action
