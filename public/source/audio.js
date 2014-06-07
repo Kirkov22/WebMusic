@@ -38,7 +38,7 @@ Audio.prototype.setCurrentTime = function(time) {
 }
 
 Audio.prototype.setVolume = function(vol) {
-  this.$node[0].volume = vol || 50;
+  this.$node[0].volume = vol;
 }
 
 Audio.prototype.getDuration = function() {
