@@ -99,8 +99,7 @@ var playlist = (function() {
       removeSong(selected[i]);
     }
     selected = [];
-    preparePrev();
-    prepareNext();
+    evaluatePrevNext();
 
     //Stop Propagation/Default Action
     return false;
@@ -114,8 +113,7 @@ var playlist = (function() {
       $playlist.html($songs);
       $playlist.append($blanks);
       reacquireCurrent();
-      preparePrev();
-      prepareNext();
+      evaluatePrevNext();
     }
 
     //Stop Propagation/Default Action
@@ -260,16 +258,14 @@ var playlist = (function() {
   function onCurrentLoad(path) {
     player.setSrc(path);
     trackData.stop();
-    preparePrev();
-    prepareNext();
+    evaluatePrevNext();
   }
 
   function preparePrev() {
     prevPath  = "";
     $prev     = $current.prev(ACTIVE);
 
-    //TODO Add support for continuous play
-    if (false && $prev.length === 0)
+    if (continuousButton.isActive() && $prev.length === 0)
       $prev = $playlist.children(TRACK_ID_ATTR).last();
     if ($prev.length !== 0)
       $.get(GETSONG_URL,
@@ -284,8 +280,7 @@ var playlist = (function() {
     nextPath  = "";
     $next     = $current.next(ACTIVE);
 
-    //TODO Add support for continuous play
-    if (false && $next.length === 0)
+    if (continuousButton.isActive() && $next.length === 0)
       $next = $playlist.children(TRACK_ID_ATTR).first();
     if ($next.length !== 0)
       $.get(GETSONG_URL,
@@ -348,6 +343,11 @@ var playlist = (function() {
     return "[" + TRACK_ID + "=\"" + id + "\"]";
   }
 
+  function evaluatePrevNext() {
+    preparePrev();
+    prepareNext();
+  }
+
   //-------------------------------
   // External Playlist Manipulation
   //-------------------------------
@@ -359,9 +359,10 @@ var playlist = (function() {
     if ($playlist.children(trackIDAttr(idToAdd)).length === 0) {
       if (length >= MIN_ROWS) {
         $playlist.append($tr.clone());
+        evaluatePrevNext();
       } else if (length > 0) {
         $playlist.children(BLANK).first().before($tr.clone());
-        prepareNext();
+        evaluatePrevNext();
       } else {
         $current = $tr.clone();
         $playlist.children(BLANK).first().before($current);
@@ -419,13 +420,13 @@ var playlist = (function() {
   }
 
   return {
-    setPlaylist:  setPlaylist,
-    setScrollbar: setScrollbar,
-    enable:       enable,
-    prepareNext:  prepareNext,
-    add:          add,
-    next:         next,
-    prev:         prev
+    setPlaylist:      setPlaylist,
+    setScrollbar:     setScrollbar,
+    enable:           enable,
+    evaluatePrevNext: evaluatePrevNext,
+    add:              add,
+    next:             next,
+    prev:             prev
   };
 })();
 

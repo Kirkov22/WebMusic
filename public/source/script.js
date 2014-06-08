@@ -153,6 +153,7 @@ $(document).ready(function() {
   playPause.enable();
   nextButton.enable();
   prevButton.enable();
+  continuousButton.enable();
   player.enable();
 //   audio.enable();
 //   $(document).ajaxSend(loadSong);

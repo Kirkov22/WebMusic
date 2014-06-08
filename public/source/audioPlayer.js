@@ -304,19 +304,37 @@ var progressBar = (function() {
 
   function seek(e) {
     player.offTimeUpdate(updateTime);
-    document.addEventListener("mouseup", upHandler, true);
-    document.addEventListener("mousemove", moveHandler, true);
+    $bumper.on("mouseup", upHandler);
+    $bumper.on("mousemove", moveHandler);
+    e.target.setCapture();
     
+    function moveHandler(e) {
+      var position = 0;
+      if (e.pageX < leftBound) {
+        position = 0;
+      } else if (e.pageX > rightBound + halfWidth) {
+        position = rightBound - pageOffset;
+      } else {
+        position = e.pageX - halfWidth - pageOffset;
+      }
+      setPosition(position);
+      
+      // Stop Propagation/Default Action
+      return false;
+    }
+
+    function upHandler(e) {
+      $bumper.off("mousemove", moveHandler);
+      $bumper.off("mouseup", upHandler);
+      player.setCurrentTime(positionToTime());
+      player.onTimeUpdate(updateTime);
+
+      // Stop Propagation/Default Action
+      return false;
+    }
+
     // Stop Propagation/Default Action
     return false;
-  }
-
-  function upHandler(e) {
-    document.removeEventListener("mousemove", moveHandler, true);
-    document.removeEventListener("mouseup", upHandler, true);
-    player.setCurrentTime(positionToTime());
-    player.onTimeUpdate(updateTime);
-    e.stopPropagation();
   }
 
   function positionToTime() {
@@ -324,19 +342,6 @@ var progressBar = (function() {
       ($bumper.parent().width() - $bumper.width());
     var songLength = player.getDuration();
     return percent * songLength;
-  }
-
-  function moveHandler(e) {
-    var position = 0;
-    if (e.pageX < leftBound) {
-      position = 0;
-    } else if (e.pageX > rightBound + halfWidth) {
-      position = rightBound - pageOffset;
-    } else {
-      position = e.pageX - halfWidth - pageOffset;
-    }
-    setPosition(position);
-    e.stopPropagation();
   }
 
   function setPosition(position) {
@@ -477,6 +482,56 @@ var prevButton = (function() {
     setButton:  setButton,
     enable:     enable,
     disable:    disable
+  };
+})();
+
+var continuousButton = (function() {
+  var $button     = $(),
+      enabled     = false,
+      continuous  = false;
+
+  function setButton($buttonNode) {
+    $button = $buttonNode;
+  }
+
+  function enable() {
+    if ($button.length === 0) {
+      throw new Error("(continuousButton) unitialized $button var");
+    } else if (!enabled) {
+      $button.on("click", buttonPress);
+      enabled = true;
+    }
+  }
+
+  function disable() {
+    $button.off("click", buttonPress);
+    enabled = false;
+  }
+
+  function buttonPress() {
+    if (continuous) {
+      $button.removeAttr("style");
+    } else {
+      // If CSS for buttons ever changes, these statements will have to be updated
+      $button.css("background", "linear-gradient(#86858b 0%, #86858b 49%, #68676c 50%, #605f64 100%)");
+      $button.css("box-shadow", "0px 1px 3px #1c6a1a");
+    }
+    continuous = !continuous;
+    playlist.evaluatePrevNext();
+
+    //Stop Propagation/Default Action
+    return false;
+  }
+
+  function isActive() {
+    return continuous;
+  }
+
+  return {
+    setButton:  setButton,
+    enable:     enable,
+    disable:    disable,
+    isActive:   isActive
   };
 })();
 
@@ -621,6 +676,7 @@ function initAudioPlayer() {
   playPause.setButton($("#play-pause"));
   nextButton.setButton($("#next"));
   prevButton.setButton($("#prev"));
+  continuousButton.setButton($("#loop"));
   trackData.setNode($("#track-data"));
   player.setPlayer($("#audio-player"));
 }

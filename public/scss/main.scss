@@ -103,7 +103,6 @@ $player-width   : 500px;
   text-align  : center;
   height      : $size;
   content     : $content;
-  cursor      : default;
   @include etched;
   @include absolute-center;
 }
@@ -268,6 +267,7 @@ html, body {
     top               : -3px;
     left              : -1px;
     z-index           : 3;
+    cursor            : ew-resize;
     @include raised-button;
     @include raised-button-hover;
   }
@@ -302,12 +302,13 @@ ul#player-buttons {
 }
 
 .button {
-  margin-right          : 8px;
-  width                 : 32px;
-  height                : 36px;
+  margin-right  : 8px;
+  width         : 32px;
+  height        : 36px;
   @include raised-button;
   @include raised-button-hover;
   @include raised-button-active;
+  cursor        : pointer;
 
   &::after {
     @include media-icon(28px, attr(icon-content));
@@ -322,6 +323,7 @@ ul#player-buttons {
   @include raised-button;
   @include raised-button-hover;
   border-radius : $radius + 1;
+  cursor        : pointer;
 
   &::after {
     @include media-icon(16px, attr(icon-content)); 
