@@ -1,9 +1,5 @@
 %div{id: 'container'}
-  %div{id: 'audio-player'}
-    -# %div{id: 'header'}
-      -# %h1 FG179
-      -# %h2 Remote Audio
-      -# %h3 Ver 2.71
+  %div{id: 'audio-player', class: 'center-contents'}
     %div{id: 'track-data', class: 'display'}
       %p<
         %span< @FGL ~$
@@ -34,9 +30,7 @@
         %div{class: 'indicator'}
       %li{id: 'loop', class: 'button', 'icon-content' => "\ue609"}
     %div{class: 'clear-float'}
-    -# %audio
   %div{id: 'playlist-box'}
-    -# %h2 Playlist
     %div{class: 'center-contents'}
       %div{class: 'display'}
         %table
@@ -51,8 +45,8 @@
               %th Album
               %th Track
               %th Title
-              %th{id: 'shuffle'}
-              %th{id: 'trash'}
+              %th{id: 'shuffle', class:'clickable-cell'}
+              %th{id: 'trash', class:'clickable-cell'}
           %tbody
             %tr
               %td{class: 'data-container', colspan: '6'}
@@ -61,7 +55,7 @@
                     %colgroup{span: '1', class: 'col-artist'}
                     %colgroup{span: '1', class: 'col-album'}
                     %colgroup{span: '1', class: 'col-track'}
-                    %colgroup{span: '1', class: 'col-title'}
+                    %colgroup{span: '1', class: 'col-inner-title'}
                     %tbody{id: 'playlist'}
                       - 8.times do
                         %tr{class: 'empty'}
@@ -69,18 +63,40 @@
                             %td
                   %div{id: 'pl-scrollbar', class: 'scrollbar'}
                     %div{class: 'indicator'}
-        -# %ul{id: 'playlist-buttons'}
-          -# %li{id: 'shuffle', class: 'button'}
-          -# %li{id: 'trash', class: 'button'}
     %div{class: 'clear-float'}
-%h2 Library
-%table
-  %thead
-    %tr
-      %th Artist
-      %th Album
-      %th Track #
-      %th Title
-  %tbody{id: 'library'}
-%button{type: 'button', onclick: 'updateLibraryTable();'}
-  Click me!
+  %div{id: 'library-box'}
+    %div{class: 'center-contents'}
+      %div{class: 'display'}
+        %table
+          %colgroup{span: '1', class: 'col-category'}
+          %colgroup{span: '27', class: 'col-letter'}
+          %thead{id: 'lib-nav'}
+            %tr
+              %th Artists ...
+              - ['#',*('A'..'Z')].each do |letter|
+                %th{class: 'clickable-cell'}=letter
+            %tr
+              %th{colspan: '27'}
+                %span{id: 'choose-letter'}
+                  D
+                %span='>'
+                %span{id: 'choose-artist'}
+                  Disasterpeace
+                %span='>'
+                %span{id: 'choose-album'}
+                  Rise of the Obsidian Interstellar
+              %th{id: 'add-song', class:'clickable-cell'} +
+          %tbody
+            %tr
+              %td{class: 'data-container', colspan: '28'}
+                %div{class: 'scrollable'}
+                  %table
+                    %colgroup{span: '1', class: 'col-content'}
+                    %thead{id: 'library-headings'}
+                    %tbody{id: 'library'}
+                      - 8.times do
+                        %tr{class: 'empty'}
+                          %td
+                  %div{id: 'lib-scrollbar', class: 'scrollbar'}
+                    %div{class: 'indicator'}
+    %div{class: 'clear-float'}

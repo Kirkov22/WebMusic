@@ -88,18 +88,18 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   src: url('/fonts/opensans-semibold-webfont.ttf') format('truetype'), url('/fonts/opensans-semibold-webfont.woff') format('woff'), url('/fonts/opensans-semibold-webfont.svg') format('svg');
 }
 
-/* line 120, ../scss/main.scss */
+/* line 147, ../scss/main.scss */
 html, body {
   background-color: gray;
 }
 
-/* line 124, ../scss/main.scss */
+/* line 151, ../scss/main.scss */
 #header {
   display: inline-block;
   border: 2px solid #29272b;
   background-color: #dadadf;
 }
-/* line 129, ../scss/main.scss */
+/* line 156, ../scss/main.scss */
 #header h1 {
   display: inline-block;
   margin: 4px;
@@ -110,19 +110,19 @@ html, body {
   color: #dadadf;
   background-color: #29272b;
 }
-/* line 140, ../scss/main.scss */
+/* line 167, ../scss/main.scss */
 #header h2, #header h3 {
   margin-right: 5px;
   display: inline-block;
   float: right;
 }
-/* line 146, ../scss/main.scss */
+/* line 173, ../scss/main.scss */
 #header h2 {
   margin-top: 5px;
   font-family: 'OpenSans-Bold';
   font-size: 14px;
 }
-/* line 152, ../scss/main.scss */
+/* line 179, ../scss/main.scss */
 #header h3 {
   margin-top: 4px;
   clear: right;
@@ -130,7 +130,7 @@ html, body {
   font-size: 8px;
 }
 
-/* line 160, ../scss/main.scss */
+/* line 187, ../scss/main.scss */
 #container {
   border-radius: 8px;
   border: 1px solid black;
@@ -140,25 +140,29 @@ html, body {
   margin: 20px auto 0;
 }
 
-/* line 166, ../scss/main.scss */
+/* line 193, ../scss/main.scss */
 #audio-player {
   width: 520px;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* line 173, ../scss/main.scss */
+/* line 200, ../scss/main.scss */
 .center-contents {
   text-align: center;
 }
 
-/* line 177, ../scss/main.scss */
+/* line 204, ../scss/main.scss */
 .display {
+  display: inline-block;
   position: relative;
+  padding: 10px;
+  border-radius: 10px;
   background-color: #29272b;
   background-image: linear-gradient(transparent 0%, #000000 100%), linear-gradient(transparent 1px, rgba(255, 255, 255, 0.2) 2px);
   background-size: 100% 100%, 10px 2px;
   box-shadow: inset 3px 3px 5px black, inset -3px -3px 15px black, inset 0 5px 7px rgba(255, 255, 255, 0.3);
+  text-align: left;
   color: #bebec8;
   cursor: default;
   -webkit-user-select: none;
@@ -166,35 +170,33 @@ html, body {
   user-select: none;
 }
 
-/* line 193, ../scss/main.scss */
+/* line 226, ../scss/main.scss */
 #track-data {
-  padding: 5px;
   margin: 10px auto;
-  width: 490px;
+  width: 500px;
   height: 70px;
   font-size: 14px;
   font-family: 'Inconsolata-Bold';
-  border-radius: 5px;
 }
-/* line 204, ../scss/main.scss */
+/* line 235, ../scss/main.scss */
 #track-data p:first-of-type span:first-of-type {
   color: #73cbbe;
 }
-/* line 208, ../scss/main.scss */
+/* line 239, ../scss/main.scss */
 #track-data p:not(:first-of-type)::before {
   white-space: pre;
   content: " ";
 }
-/* line 213, ../scss/main.scss */
+/* line 244, ../scss/main.scss */
 #track-data p:nth-child(4) {
   color: #4ed34a;
 }
-/* line 217, ../scss/main.scss */
+/* line 248, ../scss/main.scss */
 #track-data #cursor {
   background-color: #bebec8;
 }
 
-/* line 222, ../scss/main.scss */
+/* line 253, ../scss/main.scss */
 #track-position {
   position: relative;
   margin: 0px auto 10px;
@@ -203,7 +205,7 @@ html, body {
   border-radius: 7px;
   border: solid 1px black;
 }
-/* line 230, ../scss/main.scss */
+/* line 261, ../scss/main.scss */
 #track-position .bg {
   position: absolute;
   height: 100%;
@@ -215,7 +217,7 @@ html, body {
   box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.6), inset 0px -1px 2px rgba(255, 255, 255, 0.3);
   background-color: #29272b;
 }
-/* line 244, ../scss/main.scss */
+/* line 275, ../scss/main.scss */
 #track-position .progress-bg {
   position: absolute;
   height: 12px;
@@ -226,7 +228,7 @@ html, body {
   box-shadow: inset 0px -1px 1px #4ed34a, inset 0px 1px 3px #ffffc8;
   background-image: linear-gradient(#86ff6d 0%, #47783d 55%, #1b3d11 55%, #1c6a1a 100%);
 }
-/* line 263, ../scss/main.scss */
+/* line 294, ../scss/main.scss */
 #track-position .bumper {
   position: absolute;
   height: 18px;
@@ -241,42 +243,42 @@ html, body {
   box-shadow: 0px 1px 3px black;
   background: linear-gradient(#939297 0%, #939297 49%, #747379 50%, #6d6c71 100%);
 }
-/* line 81, ../scss/main.scss */
+/* line 88, ../scss/main.scss */
 #track-position .bumper:hover {
   box-shadow: 0px 2px 3px #1b3d11;
 }
 
-/* line 276, ../scss/main.scss */
+/* line 307, ../scss/main.scss */
 ul#player-buttons {
   list-style: none;
   margin: 0px auto 10px;
   width: 490px;
   font-size: 0px;
 }
-/* line 282, ../scss/main.scss */
+/* line 313, ../scss/main.scss */
 ul#player-buttons li {
   position: relative;
 }
-/* line 286, ../scss/main.scss */
+/* line 317, ../scss/main.scss */
 ul#player-buttons #prev, ul#player-buttons #play-pause, ul#player-buttons #next {
   float: left;
 }
-/* line 290, ../scss/main.scss */
+/* line 321, ../scss/main.scss */
 ul#player-buttons #volume, ul#player-buttons #loop {
   float: right;
 }
-/* line 294, ../scss/main.scss */
+/* line 325, ../scss/main.scss */
 ul#player-buttons .button {
   margin-top: 6px;
 }
 
-/* line 299, ../scss/main.scss */
+/* line 330, ../scss/main.scss */
 .clear-float {
   clear: both;
   margin-bottom: 10px;
 }
 
-/* line 304, ../scss/main.scss */
+/* line 335, ../scss/main.scss */
 .button {
   margin-right: 8px;
   width: 32px;
@@ -288,16 +290,16 @@ ul#player-buttons .button {
   background: linear-gradient(#939297 0%, #939297 49%, #747379 50%, #6d6c71 100%);
   cursor: pointer;
 }
-/* line 81, ../scss/main.scss */
+/* line 88, ../scss/main.scss */
 .button:hover {
   box-shadow: 0px 2px 3px #1b3d11;
 }
-/* line 87, ../scss/main.scss */
+/* line 94, ../scss/main.scss */
 .button:active {
   box-shadow: 0px 1px 3px #1c6a1a;
   background: linear-gradient(#86858b 0%, #86858b 49%, #68676c 50%, #605f64 100%);
 }
-/* line 313, ../scss/main.scss */
+/* line 344, ../scss/main.scss */
 .button::after {
   font-family: 'MediaIcons';
   font-size: 28px;
@@ -314,7 +316,7 @@ ul#player-buttons .button {
   right: 0;
 }
 
-/* line 318, ../scss/main.scss */
+/* line 349, ../scss/main.scss */
 #volume {
   position: relative;
   width: 48px;
@@ -327,11 +329,11 @@ ul#player-buttons .button {
   border-radius: 25px;
   cursor: pointer;
 }
-/* line 81, ../scss/main.scss */
+/* line 88, ../scss/main.scss */
 #volume:hover {
   box-shadow: 0px 2px 3px #1b3d11;
 }
-/* line 328, ../scss/main.scss */
+/* line 359, ../scss/main.scss */
 #volume::after {
   font-family: 'MediaIcons';
   font-size: 16px;
@@ -347,7 +349,7 @@ ul#player-buttons .button {
   bottom: 0;
   right: 0;
 }
-/* line 332, ../scss/main.scss */
+/* line 363, ../scss/main.scss */
 #volume .indicator {
   height: 44px;
   width: 44px;
@@ -358,7 +360,7 @@ ul#player-buttons .button {
   bottom: 0;
   right: 0;
 }
-/* line 337, ../scss/main.scss */
+/* line 368, ../scss/main.scss */
 #volume .indicator::after {
   content: "";
   position: absolute;
@@ -373,145 +375,135 @@ ul#player-buttons .button {
   border: 1px solid rgba(0, 0, 0, 0.6);
 }
 
-/* line 354, ../scss/main.scss */
-#playlist-box {
-  margin-left: auto;
-  margin-right: auto;
-}
-/* line 366, ../scss/main.scss */
-#playlist-box div.display {
-  display: inline-block;
-  padding: 10px;
-  border-radius: 10px;
-}
-/* line 373, ../scss/main.scss */
-#playlist-box div.scrollable {
-  position: relative;
-  overflow: hidden;
-  height: 151px;
-}
-/* line 378, ../scss/main.scss */
-#playlist-box div.scrollable table {
-  float: left;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-}
-/* line 386, ../scss/main.scss */
-#playlist-box h2 {
-  float: left;
-  font-family: 'OpenSans-Bold';
-  font-size: 20px;
-  text-transform: uppercase;
-}
-/* line 394, ../scss/main.scss */
-#playlist-box table {
-  clear: both;
+/* line 385, ../scss/main.scss */
+table {
   font-family: 'Inconsolata-Bold';
   font-size: 14px;
+}
+/* line 389, ../scss/main.scss */
+table th {
+  padding: 5px;
+  border: 1px solid #6d6d80;
+  border-bottom-width: 0;
+  color: #73cbbe;
+}
+/* line 396, ../scss/main.scss */
+table td {
+  padding: 1px 5px 3px;
+  border: 1px solid #6d6d80;
   color: #bebec8;
+  height: 14px;
 }
-/* line 400, ../scss/main.scss */
-#playlist-box table colgroup.col-artist {
-  width: 175px;
-}
-/* line 404, ../scss/main.scss */
-#playlist-box table colgroup.col-album {
-  width: 280px;
-}
-/* line 408, ../scss/main.scss */
-#playlist-box table colgroup.col-track {
-  width: 56px;
-}
-/* line 412, ../scss/main.scss */
-#playlist-box table colgroup.col-title {
-  width: 350px;
-}
-/* line 416, ../scss/main.scss */
-#playlist-box table colgroup.col-buttons {
-  width: 28px;
-}
-/* line 421, ../scss/main.scss */
-#playlist-box th, #playlist-box td {
+/* line 403, ../scss/main.scss */
+table th, table td {
   max-width: 0px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-/* line 428, ../scss/main.scss */
-#playlist-box th {
-  padding: 3px 5px 5px;
-  color: #73cbbe;
-  border: 1px solid #6d6d80;
-  border-bottom: 0;
+
+/* line 411, ../scss/main.scss */
+td.data-container {
+  padding: 0;
 }
-/* line 435, ../scss/main.scss */
-#playlist-box td.data-container {
-  padding: 0px;
-  border: 1px solid #6d6d80;
+
+/* line 415, ../scss/main.scss */
+div.scrollable {
+  position: relative;
+  overflow: hidden;
+}
+/* line 420, ../scss/main.scss */
+div.scrollable table {
+  float: left;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+/* line 427, ../scss/main.scss */
+div.scrollable tr:not(.empty) {
+  cursor: pointer;
+}
+/* line 430, ../scss/main.scss */
+div.scrollable tr:not(.empty):hover td {
+  background-color: #32323b;
+}
+/* line 434, ../scss/main.scss */
+div.scrollable tr:not(.empty):active td {
+  background-color: #4a4a57;
 }
 /* line 439, ../scss/main.scss */
-#playlist-box td.data-container colgroup.col-title {
+div.scrollable tr.selected td {
+  background-color: #3e3e49;
+}
+/* line 443, ../scss/main.scss */
+div.scrollable tr.selected:hover td {
+  background-color: #4a4a57;
+}
+/* line 447, ../scss/main.scss */
+div.scrollable tr.selected:active td {
+  background-color: #616173;
+}
+/* line 451, ../scss/main.scss */
+div.scrollable td:first-of-type {
+  border-left-width: 0;
+}
+/* line 455, ../scss/main.scss */
+div.scrollable tr:first-child td {
+  border-top-width: 0;
+}
+
+/* line 460, ../scss/main.scss */
+#playlist-box {
+  margin-left: auto;
+  margin-right: auto;
+}
+/* line 467, ../scss/main.scss */
+#playlist-box div.scrollable {
+  height: 151px;
+}
+/* line 472, ../scss/main.scss */
+#playlist-box colgroup.col-artist {
+  width: 175px;
+}
+/* line 477, ../scss/main.scss */
+#playlist-box colgroup.col-album {
+  width: 280px;
+}
+/* line 482, ../scss/main.scss */
+#playlist-box colgroup.col-track {
+  width: 56px;
+}
+/* line 487, ../scss/main.scss */
+#playlist-box colgroup.col-title {
+  width: 350px;
+}
+/* line 491, ../scss/main.scss */
+#playlist-box colgroup.col-buttons {
+  width: 28px;
+}
+/* line 496, ../scss/main.scss */
+#playlist-box colgroup.col-inner-title {
   width: 378px;
 }
-/* line 444, ../scss/main.scss */
+/* line 501, ../scss/main.scss */
 #playlist-box th:nth-of-type(3), #playlist-box td:nth-of-type(3) {
   text-align: center;
 }
-/* line 448, ../scss/main.scss */
+/* line 506, ../scss/main.scss */
 #playlist-box th:nth-of-type(5), #playlist-box th:nth-of-type(6) {
   text-align: center;
   padding: 1px 0px 0px;
 }
-/* line 454, ../scss/main.scss */
-#playlist-box #playlist tr:not(.empty) {
-  cursor: pointer;
-}
-/* line 457, ../scss/main.scss */
-#playlist-box #playlist tr:not(.empty):hover td {
-  background-color: #32323b;
-}
-/* line 461, ../scss/main.scss */
-#playlist-box #playlist tr:not(.empty):active td {
-  background-color: #4a4a57;
-}
-/* line 466, ../scss/main.scss */
-#playlist-box #playlist tr.selected td {
-  background-color: #3e3e49;
-}
-/* line 470, ../scss/main.scss */
-#playlist-box #playlist tr.selected:hover td {
-  background-color: #4a4a57;
-}
-/* line 474, ../scss/main.scss */
-#playlist-box #playlist tr.selected:active td {
-  background-color: #616173;
-}
-/* line 478, ../scss/main.scss */
-#playlist-box #playlist td {
-  padding: 1px 5px 3px;
-  height: 14px;
-  border: 1px solid #6d6d80;
-}
-/* line 483, ../scss/main.scss */
-#playlist-box #playlist td:first-child {
-  border-left: 0;
-}
-/* line 492, ../scss/main.scss */
-#playlist-box #playlist tr:first-child td {
-  border-top: 0;
-}
-/* line 501, ../scss/main.scss */
-#playlist-box div.scrollbar {
+/* line 511, ../scss/main.scss */
+#playlist-box .scrollbar {
   position: relative;
   margin: 4px;
   float: right;
   width: 19px;
   height: 143px;
 }
-/* line 510, ../scss/main.scss */
-#playlist-box div.scrollbar div.indicator {
-  display: none;
+/* line 514, ../scss/main.scss */
+#playlist-box .scrollbar .indicator {
   position: absolute;
   width: 19px;
   height: 19px;
@@ -521,61 +513,80 @@ ul#player-buttons .button {
   cursor: ns-resize;
 }
 
-/* line 523, ../scss/main.scss */
+/* line 520, ../scss/main.scss */
 .current {
   color: #4ed34a;
 }
 
+/* line 524, ../scss/main.scss */
+.clickable-cell {
+  cursor: pointer;
+}
 /* line 527, ../scss/main.scss */
-ul#playlist-buttons {
-  list-style: none;
-  float: right;
-  font-size: 0px;
+.clickable-cell:hover {
+  font-size: 16px;
+  padding: 0px;
 }
 /* line 532, ../scss/main.scss */
-ul#playlist-buttons li {
-  position: relative;
-  display: inline-block;
+.clickable-cell:active {
+  font-size: 12px;
+  padding: 0px;
 }
 
 /* line 538, ../scss/main.scss */
-#shuffle {
-  cursor: pointer;
-}
-/* line 541, ../scss/main.scss */
 #shuffle::after {
   font-family: 'MediaIcons';
   content: '\e60a';
   text-align: center;
 }
-/* line 548, ../scss/main.scss */
-#shuffle:hover {
-  font-size: 16px;
-  padding: 0px;
-}
-/* line 553, ../scss/main.scss */
-#shuffle:active {
-  font-size: 12px;
-  padding: 0px;
-}
 
-/* line 559, ../scss/main.scss */
-#trash {
-  cursor: pointer;
-}
-/* line 562, ../scss/main.scss */
+/* line 544, ../scss/main.scss */
 #trash::after {
   font-family: 'MediaIcons';
   content: '\e60b';
   text-align: center;
 }
-/* line 569, ../scss/main.scss */
-#trash:hover {
-  font-size: 16px;
-  padding: 0px;
+
+/* line 550, ../scss/main.scss */
+#library-box {
+  margin-left: auto;
+  margin-right: auto;
 }
-/* line 574, ../scss/main.scss */
-#trash:active {
-  font-size: 12px;
-  padding: 0px;
+/* line 557, ../scss/main.scss */
+#library-box div.scrollable {
+  height: 151px;
+}
+/* line 561, ../scss/main.scss */
+#library-box colgroup.col-category {
+  width: 161px;
+}
+/* line 565, ../scss/main.scss */
+#library-box colgroup.col-letter {
+  width: 28px;
+}
+/* line 569, ../scss/main.scss */
+#library-box colgroup.col-content {
+  width: 889px;
+}
+/* line 573, ../scss/main.scss */
+#library-box th:nth-of-type(n+2) {
+  text-align: center;
+}
+/* line 577, ../scss/main.scss */
+#library-box .scrollbar {
+  position: relative;
+  margin: 4px;
+  float: right;
+  width: 19px;
+  height: 143px;
+}
+/* line 580, ../scss/main.scss */
+#library-box .scrollbar .indicator {
+  position: absolute;
+  width: 19px;
+  height: 19px;
+  background-color: #bebec8;
+  left: 0px;
+  top: 0px;
+  cursor: ns-resize;
 }

@@ -17,8 +17,15 @@ $pale-sky-blue  : rgb(115,203,190);
 $black-alpha    : rgba(  0,  0,  0, 0.6);
 $white-alpha    : rgba(255,255,255, 0.3);
 
-$track-height   : 14px;
-$player-width   : 500px;
+$track-height       : 14px;
+$player-width       : 500px;
+$table-font-size    : 14px;
+$table-border-width : 1px;
+$table-border       : $table-border-width solid darken($terminal-white, 30%);
+$table-td-pad-top   : 1px;
+$table-td-pad-bot   : 3px;
+$true-row-height    : $table-font-size + $table-td-pad-bot + $table-td-pad-top +
+                      $table-border-width;
 
 // *****
 // Fonts
@@ -114,6 +121,26 @@ $player-width   : 500px;
   box-shadow        : 0px 1px 1px $black-alpha;
 }
 
+@mixin scrollbar($width, $height, $margin) {
+  $margin       : 4px;
+  position      : relative;
+  margin        : $margin;
+  float         : right;
+  width         : $width - 2 * $margin - 1;
+  height        : $height - 2 * $margin;
+}
+
+@mixin scrollbar-button($width, $margin) {
+  //display     : none;
+  position    : absolute;
+  width       : $width - 2 * $margin - 1;
+  height      : $width - 2 * $margin - 1;
+  background-color  : $terminal-white;
+  left        : 0px;
+  top         : 0px;
+  cursor      : ns-resize;
+}
+
 // ***************
 // Element Styling
 // ***************
@@ -175,7 +202,12 @@ html, body {
 }
 
 .display {
+  $padding            : 10px;
+
+  display             : inline-block;
   position            : relative;
+  padding             : $padding;
+  border-radius       : $padding;
   background-color    : $dark-gray;
   background-image    :
     linear-gradient(transparent 0%, black 100%),
@@ -185,6 +217,7 @@ html, body {
     inset 3px 3px 5px black,
     inset -3px -3px 15px black,
     inset 0 5px 7px $white-alpha;
+  text-align          : left;
   color               : $terminal-white;
   cursor              : default;
   @include user-select(none);
@@ -192,14 +225,12 @@ html, body {
 
 #track-data {
   $font-size          : 14px;
-  $padding            : 5px;
-  padding             : $padding;
+  $padding            : 10px;
   margin              : 10px auto;
-  width               : $player-width - 2 * $padding;
+  width               : $player-width;
   height              : 5 * $font-size;
   font-size           : $font-size;
   font-family         : 'Inconsolata-Bold';
-  border-radius       : $padding;
 
   p:first-of-type span:first-of-type {
     color         : $pale-sky-blue;
@@ -351,71 +382,22 @@ ul#player-buttons {
   }
 }
 
-#playlist-box {
-  $font-size            : 14px; 
-  $table-border         : 1px;
-  $scrollbar-width      : 2 * $font-size; //20px;
-  $scrollable-window    : 8 * ($font-size + 4 + 1) - 1;
+table {
+  font-family     : 'Inconsolata-Bold';
+  font-size       : $table-font-size;
 
-  //max-width       : 960px;
-  margin-left     : auto;
-  margin-right    : auto;
-
-  //@include device-bg;
-
-  div.display {
-    display       : inline-block;
-    $padding      : 10px;
-    padding       : $padding;
-    border-radius : $padding;
+  th {
+    padding             : 5px;
+    border              : $table-border;
+    border-bottom-width : 0;
+    color               : $pale-sky-blue;
   }
 
-  div.scrollable {
-    position      : relative;
-    overflow      : hidden;
-    height        : $scrollable-window;
-
-    table {
-      float       : left;
-      position    : absolute;
-      top         : 0px;
-      left        : 0px;
-    }
-  }
-
-  h2 {
-    float           : left;
-    font-family     : 'OpenSans-Bold';
-    font-size       : 20px;
-    text-transform  : uppercase;
-    //@include etched;
-  }
-
-  table {
-    clear       : both;
-    font-family : 'Inconsolata-Bold';
-    font-size   : $font-size;
-    color       : $terminal-white;
-
-    colgroup.col-artist {
-      width         : 25 * $font-size / 2;
-    }
-
-    colgroup.col-album {
-      width         : 40 * $font-size / 2;
-    }
-
-    colgroup.col-track {
-      width         : 8 * $font-size / 2;
-    }
-
-    colgroup.col-title {
-      width         : 50 * $font-size / 2;
-    }
-
-    colgroup.col-buttons {
-      width         : 2 * $font-size;
-    }
+  td {
+    padding       : $table-td-pad-top 5px $table-td-pad-bot;
+    border        : $table-border;
+    color         : $terminal-white;
+    height        : $table-font-size;
   }
 
   th, td {
@@ -424,98 +406,113 @@ ul#player-buttons {
     text-overflow : ellipsis;
     white-space   : nowrap;
   }
-  
-  th {
-    padding       : 3px 5px 5px;
-    color         : $pale-sky-blue;
-    border        : $table-border solid darken($terminal-white, 30%);
-    border-bottom : 0;
+}
+
+td.data-container {
+  padding       : 0;
+}
+
+div.scrollable {
+  position      : relative;
+  overflow      : hidden;
+  //height        : $scrollable-window;
+
+  table {
+    float       : left;
+    position    : absolute;
+    top         : 0px;
+    left        : 0px;
   }
 
-  td.data-container {
-    padding       : 0px;
-    border        : $table-border solid darken($terminal-white, 30%);
+  tr:not(.empty) {
+    cursor      : pointer;
 
-    colgroup.col-title {
-      width       : 50 * $font-size / 2 + 4 * $font-size - $scrollbar-width;
+    &:hover td {
+      background-color  : darken($terminal-white, 55%);
+    }
+
+    &:active td {
+      background-color  : darken($terminal-white, 45%);
     }
   }
 
+  tr.selected td {
+    background-color  : darken($terminal-white, 50%);
+  }
+
+  tr.selected:hover td {
+    background-color  : darken($terminal-white, 45%);
+  }
+
+  tr.selected:active td {
+    background-color  : darken($terminal-white, 35%);
+  }
+
+  td:first-of-type {
+    border-left-width   : 0;
+  }
+
+  tr:first-child td {
+    border-top-width    : 0;
+  }
+}
+
+#playlist-box {
+  $scrollbar-width      : 2 * $table-font-size; // formerly 20px;
+  $scrollable-window    : 8 * $true-row-height - 1;
+
+  margin-left     : auto;
+  margin-right    : auto;
+
+  div.scrollable {
+    height        : $scrollable-window;
+  }
+
+  // 25 characters wide
+  colgroup.col-artist {
+    width         : 25 * $table-font-size / 2;
+  }
+
+  // 40 characters wide
+  colgroup.col-album {
+    width         : 40 * $table-font-size / 2;
+  }
+
+  // 8 characters wide
+  colgroup.col-track {
+    width         : 8 * $table-font-size / 2;
+  }
+
+  // 50 characters wide
+  colgroup.col-title {
+    width         : 50 * $table-font-size / 2;
+  }
+
+  colgroup.col-buttons {
+    width         : 2 * $table-font-size;
+  }
+
+  // Different width to account for PL buttons and scrollbar
+  colgroup.col-inner-title {
+    width       : 50 * $table-font-size / 2 + 4 * $table-font-size - $scrollbar-width;
+  }
+
+  // Center Track #
   th:nth-of-type(3), td:nth-of-type(3) {
     text-align    : center;
   }
 
+  // Center PL buttons
   th:nth-of-type(5), th:nth-of-type(6) {
     text-align    : center;
     padding       : 1px 0px 0px;
   }
 
-  #playlist {
-    tr:not(.empty) {
-      cursor      : pointer;
+  .scrollbar {
+    @include scrollbar($scrollbar-width, $scrollable-window, 4px);
 
-      &:hover td {
-        background-color  : darken($terminal-white, 55%);
-      }
-
-      &:active td {
-        background-color  : darken($terminal-white, 45%);
-      }
-    }
-
-    tr.selected td {
-      background-color  : darken($terminal-white, 50%);
-    }
-
-    tr.selected:hover td {
-      background-color  : darken($terminal-white, 45%);
-    }
-
-    tr.selected:active td {
-      background-color  : darken($terminal-white, 35%);
-    }
-
-    td {
-      padding         : 1px 5px 3px;
-      height          : 14px;
-      border          : $table-border solid darken($terminal-white, 30%);
-
-      &:first-child {
-        border-left   : 0;
-      }
-
-      &:last-child {
-        //border-right  : 0;
-      }
-    }
-
-    tr:first-child td {
-      border-top      : 0;
-    }
-
-    tr:last-child td {
-      //border-bottom   : 0;
-    }
-  }
-
-  div.scrollbar {
-    $margin       : 4px;
-    $width        : $scrollbar-width;
-    position      : relative;
-    margin        : $margin;
-    float         : right;
-    width         : $width - 2 * $margin - 1;
-    height        : $scrollable-window - 2 * $margin;
-
-    div.indicator {
-      display     : none;
-      position    : absolute;
-      width       : $width - 2 * $margin - 1;
-      height      : $width - 2 * $margin - 1;
-      background-color  : $terminal-white;
-      left        : 0px;
-      top         : 0px;
-      cursor      : ns-resize;
+    .indicator {
+      @include scrollbar-button($scrollbar-width, 4px);
     }
   }
 }
@@ -524,55 +521,64 @@ ul#player-buttons {
   color         : lighten($emerald-green, 30%);
 }
 
-ul#playlist-buttons {
-  list-style  : none;
-  float       : right;
-  font-size   : 0px;
+.clickable-cell {
+  cursor          : pointer;
 
-  li {
-    position    : relative;
-    display     : inline-block;
+  &:hover {
+    font-size     : $table-font-size + 2;
+    padding       : 0px;
+  }
+  
+  &:active {
+    font-size     : $table-font-size - 2;
+    padding       : 0px;
   }
 }
 
-#shuffle {
-  cursor          : pointer;
-
-  &::after {
+#shuffle::after {
     font-family   : 'MediaIcons';
     content       : '\e60a';
-    //cursor        : default;
     text-align    : center;
-  }
-
-  &:hover {
-    font-size     : 16px;
-    padding       : 0px;
-  }
-  
-  &:active {
-    font-size     : 12px;
-    padding       : 0px;
-  }
 }
 
-#trash {
-  cursor          : pointer;
-
-  &::after {
+#trash::after {
     font-family   : 'MediaIcons';
     content       : '\e60b';
-    //cursor        : default;
+    text-align    : center;
+}
+
+#library-box {
+  $scrollbar-width      : 2 * $table-font-size; // formerly 20px;
+  $scrollable-window    : 8 * $true-row-height - 1;
+
+  margin-left           : auto;
+  margin-right          : auto;
+  
+  div.scrollable {
+    height              : $scrollable-window;
+  }
+
+  colgroup.col-category {
+    width         : 917px - $table-font-size * 54;
+  }
+
+  colgroup.col-letter {
+    width         : $table-font-size * 2;
+  }
+
+  colgroup.col-content {
+    width         : 917px - $scrollbar-width;
+  }
+
+  th:nth-of-type(n+2) {
     text-align    : center;
   }
 
-  &:hover {
-    font-size     : 16px;
-    padding       : 0px;
-  }
-  
-  &:active {
-    font-size     : 12px;
-    padding       : 0px;
+  .scrollbar {
+    @include scrollbar($scrollbar-width, $scrollable-window, 4px);
+
+    .indicator {
+      @include scrollbar-button($scrollbar-width, 4px);
+    }
   }
 }
