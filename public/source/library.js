@@ -19,7 +19,9 @@ var library = (function() {
       NAV_PATH3     = "#nav-path3",
       CLICKABLE     = ".clickable-cell"
       BLANK         = ".empty",
-      BLANK_ROW     = "<tr class=\"empty\"><td/></tr>";
+      BLANK_ROW     = "<tr class=\"empty\"><td/></tr>",
+      ACTIVE        = ":not(" + BLANK + ")",
+      ACTIVE_ROW    = "tr" + ACTIVE;
 
   // ---------------
   // Setup Functions
@@ -56,19 +58,27 @@ var library = (function() {
       { "first_letter" : letter },
       function(artists) {
         display(artists);
+        $library.on("click", ACTIVE_ROW, listAlbumsByArtist);
       },
       "json");
   }
 
   function listAlbumsByArtist(e) {
-    var artist = $(this).text();
+    var artist = $(this).children("td").text();
+    $library.off("click", ACTIVE_ROW);
+    setNavPath(2, artist);
     $.get(
       "getalbumsbyartist",
       { "artist" : artist },
       function(albums) {
         display(albums);
+        $library.on("click", ACTIVE_ROW, listSongsByAlbum);
       },
       "json");
+  }
+
+  function listSongsByAlbum(e) {
+
   }
 
   // -------------
@@ -80,7 +90,9 @@ var library = (function() {
       $(NAV_PATH1, $nav).text(text);
       $(NAV_PATH1, $nav).siblings().css("display", "none");
     } else if (position === 2) {
-
+      $(NAV_PATH2, $nav).prev().removeAttr("style");
+      $(NAV_PATH2, $nav).text(text);
+      $(NAV_PATH2, $nav).removeAttr("style");
     } else {
 
     }
