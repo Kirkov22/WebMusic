@@ -29,7 +29,7 @@ var playlist = (function() {
       TRACK_ID_ATTR = "[" + TRACK_ID + "]",
       BLANK         = ".empty",
       BLANK_ROW     = "<tr class=\"empty\"><td/><td/><td/><td/></tr>",
-      ACTIVE        = ":not(" + BLANK + ")";
+      ACTIVE        = ":not(" + BLANK + ")",
       ACTIVE_ROW    = "tr" + ACTIVE;
 
   // ---------------
