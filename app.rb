@@ -17,7 +17,9 @@ configure do
                    "file04.ogg"];
   set :converted, {}
   # TODO: Remove once MySQL database is set up
-  set :songs, {}
+  include AppHelpers
+  songs = tagArray(settings.config.opts[:path])
+  set :songs, songs
 end
 
 # Main Page
@@ -25,14 +27,30 @@ get '/' do
   haml :home, :layout => :index, :format => :html5
 end
 
-# Retrieve music file list
-get '/getfilelist' do
-  files = tagArray(settings.config.opts[:path])
-  files.each do |song|
-    settings.songs[song[:id]] = song[:path]
-  end
-  JSON.generate(files)
+# Get list of artists
+get '/getartists' do
+  first = /^#{params[:first_letter]}/i
+  selected = settings.songs.select { |song| song[:artist] =~ first }
+  artists = selected.map { |song| song[:artist] }
+  JSON.generate(artists.uniq)
 end
+
+# Get album
+get '/getalbumsbyartist' do
+  artist = params[:artist]
+  selected = settings.songs.select { |song| song[:artist] == artist }
+  albums = selected.map { |song| song[:album] }
+  JSON.generate(albums.uniq)
+end
+
+# Retrieve music file list
+# get '/getfilelist' do
+#   files = tagArray(settings.config.opts[:path])
+#   files.each do |song|
+#     settings.songs[song[:id]] = song[:path]
+#   end
+#   JSON.generate(files)
+# end
 
 # Test for Javascript
 get '/music' do
@@ -40,7 +58,8 @@ get '/music' do
   if settings.converted.has_key?(id)
     settings.converted[id]
   else
-    mp3 = Mpeg.new(settings.songs[id])
+    selected_song = settings.songs.select { |song| song[:id] == id }
+    mp3 = Mpeg.new(song[:path])
     tempfile = settings.playNames.shift
     settings.playNames.push(tempfile);
     mp3.convert(settings.config.opts[:converter], "public/" + tempfile)

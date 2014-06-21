@@ -4,8 +4,8 @@
 */
 
 var playlist = (function() {
-  var $playlist     = null,
-      $scrollButton = null,
+  var $playlist     = $(),
+      $scrollButton = $(),
       scrollYStart  = 0,
       scrollHeight  = 0,
       rowHeight     = 0,
