@@ -88,18 +88,18 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   src: url('/fonts/opensans-semibold-webfont.ttf') format('truetype'), url('/fonts/opensans-semibold-webfont.woff') format('woff'), url('/fonts/opensans-semibold-webfont.svg') format('svg');
 }
 
-/* line 147, ../scss/main.scss */
+/* line 146, ../scss/main.scss */
 html, body {
-  background-color: gray;
+  background-color: #181818;
 }
 
-/* line 151, ../scss/main.scss */
+/* line 150, ../scss/main.scss */
 #header {
   display: inline-block;
   border: 2px solid #29272b;
   background-color: #dadadf;
 }
-/* line 156, ../scss/main.scss */
+/* line 155, ../scss/main.scss */
 #header h1 {
   display: inline-block;
   margin: 4px;
@@ -110,19 +110,19 @@ html, body {
   color: #dadadf;
   background-color: #29272b;
 }
-/* line 167, ../scss/main.scss */
+/* line 166, ../scss/main.scss */
 #header h2, #header h3 {
   margin-right: 5px;
   display: inline-block;
   float: right;
 }
-/* line 173, ../scss/main.scss */
+/* line 172, ../scss/main.scss */
 #header h2 {
   margin-top: 5px;
   font-family: 'OpenSans-Bold';
   font-size: 14px;
 }
-/* line 179, ../scss/main.scss */
+/* line 178, ../scss/main.scss */
 #header h3 {
   margin-top: 4px;
   clear: right;
@@ -130,7 +130,7 @@ html, body {
   font-size: 8px;
 }
 
-/* line 187, ../scss/main.scss */
+/* line 186, ../scss/main.scss */
 #container {
   border-radius: 8px;
   border: 1px solid black;
@@ -140,19 +140,19 @@ html, body {
   margin: 20px auto 0;
 }
 
-/* line 193, ../scss/main.scss */
+/* line 192, ../scss/main.scss */
 #audio-player {
   width: 520px;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* line 200, ../scss/main.scss */
+/* line 199, ../scss/main.scss */
 .center-contents {
   text-align: center;
 }
 
-/* line 204, ../scss/main.scss */
+/* line 203, ../scss/main.scss */
 .display {
   display: inline-block;
   position: relative;
@@ -170,7 +170,7 @@ html, body {
   user-select: none;
 }
 
-/* line 226, ../scss/main.scss */
+/* line 225, ../scss/main.scss */
 #track-data {
   margin: 10px auto;
   width: 500px;
@@ -178,25 +178,25 @@ html, body {
   font-size: 14px;
   font-family: 'Inconsolata-Bold';
 }
-/* line 235, ../scss/main.scss */
+/* line 234, ../scss/main.scss */
 #track-data p:first-of-type span:first-of-type {
   color: #73cbbe;
 }
-/* line 239, ../scss/main.scss */
+/* line 238, ../scss/main.scss */
 #track-data p:not(:first-of-type)::before {
   white-space: pre;
   content: " ";
 }
-/* line 244, ../scss/main.scss */
+/* line 243, ../scss/main.scss */
 #track-data p:nth-child(4) {
   color: #4ed34a;
 }
-/* line 248, ../scss/main.scss */
+/* line 247, ../scss/main.scss */
 #track-data #cursor {
   background-color: #bebec8;
 }
 
-/* line 253, ../scss/main.scss */
+/* line 252, ../scss/main.scss */
 #track-position {
   position: relative;
   margin: 0px auto 10px;
@@ -205,7 +205,7 @@ html, body {
   border-radius: 7px;
   border: solid 1px black;
 }
-/* line 261, ../scss/main.scss */
+/* line 260, ../scss/main.scss */
 #track-position .bg {
   position: absolute;
   height: 100%;
@@ -217,7 +217,7 @@ html, body {
   box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.6), inset 0px -1px 2px rgba(255, 255, 255, 0.3);
   background-color: #29272b;
 }
-/* line 275, ../scss/main.scss */
+/* line 274, ../scss/main.scss */
 #track-position .progress-bg {
   position: absolute;
   height: 12px;
@@ -228,7 +228,7 @@ html, body {
   box-shadow: inset 0px -1px 1px #4ed34a, inset 0px 1px 3px #ffffc8;
   background-image: linear-gradient(#86ff6d 0%, #47783d 55%, #1b3d11 55%, #1c6a1a 100%);
 }
-/* line 294, ../scss/main.scss */
+/* line 293, ../scss/main.scss */
 #track-position .bumper {
   position: absolute;
   height: 18px;
@@ -248,37 +248,37 @@ html, body {
   box-shadow: 0px 2px 3px #1b3d11;
 }
 
-/* line 307, ../scss/main.scss */
+/* line 306, ../scss/main.scss */
 ul#player-buttons {
   list-style: none;
   margin: 0px auto 10px;
   width: 490px;
   font-size: 0px;
 }
-/* line 313, ../scss/main.scss */
+/* line 312, ../scss/main.scss */
 ul#player-buttons li {
   position: relative;
 }
-/* line 317, ../scss/main.scss */
+/* line 316, ../scss/main.scss */
 ul#player-buttons #prev, ul#player-buttons #play-pause, ul#player-buttons #next {
   float: left;
 }
-/* line 321, ../scss/main.scss */
+/* line 320, ../scss/main.scss */
 ul#player-buttons #volume, ul#player-buttons #loop {
   float: right;
 }
-/* line 325, ../scss/main.scss */
+/* line 324, ../scss/main.scss */
 ul#player-buttons .button {
   margin-top: 6px;
 }
 
-/* line 330, ../scss/main.scss */
+/* line 329, ../scss/main.scss */
 .clear-float {
   clear: both;
   margin-bottom: 10px;
 }
 
-/* line 335, ../scss/main.scss */
+/* line 334, ../scss/main.scss */
 .button {
   margin-right: 8px;
   width: 32px;
@@ -299,7 +299,7 @@ ul#player-buttons .button {
   box-shadow: 0px 1px 3px #1c6a1a;
   background: linear-gradient(#86858b 0%, #86858b 49%, #68676c 50%, #605f64 100%);
 }
-/* line 344, ../scss/main.scss */
+/* line 343, ../scss/main.scss */
 .button::after {
   font-family: 'MediaIcons';
   font-size: 28px;
@@ -316,7 +316,7 @@ ul#player-buttons .button {
   right: 0;
 }
 
-/* line 349, ../scss/main.scss */
+/* line 348, ../scss/main.scss */
 #volume {
   position: relative;
   width: 48px;
@@ -333,7 +333,7 @@ ul#player-buttons .button {
 #volume:hover {
   box-shadow: 0px 2px 3px #1b3d11;
 }
-/* line 359, ../scss/main.scss */
+/* line 358, ../scss/main.scss */
 #volume::after {
   font-family: 'MediaIcons';
   font-size: 16px;
@@ -349,7 +349,7 @@ ul#player-buttons .button {
   bottom: 0;
   right: 0;
 }
-/* line 363, ../scss/main.scss */
+/* line 362, ../scss/main.scss */
 #volume .indicator {
   height: 44px;
   width: 44px;
@@ -360,7 +360,7 @@ ul#player-buttons .button {
   bottom: 0;
   right: 0;
 }
-/* line 368, ../scss/main.scss */
+/* line 367, ../scss/main.scss */
 #volume .indicator::after {
   content: "";
   position: absolute;
@@ -375,17 +375,18 @@ ul#player-buttons .button {
   border: 1px solid rgba(0, 0, 0, 0.6);
 }
 
-/* line 385, ../scss/main.scss */
+/* line 384, ../scss/main.scss */
 table {
   font-family: 'Inconsolata-Bold';
   font-size: 14px;
 }
-/* line 389, ../scss/main.scss */
+/* line 388, ../scss/main.scss */
 table th {
   padding: 5px;
   border: 1px solid #6d6d80;
   border-bottom-width: 0;
   color: #73cbbe;
+  height: 14px;
 }
 /* line 396, ../scss/main.scss */
 table td {
@@ -514,7 +515,7 @@ div.scrollable tr:first-child td {
 }
 
 /* line 520, ../scss/main.scss */
-.current {
+.current td {
   color: #4ed34a;
 }
 

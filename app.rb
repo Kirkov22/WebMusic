@@ -27,7 +27,6 @@ get '/' do
   haml :home, :layout => :index, :format => :html5
 end
 
-# Get list of artists
 get '/getartists' do
   first = /^#{params[:first_letter]}/i
   selected = settings.songs.select { |song| song[:artist] =~ first }
@@ -35,7 +34,6 @@ get '/getartists' do
   JSON.generate(artists.uniq)
 end
 
-# Get album
 get '/getalbumsbyartist' do
   artist = params[:artist]
   selected = settings.songs.select { |song| song[:artist] == artist }
@@ -43,6 +41,20 @@ get '/getalbumsbyartist' do
   JSON.generate(albums.uniq)
 end
 
+get '/getsongsbyalbum' do
+  album = params[:album]
+#   keepers = [:title, :id, :track]
+  selected = settings.songs.select { |song| song[:album] == album }
+#   selected.map { |song| song.keep_if { |k| keepers.include? k }}
+  selected.sort_by! { |song| song[:track] }
+  JSON.generate(selected)
+end
+
+get '/getsonginfo' do
+  id = params[:id]
+  song = settings.songs.select { |song| song[:id] == id }
+  JSON.generate(song[0])
+end
 # Retrieve music file list
 # get '/getfilelist' do
 #   files = tagArray(settings.config.opts[:path])
@@ -59,7 +71,7 @@ get '/music' do
     settings.converted[id]
   else
     selected_song = settings.songs.select { |song| song[:id] == id }
-    mp3 = Mpeg.new(song[:path])
+    mp3 = Mpeg.new(selected_song[0][:path])
     tempfile = settings.playNames.shift
     settings.playNames.push(tempfile);
     mp3.convert(settings.config.opts[:converter], "public/" + tempfile)

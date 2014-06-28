@@ -131,7 +131,6 @@ $true-row-height    : $table-font-size + $table-td-pad-bot + $table-td-pad-top +
 }
 
 @mixin scrollbar-button($width, $margin) {
-  //display     : none;
   position    : absolute;
   width       : $width - 2 * $margin - 1;
   height      : $width - 2 * $margin - 1;
@@ -145,7 +144,7 @@ $true-row-height    : $table-font-size + $table-td-pad-bot + $table-td-pad-top +
 // Element Styling
 // ***************
 html, body {
-  background-color : rgb(128,128,128);
+  background-color : rgb( 24, 24, 24);
 }
 
 #header {
@@ -391,6 +390,7 @@ table {
     border              : $table-border;
     border-bottom-width : 0;
     color               : $pale-sky-blue;
+    height              : $table-font-size;
   }
 
   td {
@@ -517,7 +517,7 @@ div.scrollable {
   }
 }
 
-.current {
+.current td {
   color         : lighten($emerald-green, 30%);
 }
 

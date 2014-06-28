@@ -48,6 +48,9 @@ var playlist = (function() {
     scrollHeight = $scrollButton.parent().height() - $scrollButton.height();
     rowHeight = $playlist.children().first().height();
     scrollStep = scrollHeight;
+    
+    // hide scrollbutton until needed
+    $scrollButton.css("display", "none");
   }
   
   function enable() {
