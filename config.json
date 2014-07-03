@@ -1,4 +1,6 @@
 {
-  "path" : "/home/kirkov/Music/",
-  "converter" : "avconv"
+  "path" :          "/home/kirkov/Music/",
+  "converter" :     "avconv",
+  "db_name" :       "music"
+  "mysql_config" :  "/etc/mysql/my.cnf"
 }
