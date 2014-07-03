@@ -4,6 +4,8 @@ require_relative 'flac.rb'
 require_relative 'mpeg.rb'
 
 module AppHelpers
+
+  class FileNotFoundError < Exception; end
   
   # Return a hash of tags for the music files at path
   def tagArray(path)
@@ -53,4 +55,33 @@ module AppHelpers
     File::FNM_CASEFOLD
   end
   
+  def getMySQLSocket(mysql_config)
+    # expects config file to have the following contents:
+    # [mysqld]
+    # ...
+    # socket = <path to socket>
+
+    raise FileNotFoundError.new("File not found at #{mysql_config}") unless
+      File.exists? mysql_config
+    File.open(mysql_config, "r") do |config|
+      contents = config.read
+      socket = /\[mysqld\].*?^socket\s*=(.*?)$/m.match(contents)[1]
+      socket.strip
+    end
+  end
+
+  def getMySQLPort(mysql_config)
+    # expects config file to have the following contents:
+    # [mysqld]
+    # ...
+    # port = <port number>
+
+    raise FileNotFoundError.new("File not found at #{mysql_config}") unless
+      File.exists? mysql_config
+    File.open(mysql_config, "r") do |config|
+      contents = config.read
+      port = /\[mysqld\].*?^port\s*=(.*?)$/m.match(contents)[1]
+      port.to_i
+    end
+  end
 end
