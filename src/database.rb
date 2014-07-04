@@ -19,4 +19,9 @@ class Database
       opts[:sock]     # MySQL socket
     )
   end
+
+  def insert_artist(artist)
+    @db.query("INSERT artists (name) VALUES ('#{artist}')")
+    @db.insert_id
+  end
 end
