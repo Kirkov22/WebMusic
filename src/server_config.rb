@@ -21,8 +21,8 @@ class ServerConfig
     @filename = config_file
     @opts = {
       path: '',
-      converter: ''
-      db_name: ''
+      converter: '',
+      db_name: '',
       mysql_config: ''
     }
     read_config
