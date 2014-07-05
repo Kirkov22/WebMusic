@@ -30,14 +30,31 @@ class Database
     (id == -1) ? insert_album(album) : id
   end
   
+  def song_info(id)
+    result = song_by_id(id)
+    row = result.fetch_row
+    if row.nil?
+      {}
+    else
+      {
+        title:  row[0],
+        artist: row[1],
+        album:  row[2],
+        track:  row[3].to_i,
+        year:   row[4].to_i,
+        path:   row[5]
+      }
+    end
+  end
+
   private 
   
   attr_accessor :db
   
   def find_artist(artist)
     @db.query_with_result = true
-    result = @db.query("SELECT a.artist_id FROM artists a WHERE a.name='#{Mysql.quote(artist)}'")
-    row = result.fetch_row()
+    result = @db.query("SELECT a.artist_id FROM artists a WHERE a.name = '#{Mysql.quote(artist)}'")
+    row = result.fetch_row
     row.nil? ? -1 : row[0].to_i
   end
   
@@ -49,8 +66,8 @@ class Database
   
   def find_album(album)
     @db.query_with_result = true
-    result = @db.query("SELECT a.album_id FROM albums a WHERE a.name='#{Mysql.quote(album)}'")
-    row = result.fetch_row()
+    result = @db.query("SELECT a.album_id FROM albums a WHERE a.name = '#{Mysql.quote(album)}'")
+    row = result.fetch_row
     row.nil? ? -1 : row[0].to_i
   end
   
@@ -60,6 +77,26 @@ class Database
     @db.insert_id
   end
   
+  def song_by_path(path)
+    @db.query_with_result = true
+    result = @db.query("SELECT s.song_id FROM songs s WHERE s.path = '#{Mysql.quote(path)}'")
+    row = result.fetch_row
+    row.nil? ? -1 : row[0].to_i
+  end
+
+  def song_by_id(id)
+    query = <<ENDDOC
+SELECT s.title, art.name, alb.name, s.track_number, s.release_year, s.path
+FROM songs s INNER JOIN artists art
+  USING (artist_id)
+  INNER JOIN albums alb
+  USING (album_id)
+WHERE s.song_id = #{id}
+ENDDOC
+    @db.query_with_result = true
+    @db.query(query)
+  end
+
   def insert_song(song)
     song[:title]  ||= 'Unknown'
     song[:artist] ||= 'Unknown'
