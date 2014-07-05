@@ -2,7 +2,6 @@
 # Helper methods for the main Sinatra app
 require_relative 'flac.rb'
 require_relative 'mpeg.rb'
-# require_relative 'server_config.rb'
 require_relative 'database.rb'
 
 module AppHelpers
@@ -49,7 +48,7 @@ module AppHelpers
   
   # Return an array of music files at path
   def listMusicFiles(path)
-    Dir.glob(path + "**{" + Mpeg::EXT + "," + Flac::EXT + "}", caseinsensitive)
+    Dir.glob(path + "**/*{" + Mpeg::EXT + "," + Flac::EXT + "}", caseinsensitive)
   end
   
   # Flag for case insensitive glob expression
