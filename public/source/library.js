@@ -232,6 +232,7 @@ var library = (function() {
       scrollStep  = scrollHeight / (length - MIN_ROWS);
       $scrollButton.on("mousedown", scrollStart);
     }
+    scroll(0);
   }
 
   function displaySongs(songs) {
